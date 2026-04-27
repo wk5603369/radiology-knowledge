@@ -11,18 +11,58 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a5276'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>🫁</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#1a5276;--accent:#2980b9;--bg:#f5f7fa;--card:#fff;--text:#2c3e50;--light:#ecf0f1;--tag-bg:#e8f4fd;--tag-active:#2980b9;--tag-active-text:#fff;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+:root{
+  --primary:#1a5276;
+  --accent:#2980b9;
+  --bg:#f5f7fa;
+  --card:#fff;
+  --text:#2c3e50;
+  --light:#ecf0f1;
+  --tag-bg:#e8f4fd;
+  --tag-active:#2980b9;
+  --tag-active-text:#fff;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  /* 模块颜色 */
+  --brain:#6c5ce7;
+  --head:#00b894;
+  --lung:#e17055;
+  --abdomen:#fdcb6e;
+  --bone:#74b9ff;
+  --cardio:#e84393;
+  --breast:#00cec9;
+}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 60px)}
+
+/* 头部 */
 .header{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:16px 20px;padding-top:calc(16px + var(--safe-top));position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .header h1{font-size:18px;font-weight:600}
 .header p{font-size:12px;opacity:.8;margin-top:2px}
-.search-box{padding:12px 16px;background:var(--bg);position:sticky;top:0;z-index:99}
-.search-box input{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:20px;font-size:14px;background:var(--card);outline:none;transition:border .2s}
-.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(41,128,185,.15)}
+
+/* 模块导航 */
+.module-nav{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:#fff;position:sticky;top:0;z-index:99}
+.module-nav::-webkit-scrollbar{display:none}
+.module-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#666;transition:all .2s;white-space:nowrap}
+.module-btn.active{color:#fff;border-color:transparent}
+.module-btn[data-module="brain"].active{background:var(--brain)}
+.module-btn[data-module="head"].active{background:var(--head)}
+.module-btn[data-module="lung"].active{background:var(--lung)}
+.module-btn[data-module="abdomen"].active{background:var(--abdomen);color:#333}
+.module-btn[data-module="bone"].active{background:var(--bone)}
+.module-btn[data-module="cardio"].active{background:var(--cardio)}
+.module-btn[data-module="breast"].active{background:var(--breast)}
+.module-btn[data-module="all"].active{background:var(--primary)}
+
+/* 分类标签 */
 .tags{padding:8px 16px 12px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--bg);position:sticky;top:0;z-index:98}
 .tags::-webkit-scrollbar{display:none}
 .tag{flex-shrink:0;padding:5px 14px;border-radius:16px;font-size:12px;background:var(--tag-bg);color:var(--accent);cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
 .tag.active{background:var(--tag-active);color:var(--tag-active-text)}
+
+.search-box{padding:12px 16px;background:var(--bg);position:sticky;top:0;z-index:97}
+.search-box input{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:20px;font-size:14px;background:var(--card);outline:none;transition:border .2s}
+.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(41,128,185,.15)}
+
 .stats{padding:8px 16px;font-size:12px;color:#888;background:var(--bg)}
 .disease-list{padding:0 16px 100px}
 .disease-card{background:var(--card);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;transition:transform .2s}
@@ -39,8 +79,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 .sign-tag{display:inline-block;background:#fef9e7;color:#d4a017;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #f9e79f}
 .feature-tag{display:inline-block;background:#eafaf1;color:#1e8449;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #a9dfbf}
 .empty{padding:40px 20px;text-align:center;color:#aaa;font-size:14px}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.coming-soon{background:#fff3cd;border:1px dashed #ffc107;border-radius:12px;padding:20px;text-align:center;color:#856404;margin-bottom:12px}
+.coming-soon .icon{font-size:32px;margin-bottom:8px}
+.coming-soon .title{font-weight:600;margin-bottom:4px}
+
+/* 空模块提示 */
+.module-empty{padding:40px 20px;text-align:center}
+.module-empty .module-icon{font-size:64px;margin-bottom:16px;opacity:.3}
+.module-empty .module-title{font-size:18px;font-weight:600;color:#333;margin-bottom:8px}
+.module-empty .module-desc{font-size:14px;color:#888;margin-bottom:16px}
+.module-empty .module-count{font-size:12px;color:var(--accent)}
+
 .back-top{position:fixed;right:16px;bottom:calc(24px + var(--safe-bottom));width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;z-index:200}
-.install-hint{text-align:center;padding:8px 16px;font-size:11px;color:#888;background:var(--bg)}
+.back-top:hover{background:var(--primary)}
+
 @media(min-width:768px){
 .disease-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .stats{grid-column:1/-1}
@@ -52,6 +105,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 <div class="header">
 <h1>🫁 影像诊断知识库</h1>
 <p>放射科日常工作速查手册</p>
+</div>
+
+<!-- 模块导航 -->
+<div class="module-nav" id="moduleNav">
+<button class="module-btn active" data-module="all">全部</button>
+<button class="module-btn" data-module="brain">🧠 中枢神经</button>
+<button class="module-btn" data-module="head">👁 头颈五官</button>
+<button class="module-btn" data-module="lung">🫁 呼吸系统</button>
+<button class="module-btn" data-module="abdomen">🍽 消化系统</button>
+<button class="module-btn" data-module="bone">🦴 骨肌系统</button>
+<button class="module-btn" data-module="cardio">❤️ 心血管</button>
+<button class="module-btn" data-module="breast">🤝 乳腺</button>
 </div>
 
 <div class="search-box">
@@ -67,262 +132,634 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-const DATA=[
-{
-name:"肺癌",
-subtitle:"原发性支气管肺癌",
-category:"肿瘤",
-age:"40-70岁",
-keywords:["肺癌","支气管肺癌","鳞癌","腺癌"],
-signs:["分叶征","毛刺征","胸膜凹陷征","偏心性空洞","壁结节","支气管截断"],
-types:[
-{label:"中央型（多为鳞癌，男）",desc:"起源于大支气管，阻塞性肺炎，肺气肿；血供丰富，生长快。支气管肿物，或包绕支气管壁生长的肿瘤。支气管截断征。"},
-{label:"周围型（多为腺癌，女）",desc:"多呈分叶状，可见胸膜凹陷，且多为局限性，与胸膜宽基底相连，且界限不清晰。边缘多为细短毛刺，边缘较清，无晕征。"}
-],
-features:["增强CT扫描强化呈快进快出，强化不均匀","病灶内偏心性空洞，空洞内壁不光整，壁结节","侵犯临近结构，纵隔、胸膜","多发灶状坏死及空洞；双重血供，坏死不强化，瘤体部分明显强化"]
-},
-{
-name:"孤立性纤维瘤（SFT）",
-subtitle:"Solitary Fibrous Tumor",
-category:"肿瘤",
-age:"20-70岁，女性略多见",
-keywords:["孤立性纤维瘤","SFT","纤维瘤"],
-signs:["蛇纹状血管","贴边血管征","持续进行性强化","地图样强化"],
-features:[
-"肺内的一种少见良性肿瘤",
-"多位于双肺下叶周边，可贴近纵隔、胸膜下",
-"大多边缘光滑清晰，密度较均匀",
-"靠胸壁，靠叶间裂，或肺纵隔交界区域，边界清楚",
-"Y形、V形外观",
-"动脉期可见粗大血管，静脉期不均匀",
-"如果瘤体表面观察到有肺动脉进入的血管蒂样结构，并由此如蛇纹样四散爬行（血管影），则相当具有特征性",
-"良性肿瘤影像上很少能够观察到这种瘤内血管影，孤立性纤维瘤独辟蹊径",
-"强化是否均匀与瘤体病理组成成分相关",
-"持续进行性强化"
-]
-},
-{
-name:"硬化性肺泡细胞瘤（PSP）",
-subtitle:"Pulmonary Sclerosing Pneumocytoma",
-category:"肿瘤",
-age:"中年女性多见",
-keywords:["硬化性肺泡细胞瘤","PSP","肺泡细胞瘤"],
-signs:["贴边血管征","晕征","空气新月征"],
-features:[
-"多位于双肺下叶周边",
-"大多边缘光滑清晰，密度较均匀",
-"增强扫描多呈明显均匀强化，呈持续性强化",
-"贴边血管征、晕征、空气新月征都具有较高的诊断价值"
-]
-},
-{
-name:"错构瘤",
-subtitle:"Hamartoma",
-category:"肿瘤",
-age:"中老年",
-keywords:["错构瘤","hamartoma"],
-signs:["爆米花状钙化","脂肪密度"],
-features:[
-"大多边缘光滑清晰，密度较均匀",
-"典型钙化为爆米花状",
-"30%可显示钙化或脂肪并存，此为特征性改变",
-"增强后肿块无强化或仅有轻度强化"
-]
-},
-{
-name:"单发转移瘤",
-subtitle:"Solitary Metastasis",
-category:"肿瘤",
-age:"中老年",
-keywords:["转移瘤","转移癌","metastasis"],
-signs:[],
-features:[
-"中老年，有原发病史",
-"结节或肿块型：孤立或多发，可有分叶和毛刺",
-"一般情况下，结节或肿块内部的坏死灶分布较散，以肺外侧带多见，以中央坏死并液化为主"
-]
-},
-{
-name:"胸膜间皮瘤",
-subtitle:"Mesothelioma",
-category:"肿瘤",
-age:"中老年",
-keywords:["胸膜间皮瘤","间皮瘤","mesothelioma"],
-signs:["石棉接触史","胸膜弥漫性增厚"],
-features:[
-"多数起源于胸膜，具有特征性石棉接触病史",
-"良性胸膜间皮瘤：胸膜多局限性增厚",
-"恶性胸膜间皮瘤：胸膜多弥漫性明显增厚，多发结节、肿块",
-"CT强化特征：增厚的胸膜一般有强化",
-"肿块较大时可合并囊变、坏死，增强扫描呈不均匀强化"
-]
-},
-{
-name:"炎性假瘤",
-subtitle:"Inflammatory Pseudotumor",
-category:"炎症",
-age:"30-40岁多见",
-keywords:["炎性假瘤","假瘤"],
-signs:["桃尖征","平直征"],
-features:[
-"多为单发，圆形或类圆形、边缘光整的肿块",
-"可为实性或灶性液腔，无卫星病灶",
-"边缘可见粗短毛刺、棘状突起",
-"30-40岁多见，抗炎治疗好可好转"
-]
-},
-{
-name:"肺结核球",
-subtitle:"Tuberculoma",
-category:"炎症",
-age:"青壮年",
-keywords:["结核球","肺结核","结核瘤"],
-signs:["层状钙化","裂隙样空洞","卫星灶"],
-features:[
-"好发于上叶尖后段及下叶背段",
-"类圆形结节影，密度不均，可有中心坏死",
-"弥漫斑点状或层状钙化",
-"有的边缘见裂隙样空洞或周围纤维索条影",
-"增强扫描后边缘或包膜强化"
-]
-},
-{
-name:"肺脓肿",
-subtitle:"Lung Abscess",
-category:"炎症",
-age:"各年龄段",
-keywords:["肺脓肿","脓肿","abscess"],
-signs:["气-液平面","环形强化"],
-features:[
-"该病好发于各年龄段，起病急",
-"有空洞者其内可见气-液或液-液平面",
-"急性肺脓肿空洞内壁多不规则",
-"慢性肺脓肿洞壁增厚，内壁清楚",
-"增强扫描可显示病灶内未坏死部分有不同程度强化",
-"脓肿壁可见明显环形强化"
-]
-},
-{
-name:"肺隔离症",
-subtitle:"Pulmonary Sequestration",
-category:"先天/发育",
-age:"青年多见",
-keywords:["肺隔离症","隔离症","sequestration"],
-signs:["体循环异常供血","蜂窝状改变"],
-types:[
-{label:"肺叶内型",desc:"多来自降主动脉供血。表现为膈上区或两肺下叶（左肺多见）基底部脊柱旁软组织密度影；典型者呈蜂窝状改变，或多个大小不等的囊样透光区及囊状低密度影。"},
-{label:"肺叶外型",desc:"以腹主动脉上段供血为多。表现为清楚的软组织密度影，多数患者病灶密度均匀。"}
-],
-features:[
-"由体循环的异常动脉供血",
-"增强后多数肺叶内型和少数肺叶外型病变呈不规则强化",
-"实质部分强化明显",
-"如发现来自体循环系统的血供则可确诊",
-"未见供血体动脉不能排除诊断"
-]
-},
-{
-name:"曲霉菌/曲霉球",
-subtitle:"Aspergillus / Aspergilloma",
-category:"感染",
-age:"各年龄段",
-keywords:["曲霉菌","曲霉球","真菌","aspergillus"],
-signs:["空气新月征","球中球","指套征"],
-features:[
-"变态反应型：支气管壁增厚及扩张",
-"多累及上叶，且以中心性支气管扩张（柱状、静脉曲张状、囊状）为著",
-"指套征、牙膏征或葡萄状阴影，向肺门集中，边缘清晰，为特征性表现",
-"肺空洞或空腔内圆形或类圆形影（曲霉球）",
-"空气新月征：肺空洞或空腔壁与内容物之间见新月形或环形透亮影",
-"球中球征",
-"可随体位改变有相应移位",
-"主要是由真菌感染肺血管致局部血栓，并凝固坏死"
-]
-},
-{
-name:"隐球菌",
-subtitle:"Cryptococcosis",
-category:"感染",
-age:"免疫低下者多见",
-keywords:["隐球菌","cryptococcus"],
-signs:[],
-features:[
-"肺空洞或空腔内圆形或类圆形影",
-"结节或肿块型：孤立或多发，可有分叶和毛刺",
-"影像表现多样，缺乏特异性"
-]
-}
+// =============================================
+// 疾病数据 - 按系统分类
+// =============================================
+const DATA = [
+  // ==================== 中枢神经系统 ====================
+  {
+    name: "脑梗死",
+    subtitle: "Cerebral Infarction",
+    module: "brain",
+    category: "脑血管",
+    age: "中老年为主",
+    keywords: ["脑梗死", "脑梗塞", "梗死", "中风", "卒中"],
+    signs: ["DWI高信号", "MCA高密度", "陈旧性软化灶"],
+    features: [
+      "超急性期（<6h）：CT可能正常，DWI呈高信号",
+      "急性期（6-24h）：CT低密度，DWI明显高信号",
+      "亚急性期：T1低、T2高信号，ADC恢复正常",
+      "责任血管供血区分布",
+      "大脑中动脉高密度征提示血栓"
+    ]
+  },
+  {
+    name: "脑出血",
+    subtitle: "Intracerebral Hemorrhage",
+    module: "brain",
+    category: "脑血管",
+    age: "各年龄段",
+    keywords: ["脑出血", "血肿", "出血", "SAH", "蛛网膜下腔"],
+    signs: ["CT高密度", "脑室出血", "蛛网膜下腔出血"],
+    features: [
+      "急性期：CT高密度（60-70Hu）",
+      "血肿形态不规则，边缘清晰",
+      "可破入脑室系统",
+      "亚急性期：CT密度逐渐减低",
+      "MRI信号随血红蛋白演变"
+    ]
+  },
+  {
+    name: "脑膜瘤",
+    subtitle: "Meningioma",
+    module: "brain",
+    category: "肿瘤",
+    age: "40-60岁，女性多",
+    keywords: ["脑膜瘤", "轴外", "脑外", "硬膜尾征"],
+    signs: ["宽基底", "硬膜尾征", "均匀强化", "钙化"],
+    features: [
+      "脑外肿瘤，与硬膜关系密切",
+      "宽基底贴于颅骨内板",
+      "增强后均匀明显强化",
+      "80%可见\"硬膜尾征\"",
+      "常见钙化，CT高密度",
+      "邻近骨质可增生硬化"
+    ]
+  },
+  {
+    name: "胶质母细胞瘤",
+    subtitle: "Glioblastoma Multiforme",
+    module: "brain",
+    category: "肿瘤",
+    age: "50-70岁",
+    keywords: ["胶质母细胞瘤", "GBM", "胶质瘤", "高级别"],
+    signs: ["花环状强化", "坏死囊变", "水肿"],
+    features: [
+      "位于脑白质内，位置深",
+      "边界不清，浸润性生长",
+      "花环状或不规则环形强化",
+      "中心坏死、囊变",
+      "明显水肿，占位效应",
+      "跨越中线（蝴蝶征）"
+    ]
+  },
+  {
+    name: "垂体瘤",
+    subtitle: "Pituitary Adenoma",
+    module: "brain",
+    category: "肿瘤",
+    age: "20-50岁",
+    keywords: ["垂体瘤", "垂体腺瘤", "垂体"],
+    signs: ["鞍内占位", "束腰征", "均匀强化"],
+    features: [
+      "蝶鞍区占位，向上突破鞍膈",
+      "冠状位呈\"雪人征\"",
+      "有完整包膜，均匀强化",
+      "微腺瘤（<10mm）需MRI动态增强",
+      "大腺瘤可压迫视交叉",
+      "功能性腺瘤可引起内分泌症状"
+    ]
+  },
+  {
+    name: "多发性硬化",
+    subtitle: "Multiple Sclerosis",
+    module: "brain",
+    category: "脱髓鞘",
+    age: "20-40岁女性",
+    keywords: ["多发性硬化", "MS", "脱髓鞘", "白质病变"],
+    signs: ["Dawson手指", "室管膜下病变", "新旧不等"],
+    features: [
+      "侧脑室旁白质病变",
+      "Dawson手指征：垂直于脑室的条状病灶",
+      "病灶新旧不一",
+      "急性期强化",
+      "可累及脊髓",
+      "时间多发性、空间多发性"
+    ]
+  },
+
+  // ==================== 头颈五官 ====================
+  {
+    name: "鼻窦炎",
+    subtitle: "Sinusitis",
+    module: "head",
+    category: "炎症",
+    age: "各年龄段",
+    keywords: ["鼻窦炎", "副鼻窦炎", "上颌窦炎"],
+    signs: ["窦腔密度增高", "液气面", "黏膜增厚"],
+    features: [
+      "窦腔内密度增高",
+      "急性期可见液气面",
+      "黏膜环形增厚",
+      "慢性期窦壁骨质增生硬化",
+      "真菌性鼻窦炎可见钙化"
+    ]
+  },
+  {
+    name: "腮腺多形性腺瘤",
+    subtitle: "Pleomorphic Adenoma",
+    module: "head",
+    category: "肿瘤",
+    age: "30-50岁",
+    keywords: ["腮腺瘤", "多形性腺瘤", "混合瘤", "腮腺"],
+    signs: ["边缘分叶", "渐进性强化", "钙化"],
+    features: [
+      "腮腺浅叶或深叶",
+      "边缘呈分叶状",
+      "密度不均，可有囊变",
+      "增强后渐进性强化",
+      "CT可见钙化"
+    ]
+  },
+
+  // ==================== 呼吸系统 ====================
+  {
+    name: "肺癌",
+    subtitle: "原发性支气管肺癌",
+    module: "lung",
+    category: "肿瘤",
+    age: "40-70岁",
+    keywords: ["肺癌", "支气管肺癌", "鳞癌", "腺癌"],
+    signs: ["分叶征", "毛刺征", "胸膜凹陷征", "偏心性空洞", "壁结节", "支气管截断"],
+    types: [
+      {label: "中央型（多为鳞癌，男）", desc: "起源于大支气管，阻塞性肺炎，肺气肿；血供丰富，生长快。支气管肿物，或包绕支气管壁生长的肿瘤。支气管截断征。"},
+      {label: "周围型（多为腺癌，女）", desc: "多呈分叶状，可见胸膜凹陷，且多为局限性，与胸膜宽基底相连，且界限不清晰。边缘多为细短毛刺，边缘较清，无晕征。"}
+    ],
+    features: [
+      "增强CT扫描强化呈快进快出，强化不均匀",
+      "病灶内偏心性空洞，空洞内壁不光整，壁结节",
+      "侵犯临近结构，纵隔、胸膜",
+      "多发灶状坏死及空洞；双重血供，坏死不强化，瘤体部分明显强化"
+    ]
+  },
+  {
+    name: "孤立性纤维瘤（SFT）",
+    subtitle: "Solitary Fibrous Tumor",
+    module: "lung",
+    category: "肿瘤",
+    age: "20-70岁，女性略多见",
+    keywords: ["孤立性纤维瘤", "SFT", "纤维瘤"],
+    signs: ["蛇纹状血管", "贴边血管征", "持续进行性强化", "地图样强化"],
+    features: [
+      "肺内的一种少见良性肿瘤",
+      "多位于双肺下叶周边，可贴近纵隔、胸膜下",
+      "大多边缘光滑清晰，密度较均匀",
+      "靠胸壁，靠叶间裂，或肺纵隔交界区域，边界清楚",
+      "Y形、V形外观",
+      "动脉期可见粗大血管，静脉期不均匀",
+      "如果瘤体表面观察到有肺动脉进入的血管蒂样结构，并由此如蛇纹样四散爬行（血管影），则相当具有特征性",
+      "良性肿瘤影像上很少能够观察到这种瘤内血管影，孤立性纤维瘤独辟蹊径",
+      "强化是否均匀与瘤体病理组成成分相关",
+      "持续进行性强化"
+    ]
+  },
+  {
+    name: "硬化性肺泡细胞瘤（PSP）",
+    subtitle: "Pulmonary Sclerosing Pneumocytoma",
+    module: "lung",
+    category: "肿瘤",
+    age: "中年女性多见",
+    keywords: ["硬化性肺泡细胞瘤", "PSP", "肺泡细胞瘤"],
+    signs: ["贴边血管征", "晕征", "空气新月征"],
+    features: [
+      "多位于双肺下叶周边",
+      "大多边缘光滑清晰，密度较均匀",
+      "增强扫描多呈明显均匀强化，呈持续性强化",
+      "贴边血管征、晕征、空气新月征都具有较高的诊断价值"
+    ]
+  },
+  {
+    name: "错构瘤",
+    subtitle: "Hamartoma",
+    module: "lung",
+    category: "肿瘤",
+    age: "中老年",
+    keywords: ["错构瘤", "hamartoma"],
+    signs: ["爆米花状钙化", "脂肪密度"],
+    features: [
+      "大多边缘光滑清晰，密度较均匀",
+      "典型钙化为爆米花状",
+      "30%可显示钙化或脂肪并存，此为特征性改变",
+      "增强后肿块无强化或仅有轻度强化"
+    ]
+  },
+  {
+    name: "单发转移瘤",
+    subtitle: "Solitary Metastasis",
+    module: "lung",
+    category: "肿瘤",
+    age: "中老年",
+    keywords: ["转移瘤", "转移癌", "metastasis"],
+    signs: [],
+    features: [
+      "中老年，有原发病史",
+      "结节或肿块型：孤立或多发，可有分叶和毛刺",
+      "一般情况下，结节或肿块内部的坏死灶分布较散，以肺外侧带多见，以中央坏死并液化为主"
+    ]
+  },
+  {
+    name: "胸膜间皮瘤",
+    subtitle: "Mesothelioma",
+    module: "lung",
+    category: "肿瘤",
+    age: "中老年",
+    keywords: ["胸膜间皮瘤", "间皮瘤", "mesothelioma"],
+    signs: ["石棉接触史", "胸膜弥漫性增厚"],
+    features: [
+      "多数起源于胸膜，具有特征性石棉接触病史",
+      "良性胸膜间皮瘤：胸膜多局限性增厚",
+      "恶性胸膜间皮瘤：胸膜多弥漫性明显增厚，多发结节、肿块",
+      "CT强化特征：增厚的胸膜一般有强化",
+      "肿块较大时可合并囊变、坏死，增强扫描呈不均匀强化"
+    ]
+  },
+  {
+    name: "炎性假瘤",
+    subtitle: "Inflammatory Pseudotumor",
+    module: "lung",
+    category: "炎症",
+    age: "30-40岁多见",
+    keywords: ["炎性假瘤", "假瘤"],
+    signs: ["桃尖征", "平直征"],
+    features: [
+      "多为单发，圆形或类圆形、边缘光整的肿块",
+      "可为实性或灶性液腔，无卫星病灶",
+      "边缘可见粗短毛刺、棘状突起",
+      "30-40岁多见，抗炎治疗好可好转"
+    ]
+  },
+  {
+    name: "肺结核球",
+    subtitle: "Tuberculoma",
+    module: "lung",
+    category: "炎症",
+    age: "青壮年",
+    keywords: ["结核球", "肺结核", "结核瘤"],
+    signs: ["层状钙化", "裂隙样空洞", "卫星灶"],
+    features: [
+      "好发于上叶尖后段及下叶背段",
+      "类圆形结节影，密度不均，可有中心坏死",
+      "弥漫斑点状或层状钙化",
+      "有的边缘见裂隙样空洞或周围纤维索条影",
+      "增强扫描后边缘或包膜强化"
+    ]
+  },
+  {
+    name: "肺脓肿",
+    subtitle: "Lung Abscess",
+    module: "lung",
+    category: "炎症",
+    age: "各年龄段",
+    keywords: ["肺脓肿", "脓肿", "abscess"],
+    signs: ["气-液平面", "环形强化"],
+    features: [
+      "该病好发于各年龄段，起病急",
+      "有空洞者其内可见气-液或液-液平面",
+      "急性肺脓肿空洞内壁多不规则",
+      "慢性肺脓肿洞壁增厚，内壁清楚",
+      "增强扫描可显示病灶内未坏死部分有不同程度强化",
+      "脓肿壁可见明显环形强化"
+    ]
+  },
+  {
+    name: "肺隔离症",
+    subtitle: "Pulmonary Sequestration",
+    module: "lung",
+    category: "先天/发育",
+    age: "青年多见",
+    keywords: ["肺隔离症", "隔离症", "sequestration"],
+    signs: ["体循环异常供血", "蜂窝状改变"],
+    types: [
+      {label: "肺叶内型", desc: "多来自降主动脉供血。表现为膈上区或两肺下叶（左肺多见）基底部脊柱旁软组织密度影；典型者呈蜂窝状改变，或多个大小不等的囊样透光区及囊状低密度影。"},
+      {label: "肺叶外型", desc: "以腹主动脉上段供血为多。表现为清楚的软组织密度影，多数患者病灶密度均匀。"}
+    ],
+    features: [
+      "由体循环的异常动脉供血",
+      "增强后多数肺叶内型和少数肺叶外型病变呈不规则强化",
+      "实质部分强化明显",
+      "如发现来自体循环系统的血供则可确诊",
+      "未见供血体动脉不能排除诊断"
+    ]
+  },
+  {
+    name: "曲霉菌/曲霉球",
+    subtitle: "Aspergillus / Aspergilloma",
+    module: "lung",
+    category: "感染",
+    age: "各年龄段",
+    keywords: ["曲霉菌", "曲霉球", "真菌", "aspergillus"],
+    signs: ["空气新月征", "球中球", "指套征"],
+    features: [
+      "变态反应型：支气管壁增厚及扩张",
+      "多累及上叶，且以中心性支气管扩张（柱状、静脉曲张状、囊状）为著",
+      "指套征、牙膏征或葡萄状阴影，向肺门集中，边缘清晰，为特征性表现",
+      "肺空洞或空腔内圆形或类圆形影（曲霉球）",
+      "空气新月征：肺空洞或空腔壁与内容物之间见新月形或环形透亮影",
+      "球中球征",
+      "可随体位改变有相应移位",
+      "主要是由真菌感染肺血管致局部血栓，并凝固坏死"
+    ]
+  },
+  {
+    name: "隐球菌",
+    subtitle: "Cryptococcosis",
+    module: "lung",
+    category: "感染",
+    age: "免疫低下者多见",
+    keywords: ["隐球菌", "cryptococcus"],
+    signs: [],
+    features: [
+      "肺空洞或空腔内圆形或类圆形影",
+      "结节或肿块型：孤立或多发，可有分叶和毛刺",
+      "影像表现多样，缺乏特异性"
+    ]
+  },
+
+  // ==================== 消化系统 ====================
+  {
+    name: "肝血管瘤",
+    subtitle: "Hepatic Hemangioma",
+    module: "abdomen",
+    category: "肿瘤",
+    age: "30-50岁女性",
+    keywords: ["肝血管瘤", "海绵状血管瘤", "血管瘤"],
+    signs: ["边缘明显强化", "快进慢出", "填充式"],
+    features: [
+      "肝内最常见良性肿瘤",
+      "边缘明显结节状强化",
+      "强化从周边向中心蔓延",
+      "延迟扫描病灶逐渐填充",
+      "平扫呈低密度，边界清楚"
+    ]
+  },
+  {
+    name: "肝细胞癌",
+    subtitle: "Hepatocellular Carcinoma",
+    module: "abdomen",
+    category: "肿瘤",
+    age: "40-60岁男性多",
+    keywords: ["肝癌", "肝细胞癌", "HCC", "原发性肝癌"],
+    signs: ["快进快出", "包膜征", "门脉癌栓"],
+    features: [
+      "多有乙肝/肝硬化背景",
+      "动脉期明显强化（快进）",
+      "门脉期/延迟期廓清（快出）",
+      "多有完整包膜",
+      "可合并门脉癌栓",
+      "肺转移常见"
+    ]
+  },
+  {
+    name: "肝囊肿",
+    subtitle: "Hepatic Cyst",
+    module: "abdomen",
+    category: "先天/发育",
+    age: "各年龄段",
+    keywords: ["肝囊肿", "囊肿", "单纯性囊肿"],
+    signs: ["水样密度", "无强化", "边界清楚"],
+    features: [
+      "单发或多发",
+      "水样密度，CT值0-20Hu",
+      "边界清楚，边缘光滑",
+      "无强化",
+      "MRI呈长T1长T2信号"
+    ]
+  },
+
+  // ==================== 骨肌系统 ====================
+  {
+    name: "骨巨细胞瘤",
+    subtitle: "Giant Cell Tumor of Bone",
+    module: "bone",
+    category: "肿瘤",
+    age: "20-40岁",
+    keywords: ["骨巨细胞瘤", "GCT", "骨肿瘤"],
+    signs: ["皂泡样改变", "偏心性溶骨", "骨壳"],
+    features: [
+      "长骨骨端，偏心性生长",
+      "皂泡样/蜂窝状改变",
+      "骨壳薄而不完整",
+      "无硬化边",
+      "可突破骨皮质形成软组织肿块",
+      "增强后明显强化"
+    ]
+  },
+  {
+    name: "骨肉瘤",
+    subtitle: "Osteosarcoma",
+    module: "bone",
+    category: "肿瘤",
+    age: "10-20岁青少年",
+    keywords: ["骨肉瘤", "成骨肉瘤", "骨肿瘤"],
+    signs: ["Codman三角", "日光射线", "骨质破坏+硬化"],
+    features: [
+      "青少年好发，膝关节附近",
+      "骨质破坏与肿瘤骨形成并存",
+      "Codman三角：骨膜三角",
+      "日光射线：垂直骨膜新生骨",
+      "软组织肿块形成",
+      "增强后明显不均匀强化"
+    ]
+  },
+
+  // ==================== 心血管系统 ====================
+  {
+    name: "主动脉夹层",
+    subtitle: "Aortic Dissection",
+    module: "cardio",
+    category: "血管疾病",
+    age: "40-60岁高血压",
+    keywords: ["主动脉夹层", "夹层", "A型B型"],
+    signs: ["内膜片", "真腔假腔", "破口"],
+    types: [
+      {label: "Stanford A型", desc: "累及升主动脉，需紧急手术"},
+      {label: "Stanford B型", desc: "仅累及降主动脉，可保守治疗"}
+    ],
+    features: [
+      "主动脉管腔内线样低密度影（内膜片）",
+      "真腔小、假腔大",
+      "可显示破口位置",
+      "CTA可显示分支血管受累",
+      "心包积血提示A型预后差"
+    ]
+  },
+
+  // ==================== 乳腺 ====================
+  {
+    name: "乳腺癌",
+    subtitle: "Breast Carcinoma",
+    module: "breast",
+    category: "肿瘤",
+    age: "40-60岁女性",
+    keywords: ["乳腺癌", "乳癌", "乳腺肿瘤"],
+    signs: ["毛刺征", "分叶征", "皮肤增厚", "腋窝淋巴结"],
+    features: [
+      "不规则肿块，边缘毛刺",
+      "段样分布钙化",
+      "皮肤增厚、乳头内陷",
+      "患侧腋窝淋巴结肿大",
+      "MRI：动态增强病灶时间信号曲线呈流出型",
+      "DWI受限"
+    ]
+  },
+  {
+    name: "乳腺纤维腺瘤",
+    subtitle: "Fibroadenoma",
+    module: "breast",
+    category: "肿瘤",
+    age: "20-35岁女性",
+    keywords: ["纤维腺瘤", "乳腺纤维瘤", "良性肿瘤"],
+    signs: ["边界清", "均匀强化", "无毛刺"],
+    features: [
+      "单发或多发",
+      "边界清楚，边缘光滑",
+      "密度/信号均匀",
+      "增强后均匀强化",
+      "时间信号曲线呈渐增型"
+    ]
+  }
 ];
 
-const CATEGORIES=[
-{key:"all",label:"全部"},
-{key:"肿瘤",label:"肿瘤"},
-{key:"炎症",label:"炎症"},
-{key:"感染",label:"感染"},
-{key:"先天/发育",label:"先天/发育"}
+// =============================================
+// 分类配置 - 按系统
+// =============================================
+const MODULES = [
+  { key: "all", label: "全部", icon: "📋", color: "" },
+  { key: "brain", label: "🧠 中枢神经", icon: "🧠", color: "#6c5ce7" },
+  { key: "head", label: "👁 头颈五官", icon: "👁", color: "#00b894" },
+  { key: "lung", label: "🫁 呼吸系统", icon: "🫁", color: "#e17055" },
+  { key: "abdomen", label: "🍽 消化系统", icon: "🍽", color: "#fdcb6e" },
+  { key: "bone", label: "🦴 骨肌系统", icon: "🦴", color: "#74b9ff" },
+  { key: "cardio", label: "❤️ 心血管", icon: "❤️", color: "#e84393" },
+  { key: "breast", label: "🤝 乳腺", icon: "🤝", color: "#00cec9" }
 ];
 
-let activeTag="all";
-
-function init(){
-renderTags();
-renderList(DATA);
-updateStats(DATA.length);
-window.addEventListener("scroll",()=>{document.getElementById("backTop").style.display=window.scrollY>300?"block":"none";});
+// 按模块获取所有分类
+function getCategories(module) {
+  const categories = new Set();
+  DATA.filter(d => module === "all" || d.module === module).forEach(d => {
+    if (d.category) categories.add(d.category);
+  });
+  return [
+    { key: "all", label: "全部" },
+    ...[...categories].sort().map(c => ({ key: c, label: c }))
+  ];
 }
 
-function renderTags(){
-const c=document.getElementById("tags");
-c.innerHTML=CATEGORIES.map(t=>`<button class="tag ${t.key===activeTag?'active':''}" onclick="setTag('${t.key}')">${t.label}</button>`).join("");
+let activeModule = "all";
+let activeTag = "all";
+
+function init() {
+  renderModuleNav();
+  renderTags();
+  renderList(DATA);
+  updateStats();
+  window.addEventListener("scroll", () => {
+    document.getElementById("backTop").style.display = window.scrollY > 300 ? "block" : "none";
+  });
 }
 
-function setTag(key){
-activeTag=key;
-renderTags();
-filterCards();
+function renderModuleNav() {
+  const nav = document.getElementById("moduleNav");
+  nav.innerHTML = MODULES.map(m => `
+    <button class="module-btn ${m.key === activeModule ? 'active' : ''}" 
+            data-module="${m.key}" 
+            onclick="setModule('${m.key}')">${m.label}</button>
+  `).join("");
 }
 
-function filterCards(){
-const q=document.getElementById("search").value.trim().toLowerCase();
-let filtered=DATA;
-if(activeTag!=="all") filtered=filtered.filter(d=>d.category===activeTag);
-if(q) filtered=filtered.filter(d=>{
-const searchable=[d.name,d.subtitle,d.category,...d.keywords,...d.signs,...(d.features||[])].join(" ").toLowerCase();
-return searchable.includes(q)||d.name.toLowerCase().includes(q);
-});
-renderList(filtered);
-updateStats(filtered.length);
+function setModule(module) {
+  activeModule = module;
+  activeTag = "all";
+  renderModuleNav();
+  renderTags();
+  filterCards();
 }
 
-function updateStats(n){
-document.getElementById("stats").textContent=`共 ${n} 种疾病`;
+function renderTags() {
+  const c = document.getElementById("tags");
+  const cats = getCategories(activeModule);
+  c.innerHTML = cats.map(t => `
+    <button class="tag ${t.key === activeTag ? 'active' : ''}" onclick="setTag('${t.key}')">${t.label}</button>
+  `).join("");
 }
 
-function renderList(data){
-const c=document.getElementById("list");
-if(!data.length){c.innerHTML='<div class="empty">没有匹配的疾病</div>';return;}
-c.innerHTML=data.map((d,i)=>`
-<div class="disease-card" data-index="${i}">
-<div class="card-header" onclick="toggle(${i})">
-<h3>${d.name}</h3>
-<span class="arrow" id="arrow${i}">▶</span>
-</div>
-<div class="card-body" id="body${i}">
-${d.age?`<div class="info-row"><div class="info-label">好发年龄</div><div class="info-text">${d.age}</div></div>`:""}
-${d.types?d.types.map(t=>`<div class="info-row"><div class="info-label">分型</div><div class="info-text"><strong>${t.label}</strong>：${t.desc}</div></div>`).join(""):""}
-${d.signs&&d.signs.length?`<div class="info-row"><div class="info-label">影像征象</div><div class="info-text">${d.signs.map(s=>`<span class="sign-tag">${s}</span>`).join("")}</div></div>`:""}
-${d.features&&d.features.length?`<div class="info-row"><div class="info-label">影像特征</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.features.map(f=>`<li>${f}</li>`).join("")}</ul></div></div>`:""}
-</div>
-</div>`).join("");
+function setTag(key) {
+  activeTag = key;
+  renderTags();
+  filterCards();
 }
 
-function toggle(i){
-const body=document.getElementById("body"+i);
-const arrow=document.getElementById("arrow"+i);
-const isOpen=body.classList.contains("open");
-body.classList.toggle("open");
-arrow.classList.toggle("open");
-if(!isOpen) body.parentElement.scrollIntoView({behavior:"smooth",block:"nearest"});
+function filterCards() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  let filtered = DATA;
+  
+  // 模块过滤
+  if (activeModule !== "all") {
+    filtered = filtered.filter(d => d.module === activeModule);
+  }
+  
+  // 分类过滤
+  if (activeTag !== "all") {
+    filtered = filtered.filter(d => d.category === activeTag);
+  }
+  
+  // 搜索过滤
+  if (q) {
+    filtered = filtered.filter(d => {
+      const searchable = [d.name, d.subtitle, d.category, ...(d.keywords || []), ...(d.signs || []), ...(d.features || [])].join(" ").toLowerCase();
+      return searchable.includes(q) || d.name.toLowerCase().includes(q);
+    });
+  }
+  
+  renderList(filtered);
+  updateStats(filtered.length);
+}
+
+function updateStats(n) {
+  const total = n !== undefined ? n : DATA.length;
+  const moduleName = activeModule === "all" ? "" : MODULES.find(m => m.key === activeModule)?.label.replace(/^[🧠👁🫁🍽🦴❤️🤝]\s*/, "") + " ";
+  document.getElementById("stats").textContent = `${moduleName}共 ${total} 种疾病`;
+}
+
+function renderList(data) {
+  const c = document.getElementById("list");
+  
+  if (!data.length) {
+    c.innerHTML = `
+      <div class="module-empty">
+        <div class="module-icon">🔍</div>
+        <div class="module-title">没有找到匹配的疾病</div>
+        <div class="module-desc">试试其他关键词或切换分类</div>
+      </div>
+    `;
+    return;
+  }
+  
+  c.innerHTML = data.map((d, i) => `
+    <div class="disease-card" data-index="${i}">
+      <div class="card-header" onclick="toggle(${i})">
+        <h3>${d.name}</h3>
+        <span class="arrow" id="arrow${i}">▶</span>
+      </div>
+      <div class="card-body" id="body${i}">
+        ${d.subtitle ? `<div class="info-row"><div class="info-label">别名</div><div class="info-text" style="color:#888">${d.subtitle}</div></div>` : ""}
+        ${d.age ? `<div class="info-row"><div class="info-label">好发年龄</div><div class="info-text">${d.age}</div></div>` : ""}
+        ${d.types ? d.types.map(t => `<div class="info-row"><div class="info-label">分型</div><div class="info-text"><strong>${t.label}</strong>：${t.desc}</div></div>`).join("") : ""}
+        ${d.signs && d.signs.length ? `<div class="info-row"><div class="info-label">影像征象</div><div class="info-text">${d.signs.map(s => `<span class="sign-tag">${s}</span>`).join("")}</div></div>` : ""}
+        ${d.features && d.features.length ? `<div class="info-row"><div class="info-label">影像特征</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.features.map(f => `<li>${f}</li>`).join("")}</ul></div></div>` : ""}
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggle(i) {
+  const body = document.getElementById("body" + i);
+  const arrow = document.getElementById("arrow" + i);
+  const isOpen = body.classList.contains("open");
+  body.classList.toggle("open");
+  arrow.classList.toggle("open");
+  if (!isOpen) body.parentElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 init();
