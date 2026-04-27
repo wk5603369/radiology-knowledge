@@ -170,82 +170,36 @@ body:before{
 .w-stat-label{font-size:11px;color:var(--muted);margin-top:1px;letter-spacing:.5px}
 
 /* ===== 疾病列表 ===== */
-.disease-list{padding:16px 18px 100px;display:none}
+.disease-list{padding:16px 18px 100px;display:none;columns:2 280px;column-gap:12px}
 .disease-list.show{display:block}
+.disease-list.show .disease-card{display:inline-block;width:100%;break-inside:avoid;vertical-align:top}
 
-/* ===== 横竖结合：系统区块 ===== */
-.module-section{margin-bottom:28px}
-.module-header{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:12px;padding-bottom:8px;
-  border-bottom:1px solid rgba(66,217,255,.22);
-  cursor:pointer;
-}
-.module-header h2{
-  font-size:16px;font-weight:700;
-  letter-spacing:.5px;
-  color:var(--text);
-}
-.module-header .m-count{
-  font-size:11px;color:var(--muted);
-  background:rgba(66,217,255,.10);
-  padding:2px 8px;border-radius:999px;
-  margin-left:4px;
-}
-.module-header .m-arrow{
-  margin-left:auto;font-size:13px;color:var(--muted);
-  transition:transform .25s;
-}
-.module-header .m-arrow.open{transform:rotate(90deg)}
 
-/* ===== 横竖结合：分类标签行 ===== */
-.cat-tags{margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;padding-left:2px}
-.cat-tag{
-  font-size:11px;padding:3px 10px;
-  border-radius:999px;
-  background:rgba(66,217,255,.08);
-  color:var(--cyan);
-  border:1px solid rgba(66,217,255,.20);
-}
-.cat-row{margin-bottom:16px}
-.cat-diseases{}
-
-.cat-tag-dot{
-  display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--cyan);margin-right:4px;vertical-align:middle;
-}
-  font-size:11px;padding:3px 10px;
-  border-radius:999px;
-  background:rgba(66,217,255,.08);
-  color:var(--cyan);
-  border:1px solid rgba(66,217,255,.20);
-  cursor:pointer;transition:.15s;
-}
-.cat-tag:hover,.cat-tag.active{background:rgba(66,217,255,.22);color:#fff}
-.cat-tag .ct-num{opacity:.65;font-size:10px;margin-left:3px}
 
 .disease-card{
-  background:var(--panel);
-  border:1px solid rgba(66,217,255,.16);
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,.08);
   border-radius:18px;margin-bottom:12px;
-  box-shadow:0 8px 28px rgba(0,0,0,.18);
+  box-shadow:0 4px 20px rgba(0,0,0,.10);
   overflow:hidden;transition:transform .2s;
 }
-.disease-card:hover{transform:translateY(-1px);border-color:rgba(66,217,255,.35)}
-.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.card-header h3{font-size:15px;font-weight:600;color:var(--cyan);flex:1}
-.card-header .arrow{font-size:12px;color:var(--muted);transition:transform .3s;margin-left:8px}
+.disease-card:hover{transform:translateY(-1px);border-color:rgba(66,217,255,.4);box-shadow:0 6px 24px rgba(0,0,0,.13)}
+.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:linear-gradient(135deg,rgba(66,217,255,.06),rgba(77,255,191,.04));border-bottom:1px solid rgba(0,0,0,.06)}
+.card-header h3{font-size:15px;font-weight:700;color:#0a1f36;flex:1}
+.card-header .arrow{font-size:12px;color:#8fb6c9;transition:transform .3s;margin-left:8px}
 .card-header .arrow.open{transform:rotate(90deg)}
-.card-body{display:none;padding:0 16px 14px;border-top:1px solid rgba(66,217,255,.12)}
+.card-body{display:none;padding:10px 16px 14px;border-top:1px solid rgba(0,0,0,.06);background:#ffffff}
 .card-body.open{display:block}
 .info-row{margin-top:10px}
-.info-label{font-size:11px;color:var(--cyan);font-weight:600;letter-spacing:.5px;margin-bottom:3px;text-transform:uppercase}
-.info-text{font-size:13px;color:var(--muted);line-height:1.7}
-.sign-tag{display:inline-block;background:rgba(253,203,110,.10);color:#d4a017;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid rgba(253,203,110,.25)}
-.feature-tag{display:inline-block;background:rgba(77,255,191,.08);color:#4dffbf;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid rgba(77,255,191,.22)}
-.clinical-tag{display:inline-block;background:rgba(255,107,138,.08);color:#ff6b8a;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid rgba(255,107,138,.22)}
-.pathology-tag{display:inline-block;background:rgba(142,68,173,.10);color:#c39bd3;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid rgba(142,68,173,.25)}
-.imaging-tag{display:inline-block;background:rgba(66,217,255,.08);color:#42d9ff;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid rgba(66,217,255,.22)}
+.info-label{font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:4px;text-transform:uppercase}
+/* 各字段标签颜色在浅色背景下改用深色系 */
+.info-label{color:#0a1f36}
+.info-text{font-size:13px;color:#2d3748;line-height:1.75}
+.sign-tag{display:inline-block;background:#fef9e7;color:#b8860b;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #f0d060}
+.feature-tag{display:inline-block;background:#e6f9f0;color:#0d7a4f;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #4dffbf}
+.clinical-tag{display:inline-block;background:#fff0f3;color:#c2185b;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #ff6b8a}
+.pathology-tag{display:inline-block;background:#f3e5f5;color:#6a1b9a;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #ba68c8}
+.imaging-tag{display:inline-block;background:#e0f7fa;color:#006064;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #4dd0e1}
 .empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
 
 .back-top{
@@ -301,8 +255,8 @@ body:before{
   </div>
 </div>
 
-<!-- 固定欢迎页 -->
-<div class="welcome" id="welcome">
+<!-- 固定欢迎页（默认隐藏） -->
+<div class="welcome" id="welcome" style="display:none;">
   <div class="welcome-inner">
     <div class="welcome-main">
       <div class="welcome-badge">RENCI HOSPITAL . RADIOLOGY DEPT.</div>
@@ -347,8 +301,8 @@ body:before{
   </div>
 </div>
 
-<!-- 疾病列表（默认隐藏，搜索/筛选后显示） -->
-<div class="disease-list" id="list"></div>
+<!-- 疾病列表（默认显示） -->
+<div class="disease-list show" id="list"></div>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
@@ -507,6 +461,120 @@ const DATA = [
     features: ["CT平扫多呈等或稍低密度，体积较大者可伴钙化","T1WI低信号，T2WI不均匀高信号，脂肪抑制序列有助于显示出血","增强扫描动脉期显著强化（快进），排泄期强化迅速减退（快出），此为其最具特征性的影像表现","较大的肿块内部易出现出血、坏死、囊变，增强后强化不均匀","可突破肾包膜向肾周脂肪间隙蔓延，肾静脉癌栓形成是常见转移方式（约10-20%）","假包膜征象：肿瘤周围低信号环，提示预后相对较好"],
     differential: {"肾血管平滑肌脂肪瘤（AML）":"若能检出脂肪成分（CT值<-20HU）则为AML，若脂肪阴性则难以与RCC鉴别；AML强化程度通常低于透明细胞癌","嫌色细胞癌":"强化相对均匀，常见中央星芒状瘢痕，出血坏死较少；透明细胞癌易出血坏死，强化不均匀","乳头状肾细胞癌":"强化程度相对较低且持续强化，与透明细胞癌快进快出不同；乳头状癌更易出现淋巴结转移"}
   },
+  ,
+  {
+    name: "内生软骨瘤（Enchondroma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：为移位进入髓内松质骨的良性成熟的透明软骨残余，由软骨细胞和软骨基质构成","好发人群：初诊年龄10~40岁，男女比例相等，非常常见","好发部位：最常见于手足短管骨，位于干骺端、骨干近端、远端；单发性多见于骨干髓腔","临床特征：多为偶然发现，少数可有局部酸胀不适，病理性骨折少见"],
+    signs: ["小环形钙化", "点状钙化", "偏心性生长", "硬化缘"],
+    features: ["X线：病变常开始于干骺部，随骨生长而渐移向骨干；病变位于骨干者多为中心性生长，位于干骺端者以偏心性生长为主","表现为边界清楚的类圆形骨质破坏区，多有硬化缘与正常骨质相隔；骨破坏区内可见小环形、点状或不规则钙化影，以中心部位较多","CT：可显示髓腔内异常软组织影，密度略低于肌肉，其内可见小环形、点状或不规则钙化影；邻近皮质膨胀变薄，边缘光整、锐利，一般无中断，其内缘凹凸不平；增强扫描可见肿瘤轻度强化","MRI：未钙化的瘤软骨呈长T1、长T2信号；已钙化部分均呈低信号，但MRI较难显示较小的钙化灶"],
+    differential: {"软骨肉瘤":"多见于50岁以上，钙化更粗糙不规则，可见软组织肿块，内生软骨瘤一般无软组织肿块"}
+  },
+  {
+    name: "软骨肉瘤（Chondrosarcoma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：起源于软骨或成软骨结缔组织的较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%","好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上","好发部位：发病部位以股骨及胫骨最为多见，其次骶骨以外的骨盆骨也是好发部位","临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；分为中心型（骨髓起源）和周围型（骨表面起源）"],
+    signs: ["环形钙化", "半环形钙化", "软组织肿块", "溶骨性破坏"],
+    features: ["X线：中心型软骨肉瘤在骨内呈溶骨性破坏，破坏区边界多不清楚，少数边缘可稍显硬化；邻近骨皮质可有不同程度的膨胀、变薄，骨皮质或骨性包壳可被破坏并形成大小不等的软组织肿块","骨破坏区和软组织肿块内可见密度不均的边缘清楚或模糊的环形、半环形或沙砾样钙化影，环形钙化影具有确定其为软骨来源的定性价值；也可见到斑片状的软骨内骨化征象","分化差的肿瘤可能仅见数个散在的点状钙化甚至不见钙化影；肿瘤的非钙化部分密度均匀，呈软组织密度","CT：可见骨破坏区、软组织肿块和钙化、骨化影；典型钙化是点状、环形或半环形钙化；非钙化部分密度可不均匀，可见肿瘤坏死、囊变等更低密度影","MRI：T1WI上软骨肉瘤表现为等或低信号，恶性度高的信号强度常更低；T2WI上，恶性度低的肿瘤因含透明软骨而呈均匀的高信号，恶性度高的软骨肉瘤信号强度常不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化"],
+    differential: {"内生软骨瘤":"多见于40岁以下，无软组织肿块，钙化细小规则，病史长、进展慢"}
+  },
+  {
+    name: "软骨母细胞瘤（Chondroblastoma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%","好发人群：好发于未成熟骨骼，10~25岁男性为主","好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨；软骨母细胞瘤几乎都是孤立性病变，发生于长骨时，肿瘤常仅累及骨骺或骨骺伴干骺端","临床特征：局部疼痛、肿胀，关节活动受限；发生在骨骺可跨越骺线生长"],
+    signs: ["偏心性溶骨破坏", "斑点状钙化", "骨骺受累", "无骨膜反应"],
+    features: ["X线：典型表现为界限清楚、偏心性、溶骨性病变，周围有薄层硬化骨形成的边缘；病变一般较小(3～6cm)，病变范围常小于骨骺的50%","矿化程度不等，中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄，但病变局限于骨内，骨皮质破坏并侵犯软组织罕见；一般没有骨膜反应","CT：有助于定性诊断和确定病变范围","MRI：T1WI低信号，T2WI混杂信号（低-钙化、中-透明软骨基质、高-液化和出血）；软组织及骨髓水肿在MRI上显示清楚；增强扫描可有不同程度的强化，病灶内可见多发液-液平面及低信号分隔影"],
+    differential: {"内生软骨瘤":"多见于骨干髓腔，无骨骺受累，钙化形态不同；软骨母细胞瘤特征性位于骨骺"}
+  },
+  {
+    name: "骨肉瘤（Osteosarcoma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨，还可见肿瘤性软骨组织和纤维组织","好发人群：好发于青少年及儿童（10-20岁），男:女约1.7:1","好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端","临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高"],
+    signs: ["Codman三角", "针状瘤骨", "软组织肿块", "虫蚀状破坏"],
+    features: ["X线：骨质破坏呈斑状或大片状、虫蚀状或筛孔及发丝状透明区；瘤骨呈象牙质样、云絮状或斑片状；骨膜增生呈平行型或葱皮型，三角型(Codman三角)、放射状或垂直状","软组织肿块边界常模糊，其内可有瘤骨、瘤软骨钙化及出血、坏死、囊变等","CT：瘤组织不均匀强化，中心部位可显示无强化的坏死液化区","MRI：典型骨肉瘤表现不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤","瘤骨、瘤软骨钙化和骨膜增生表现为T1WI、T2WI低信号","成骨型骨肉瘤可见大量瘤骨形成，溶骨型则骨质破坏为主，混合型两者兼有"],
+    differential: {"软骨肉瘤":"发病年龄较大（50岁以上），钙化呈环形/半环形，骨肉瘤瘤骨呈针状或云絮状"}
+  },
+  {
+    name: "骨巨细胞瘤（Giant Cell Tumor of Bone, GCT）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：由单核间质细胞和具有破骨细胞活性特征的多核巨细胞组成的良性肿瘤，是一种局部侵袭性的原发性骨肿瘤","好发人群：好发于20~40岁女性","好发部位：好发于四肢长骨骨端和骨突部，即骨骺闭合后的骨骺部位","临床特征：局部疼痛、肿胀，邻近关节时可出现活动受限；具有局部侵袭性，可复发，少数可远处转移"],
+    signs: ["皂泡状透亮区", "偏心性生长", "横向生长", "无钙化"],
+    features: ["X线：肿瘤呈膨胀性单房或多房性偏心性骨破坏区；多房者瘤内可见骨性间隔，致肿瘤出现皂泡状透亮区为其典型表现","骨破坏区内无钙化；肿瘤相邻的骨皮质变薄、膨胀、甚至骨壳形成；一般无骨膜反应及增生硬化","当骨破坏区出现侵袭性表现如骨壳及骨性间隔残缺不全、骨膜明显增生、软组织肿块较大、肿瘤生长迅速等，常提示肿瘤为恶性或恶变","CT平扫：地图样溶骨性破坏，边缘清晰，无硬化边，病灶内无钙化；约30%呈'皂泡状'改变；病灶位于骨端，常横向偏心生长","一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应，称为花边样骨膜新生骨","MRI：优势在于显示肿瘤周围的软组织情况；瘤体的MR信号是非特异性的，多数肿瘤在MRI图像上边界清楚，周围无低信号环","T1WI呈均匀低或中等信号，T2WI信号不均匀，呈混杂信号；增强扫描可有不同程度的强化"],
+    differential: {"单纯性骨囊肿":"多为中心性生长，无皂泡状分隔，增强扫描囊壁无明显强化，骨巨细胞瘤呈偏心性且有强化"}
+  },
+  {
+    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst, ABC）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：一种良性、溶骨性、膨胀性和出血性病变，由大小不等的囊腔及结缔组织间隔组成，囊腔内充满血液；分为原发性和继发性","好发人群：原发性ABC好发于20岁以下","好发部位：病变多累及长管状骨的干骺端","临床特征：局部肿胀疼痛，靠近关节时则可发生运动障碍，有时可触及肿块，听诊可闻及杂音"],
+    signs: ["液-液平面", "膨胀性分房样改变", "囊状低密度", "边缘硬化"],
+    features: ["X线表现：病变在早期多为单纯溶骨性改变，生长期发展较快，显示进行性骨破坏，边界不清；稳定期多呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点","CT表现：可显示病变的范围、大小及数量不一的囊性区，还可显示病变内液-液平面，是本病变较特异性征象；增强扫描囊间隔强化，病变显示更清楚","MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（代表骨壳或纤维性包膜）","病灶内亦可见同样低信号的间隔；内可见液-液平面，T1WI上液-液平面上、下方的液体内均可见到高信号，T2WI上层为较高信号，下层为较低信号，多数学者认为此征象为特征性表现","增强扫描不均匀强化"],
+    differential: {"单纯性骨囊肿":"无液-液平面，多为中心性生长，膨胀程度较轻，动脉瘤样骨囊肿强化更明显"}
+  }
+
+  ,
+  {
+    name: "内生软骨瘤（Enchondroma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：为移位进入髓内松质骨的良性成熟的透明软骨残余，由软骨细胞和软骨基质构成","好发人群：初诊年龄10~40岁，男女比例相等，非常常见","好发部位：最常见于手足短管骨，位于干骺端、骨干近端、远端；单发性多见于骨干髓腔","临床特征：多为偶然发现，少数可有局部酸胀不适，病理性骨折少见"],
+    signs: ["小环形钙化", "点状钙化", "偏心性生长", "硬化缘"],
+    features: ["X线：病变常开始于干骺部，随骨生长而渐移向骨干；病变位于骨干者多为中心性生长，位于干骺端者以偏心性生长为主","表现为边界清楚的类圆形骨质破坏区，多有硬化缘与正常骨质相隔；骨破坏区内可见小环形、点状或不规则钙化影，以中心部位较多","CT：可显示髓腔内异常软组织影，密度略低于肌肉，其内可见小环形、点状或不规则钙化影；邻近皮质膨胀变薄，边缘光整、锐利，一般无中断，其内缘凹凸不平；增强扫描可见肿瘤轻度强化","MRI：未钙化的瘤软骨呈长T1、长T2信号；已钙化部分均呈低信号，但MRI较难显示较小的钙化灶"],
+    differential: {"软骨肉瘤":"多见于50岁以上，钙化更粗糙不规则，可见软组织肿块，内生软骨瘤一般无软组织肿块"}
+  },
+  {
+    name: "软骨肉瘤（Chondrosarcoma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：起源于软骨或成软骨结缔组织的较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%","好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上","好发部位：发病部位以股骨及胫骨最为多见，其次骶骨以外的骨盆骨也是好发部位","临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；分为中心型（骨髓起源）和周围型（骨表面起源）"],
+    signs: ["环形钙化", "半环形钙化", "软组织肿块", "溶骨性破坏"],
+    features: ["X线：中心型软骨肉瘤在骨内呈溶骨性破坏，破坏区边界多不清楚，少数边缘可稍显硬化；邻近骨皮质可有不同程度的膨胀、变薄，骨皮质或骨性包壳可被破坏并形成大小不等的软组织肿块","骨破坏区和软组织肿块内可见密度不均的边缘清楚或模糊的环形、半环形或沙砾样钙化影，环形钙化影具有确定其为软骨来源的定性价值；也可见到斑片状的软骨内骨化征象","分化差的肿瘤可能仅见数个散在的点状钙化甚至不见钙化影；肿瘤的非钙化部分密度均匀，呈软组织密度","CT：可见骨破坏区、软组织肿块和钙化、骨化影；典型钙化是点状、环形或半环形钙化；非钙化部分密度可不均匀，可见肿瘤坏死、囊变等更低密度影","MRI：T1WI上软骨肉瘤表现为等或低信号，恶性度高的信号强度常更低；T2WI上，恶性度低的肿瘤因含透明软骨而呈均匀的高信号，恶性度高的软骨肉瘤信号强度常不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化"],
+    differential: {"内生软骨瘤":"多见于40岁以下，无软组织肿块，钙化细小规则，病史长、进展慢"}
+  },
+  {
+    name: "软骨母细胞瘤（Chondroblastoma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%","好发人群：好发于未成熟骨骼，10~25岁男性为主","好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨；软骨母细胞瘤几乎都是孤立性病变，发生于长骨时，肿瘤常仅累及骨骺或骨骺伴干骺端","临床特征：局部疼痛、肿胀，关节活动受限；发生在骨骺可跨越骺线生长"],
+    signs: ["偏心性溶骨破坏", "斑点状钙化", "骨骺受累", "无骨膜反应"],
+    features: ["X线：典型表现为界限清楚、偏心性、溶骨性病变，周围有薄层硬化骨形成的边缘；病变一般较小(3～6cm)，病变范围常小于骨骺的50%","矿化程度不等，中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄，但病变局限于骨内，骨皮质破坏并侵犯软组织罕见；一般没有骨膜反应","CT：有助于定性诊断和确定病变范围","MRI：T1WI低信号，T2WI混杂信号（低-钙化、中-透明软骨基质、高-液化和出血）；软组织及骨髓水肿在MRI上显示清楚；增强扫描可有不同程度的强化，病灶内可见多发液-液平面及低信号分隔影"],
+    differential: {"内生软骨瘤":"多见于骨干髓腔，无骨骺受累，钙化形态不同；软骨母细胞瘤特征性位于骨骺"}
+  },
+  {
+    name: "骨肉瘤（Osteosarcoma）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨，还可见肿瘤性软骨组织和纤维组织","好发人群：好发于青少年及儿童（10-20岁），男:女约1.7:1","好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端","临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高"],
+    signs: ["Codman三角", "针状瘤骨", "软组织肿块", "虫蚀状破坏"],
+    features: ["X线：骨质破坏呈斑状或大片状、虫蚀状或筛孔及发丝状透明区；瘤骨呈象牙质样、云絮状或斑片状；骨膜增生呈平行型或葱皮型，三角型(Codman三角)、放射状或垂直状","软组织肿块边界常模糊，其内可有瘤骨、瘤软骨钙化及出血、坏死、囊变等","CT：瘤组织不均匀强化，中心部位可显示无强化的坏死液化区","MRI：典型骨肉瘤表现不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤","瘤骨、瘤软骨钙化和骨膜增生表现为T1WI、T2WI低信号","成骨型骨肉瘤可见大量瘤骨形成，溶骨型则骨质破坏为主，混合型两者兼有"],
+    differential: {"软骨肉瘤":"发病年龄较大（50岁以上），钙化呈环形/半环形，骨肉瘤瘤骨呈针状或云絮状"}
+  },
+  {
+    name: "骨巨细胞瘤（Giant Cell Tumor of Bone, GCT）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：由单核间质细胞和具有破骨细胞活性特征的多核巨细胞组成的良性肿瘤，是一种局部侵袭性的原发性骨肿瘤","好发人群：好发于20~40岁女性","好发部位：好发于四肢长骨骨端和骨突部，即骨骺闭合后的骨骺部位","临床特征：局部疼痛、肿胀，邻近关节时可出现活动受限；具有局部侵袭性，可复发，少数可远处转移"],
+    signs: ["皂泡状透亮区", "偏心性生长", "横向生长", "无钙化"],
+    features: ["X线：肿瘤呈膨胀性单房或多房性偏心性骨破坏区；多房者瘤内可见骨性间隔，致肿瘤出现皂泡状透亮区为其典型表现","骨破坏区内无钙化；肿瘤相邻的骨皮质变薄、膨胀、甚至骨壳形成；一般无骨膜反应及增生硬化","当骨破坏区出现侵袭性表现如骨壳及骨性间隔残缺不全、骨膜明显增生、软组织肿块较大、肿瘤生长迅速等，常提示肿瘤为恶性或恶变","CT平扫：地图样溶骨性破坏，边缘清晰，无硬化边，病灶内无钙化；约30%呈'皂泡状'改变；病灶位于骨端，常横向偏心生长","一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应，称为花边样骨膜新生骨","MRI：优势在于显示肿瘤周围的软组织情况；瘤体的MR信号是非特异性的，多数肿瘤在MRI图像上边界清楚，周围无低信号环","T1WI呈均匀低或中等信号，T2WI信号不均匀，呈混杂信号；增强扫描可有不同程度的强化"],
+    differential: {"单纯性骨囊肿":"多为中心性生长，无皂泡状分隔，增强扫描囊壁无明显强化，骨巨细胞瘤呈偏心性且有强化"}
+  },
+  {
+    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst, ABC）",
+    module: "bone",
+    category: "肿瘤",
+    clinical: ["定义：一种良性、溶骨性、膨胀性和出血性病变，由大小不等的囊腔及结缔组织间隔组成，囊腔内充满血液；分为原发性和继发性","好发人群：原发性ABC好发于20岁以下","好发部位：病变多累及长管状骨的干骺端","临床特征：局部肿胀疼痛，靠近关节时则可发生运动障碍，有时可触及肿块，听诊可闻及杂音"],
+    signs: ["液-液平面", "膨胀性分房样改变", "囊状低密度", "边缘硬化"],
+    features: ["X线表现：病变在早期多为单纯溶骨性改变，生长期发展较快，显示进行性骨破坏，边界不清；稳定期多呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点","CT表现：可显示病变的范围、大小及数量不一的囊性区，还可显示病变内液-液平面，是本病变较特异性征象；增强扫描囊间隔强化，病变显示更清楚","MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（代表骨壳或纤维性包膜）","病灶内亦可见同样低信号的间隔；内可见液-液平面，T1WI上液-液平面上、下方的液体内均可见到高信号，T2WI上层为较高信号，下层为较低信号，多数学者认为此征象为特征性表现","增强扫描不均匀强化"],
+    differential: {"单纯性骨囊肿":"无液-液平面，多为中心性生长，膨胀程度较轻，动脉瘤样骨囊肿强化更明显"}
+  }
+
+
+
   {
     name: "乳头状肾细胞癌",
     subtitle: "Papillary Renal Cell Carcinoma",
@@ -583,29 +651,7 @@ function filterCards() {
     list.innerHTML = '<div class="empty">未找到匹配疾病，请更换关键词或模块</div>';
     return;
   }
-
-  // 横竖结合：按模块分组，模块内按分类聚合
-  const MODULE_NAMES = {
-    brain: '中枢神经', head: '头颈五官', respiratory: '呼吸系统',
-    mediastinum: '纵隔', abdomen: '消化系统', retroperitoneum: '腹膜后',
-    bone: '骨肌系统', spine: '椎管', cardio: '心血管', breast: '乳腺'
-  };
-  const MODULE_COLORS = {
-    brain: '#6c5ce7', head: '#00b894', respiratory: '#e17055',
-    mediastinum: '#fdcb6e', abdomen: '#f39c12', retroperitoneum: '#8e44ad',
-    bone: '#74b9ff', spine: '#16a085', cardio: '#e84393', breast: '#00cec9'
-  };
-
-  const grouped = {};
-  filtered.forEach(d => {
-    const mod = d.module || 'other';
-    if (!grouped[mod]) grouped[mod] = {};
-    const cat = d.category || '其他';
-    if (!grouped[mod][cat]) grouped[mod][cat] = [];
-    grouped[mod][cat].push(d);
-  });
-
-  const renderDiseaseCard = d => `
+  list.innerHTML = filtered.map(d => `
     <div class="disease-card">
       <div class="card-header" onclick="this.parentElement.querySelector('.card-body').classList.toggle('open');this.querySelector('.arrow').classList.toggle('open')">
         <h3>${d.name}</h3>
@@ -617,47 +663,8 @@ function filterCards() {
         ${d.features && d.features.length ? `<div class="info-row"><div class="info-label">影像特征（含典型表现）</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.features.map(f => `<li>${f}</li>`).join('')}</ul></div></div>` : ''}
         ${d.differential ? `<div class="info-row"><div class="info-label" style="color:#ff6b8a">鉴别诊断</div><div class="info-text"><ul style="padding-left:16px;margin:0">${Object.entries(d.differential).map(([name, point]) => `<li><strong style="color:var(--cyan)">${name}</strong>：${point}</li>`).join('')}</ul></div></div>` : ''}
       </div>
-    </div>`;
-
-  const sortedModules = Object.keys(grouped).sort((a, b) => {
-    const order = ['brain','head','respiratory','mediastinum','abdomen','retroperitoneum','bone','spine','cardio','breast'];
-    return order.indexOf(a) - order.indexOf(b);
-  });
-
-  list.innerHTML = sortedModules.map(mod => {
-    const cats = grouped[mod];
-    const totalCount = Object.values(cats).reduce((s, arr) => s + arr.length, 0);
-    const modName = MODULE_NAMES[mod] || mod;
-    const modColor = MODULE_COLORS[mod] || '#42d9ff';
-    const allCats = Object.keys(cats);
-
-    return `
-    <div class="module-section" data-module="${mod}">
-      <div class="module-header" onclick="toggleModuleSection(this)">
-        <span style="width:4px;height:18px;border-radius:2px;background:${modColor};flex-shrink:0;display:inline-block"></span>
-        <h2>${modName}</h2>
-        <span class="m-count">${totalCount}种疾病</span>
-        <span class="m-arrow open">&#9654;</span>
-      </div>
-      <div class="module-body" style="display:block">
-        ${allCats.map(cat => `
-          <div class="cat-row">
-            <div class="cat-tags">
-              <span class="cat-tag"><span class="cat-tag-dot"></span>${cat}<span class="ct-num">（${cats[cat].length}种）</span></span>
-            </div>
-            <div class="cat-diseases">${cats[cat].map(renderDiseaseCard).join('')}</div>
-          </div>`).join('')}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function toggleModuleSection(header) {
-  const body = header.nextElementSibling;
-  const arrow = header.querySelector('.m-arrow');
-  const isOpen = body.style.display !== 'none';
-  body.style.display = isOpen ? 'none' : '';
-  arrow.classList.toggle('open', !isOpen);
+    </div>
+  `).join('');
 }
 
 window.addEventListener('scroll', () => {
