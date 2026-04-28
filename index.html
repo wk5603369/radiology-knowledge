@@ -21,9 +21,18 @@
   --tag-bg:#e8f4fd;
   --tag-active:#2980b9;
   --tag-active-text:#fff;
+  --clinical-bg:#e8f6f3;
+  --clinical-color:#1e8449;
+  --signs-bg:#fef9e7;
+  --signs-color:#d4a017;
+  --features-bg:#eaf2f8;
+  --features-color:#2874a6;
+  --pathology-bg:#f5eef8;
+  --pathology-color:#8e44ad;
+  --differential-bg:#fdedec;
+  --differential-color:#c0392b;
   --safe-top:env(safe-area-inset-top,0px);
   --safe-bottom:env(safe-area-inset-bottom,0px);
-  /* 模块颜色 */
   --brain:#6c5ce7;
   --head:#00b894;
   --lung:#e17055;
@@ -34,12 +43,10 @@
 }
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 60px)}
 
-/* 头部 */
 .header{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:16px 20px;padding-top:calc(16px + var(--safe-top));position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .header h1{font-size:18px;font-weight:600}
 .header p{font-size:12px;opacity:.8;margin-top:2px}
 
-/* 模块导航 */
 .module-nav{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:#fff;position:sticky;top:0;z-index:99}
 .module-nav::-webkit-scrollbar{display:none}
 .module-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#666;transition:all .2s;white-space:nowrap}
@@ -53,7 +60,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 .module-btn[data-module="breast"].active{background:var(--breast)}
 .module-btn[data-module="all"].active{background:var(--primary)}
 
-/* 分类标签 */
 .tags{padding:8px 16px 12px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--bg);position:sticky;top:0;z-index:98}
 .tags::-webkit-scrollbar{display:none}
 .tag{flex-shrink:0;padding:5px 14px;border-radius:16px;font-size:12px;background:var(--tag-bg);color:var(--accent);cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
@@ -67,29 +73,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 .disease-list{padding:0 16px 100px}
 .disease-card{background:var(--card);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;transition:transform .2s}
 .disease-card:active{transform:scale(.98)}
-.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.card-header h3{font-size:15px;font-weight:600;color:var(--primary);flex:1}
+.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--card)}
+.card-header h3{font-size:15px;font-weight:600;color:var(--primary);flex:1;line-height:1.4}
 .card-header .arrow{font-size:12px;color:#aaa;transition:transform .3s;margin-left:8px}
 .card-header .arrow.open{transform:rotate(90deg)}
-.card-body{display:none;padding:0 16px 14px;border-top:1px solid var(--light)}
+.card-body{display:none;padding:12px 16px 14px;border-top:1px solid var(--light);background:#fafbfc}
 .card-body.open{display:block}
-.info-row{margin-top:10px}
-.info-label{font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
-.info-text{font-size:13px;color:#555;line-height:1.7}
-.sign-tag{display:inline-block;background:#fef9e7;color:#d4a017;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #f9e79f}
-.feature-tag{display:inline-block;background:#eafaf1;color:#1e8449;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #a9dfbf}
-.empty{padding:40px 20px;text-align:center;color:#aaa;font-size:14px}
-.empty-icon{font-size:48px;margin-bottom:12px}
-.coming-soon{background:#fff3cd;border:1px dashed #ffc107;border-radius:12px;padding:20px;text-align:center;color:#856404;margin-bottom:12px}
-.coming-soon .icon{font-size:32px;margin-bottom:8px}
-.coming-soon .title{font-weight:600;margin-bottom:4px}
 
-/* 空模块提示 */
+/* 字段标签样式 */
+.info-section{margin-bottom:14px}
+.info-section:last-child{margin-bottom:0}
+.info-label{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.info-text{font-size:13px;color:#444;line-height:1.7}
+.info-text ul{margin:0;padding-left:18px}
+.info-text li{margin-bottom:4px}
+
+/* 临床概述 - 绿色 */
+.info-section.clinical .info-label{background:var(--clinical-bg);color:var(--clinical-color)}
+
+/* 影像征象 - 黄色 */
+.info-section.signs .info-label{background:var(--signs-bg);color:var(--signs-color)}
+.sign-tag{display:inline-block;background:var(--signs-bg);color:var(--signs-color);padding:3px 10px;border-radius:12px;font-size:12px;margin:3px 4px 3px 0;border:1px solid #f9e79f;font-weight:500}
+
+/* 影像特征 - 蓝色 */
+.info-section.features .info-label{background:var(--features-bg);color:var(--features-color)}
+
+/* 病理特点 - 紫色 */
+.info-section.pathology .info-label{background:var(--pathology-bg);color:var(--pathology-color)}
+.pathology-tag{display:inline-block;background:var(--pathology-bg);color:var(--pathology-color);padding:3px 10px;border-radius:12px;font-size:12px;margin:3px 4px 3px 0;border:1px solid #d7bde2;font-weight:500}
+
+/* 鉴别诊断 - 红色 */
+.info-section.differential .info-label{background:var(--differential-bg);color:var(--differential-color)}
+.differential-item{background:#fff;border-left:3px solid var(--differential-color);padding:10px 12px;margin-bottom:8px;border-radius:0 8px 8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.differential-item:last-child{margin-bottom:0}
+.differential-item strong{color:var(--differential-color);font-size:13px}
+.differential-item .diff-text{font-size:12px;color:#555;margin-top:3px;line-height:1.5}
+
 .module-empty{padding:40px 20px;text-align:center}
 .module-empty .module-icon{font-size:64px;margin-bottom:16px;opacity:.3}
 .module-empty .module-title{font-size:18px;font-weight:600;color:#333;margin-bottom:8px}
-.module-empty .module-desc{font-size:14px;color:#888;margin-bottom:16px}
-.module-empty .module-count{font-size:12px;color:var(--accent)}
+.module-empty .module-desc{font-size:14px;color:#888}
 
 .back-top{position:fixed;right:16px;bottom:calc(24px + var(--safe-bottom));width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;z-index:200}
 .back-top:hover{background:var(--primary)}
@@ -107,7 +130,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 <p>放射科日常工作速查手册</p>
 </div>
 
-<!-- 模块导航 -->
 <div class="module-nav" id="moduleNav">
 <button class="module-btn active" data-module="all">全部</button>
 <button class="module-btn" data-module="brain">🧠 中枢神经</button>
@@ -145,7 +167,294 @@ const DATA = [
   // ==================== 消化系统 ====================
   
   // ==================== 骨肌系统 ====================
-  {
+      {
+      name: "内生软骨瘤（Enchondroma）",
+      module: "musculoskeletal",
+      category: "良性成软骨性肿瘤",
+      clinical: [
+        "定义：是生长缓慢的良性肿瘤，由软骨细胞和软骨基质构成，极少数恶变。",
+        "好发人群：多见于青少年，11-20岁占80%以上，男性略多于女性。",
+        "好发部位：好发于手、足短管状骨，其次为长骨（股骨、肱骨）。",
+        "临床特征：通常无症状，常因外伤或病理骨折偶然发现；位于长骨者可出现疼痛。"
+      ],
+      signs: [
+        "囊状透亮区",
+        "斑点状钙化",
+        "皮质变薄",
+        "病理骨折"
+      ],
+      features: [
+        "X线表现：髓腔内类圆形或分叶状透亮区，边缘清晰，可见硬化边；囊状透亮区内的钙化影（斑点状、环状）是诊断主要依据；骨皮质常变薄、膨胀。",
+        "CT表现：髓腔内软组织密度影，内可见斑点状、环状钙化，骨皮质变薄但完整。",
+        "MRI表现：T1WI呈低-等信号，T2WI呈高信号（软骨基质），钙化区呈低信号；增强扫描病变强化不明显或轻度强化。",
+        "典型表现：短管状骨内囊状透亮区伴斑点状钙化，骨皮质变薄。"
+      ],
+      differential: {
+        "骨软骨瘤": "位于骨表面，有蒂或广基底与母骨相连，皮质和髓腔与母骨相延续。",
+        "软骨肉瘤": "发病年龄较大（40-50岁），疼痛明显，钙化更密集且形态不规则，骨皮质破坏，软组织肿块。",
+        "低级别软骨肉瘤": "鉴别困难，需结合临床；明显疼痛的内生性软骨瘤需警惕恶变。"
+      }
+    },
+    {
+      name: "骨软骨瘤（Osteochondroma）",
+      module: "musculoskeletal",
+      category: "良性成软骨性肿瘤",
+      clinical: [
+        "定义：又称外生骨疣，是最常见的良性骨肿瘤，由骨性基底和软骨帽构成。",
+        "好发人群：青少年多发，80%年龄在20岁以下，男性多于女性。",
+        "好发部位：好发于长骨干骺端，尤以股骨下端、胫骨上端、肱骨上端多见。",
+        "临床特征：多为无痛性肿块，生长缓慢；可因压迫神经血管或邻近组织出现症状。"
+      ],
+      signs: [
+        "骨性突起",
+        "软骨帽",
+        "背向关节生长",
+        "皮质髓腔延续"
+      ],
+      features: [
+        "X线表现：长骨干骺端骨性突起，背向关节生长；骨皮质和髓腔与母骨相延续；顶部可见软骨帽钙化。",
+        "CT表现：清晰显示骨性基底的皮质和髓腔与母骨相延续，软骨帽厚度（成人<1cm，儿童可较厚）。",
+        "MRI表现：骨性基底呈低信号，软骨帽T1WI呈低信号、T2WI呈高信号；增强扫描软骨帽可强化。",
+        "典型表现：带蒂或广基底的骨性突起，皮质和髓腔与母骨相延续，背向关节生长。"
+      ],
+      differential: {
+        "内生软骨瘤": "位于髓腔内，骨皮质膨胀变薄，无骨性突起。",
+        "软骨肉瘤": "发病年龄大，疼痛明显，软骨帽增厚（>1cm），钙化形态不规则，骨皮质破坏。",
+        "骨旁骨肉瘤": "位于骨表面，与骨皮质间有透亮间隙，无软骨帽，可见瘤骨形成。"
+      }
+    },
+    {
+      name: "软骨母细胞瘤（Chondroblastoma）",
+      module: "musculoskeletal",
+      category: "良性成软骨性肿瘤",
+      clinical: [
+        "定义：是一种由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%。",
+        "好发人群：大多数发病年龄为10-25岁，平均年龄约20岁，男性为主，男女比为2:1。",
+        "好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨，紧邻关节软骨的长管状骨骺端。",
+        "临床特征：绝大多数患者表现为局部疼痛，可持续多年；可伴有关节积液和活动受限。"
+      ],
+      signs: [
+        "骨骺溶骨性病变",
+        "薄层硬化边",
+        "斑点状钙化",
+        "关节积液"
+      ],
+      features: [
+        "X线表现：界限清楚、偏心性、溶骨性病变，位于骨骺或骨突；周围有薄层硬化骨形成的边缘；病变一般较小(3-6cm)；中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄。",
+        "CT表现：有助于定性诊断和确定病变范围，清晰显示钙化。",
+        "MRI表现：T1WI低信号；T2WI混杂信号(低-钙化、中-透明软骨基质、高-液化和出血)；周围可见广泛骨髓水肿和软组织水肿；增强扫描病灶边缘及分隔强化。",
+        "典型表现：骨骺或骨突内溶骨性病变，薄层硬化边，伴广泛骨髓水肿。"
+      ],
+      differential: {
+        "骨巨细胞瘤": "好发年龄20-40岁，位于骨端，横向偏心生长，无硬化边，无钙化。",
+        "内生软骨瘤": "位于干骺端或骨干，髓腔内，无骨髓水肿。",
+        "软骨肉瘤": "发病年龄较大，疼痛明显，病变较大，骨皮质破坏，软组织肿块。"
+      }
+    },
+    {
+      name: "软骨肉瘤（Chondrosarcoma）",
+      module: "musculoskeletal",
+      category: "恶性成软骨性肿瘤",
+      clinical: [
+        "定义：是起源于软骨或成软骨结缔组织的一种较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%。",
+        "好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上。",
+        "好发部位：发病部位以股骨及胫骨最为多见，其次为骨盆骨、肋骨、肩胛骨。",
+        "临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；生长较慢，倾向于局部浸润，全身转移晚。"
+      ],
+      signs: [
+        "溶骨性破坏",
+        "环形钙化",
+        "软组织肿块",
+        "骨皮质破坏"
+      ],
+      features: [
+        "X线表现：中心型在骨内呈溶骨性破坏，边界多不清楚；邻近骨皮质膨胀、变薄或破坏；骨破坏区和软组织肿块内可见环形、半环形或沙砾样钙化（具有定性价值）。",
+        "CT表现：显示骨破坏区、软组织肿块和钙化；典型钙化是点状、环形或半环形；非钙化部分密度可不均匀，可见坏死、囊变。",
+        "MRI表现：T1WI呈等或低信号；T2WI恶性度低的呈均匀高信号，恶性度高的信号不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化。",
+        "典型表现：溶骨性破坏伴环形、半环形钙化，软组织肿块，多见于中老年。"
+      ],
+      differential: {
+        "内生软骨瘤": "病变较小，疼痛不明显，钙化较稀疏，无骨皮质破坏和软组织肿块。",
+        "骨肉瘤": "瘤骨形成（象牙质样、云絮状），骨膜反应明显（Codman三角），无软骨样环形钙化。",
+        "骨巨细胞瘤": "位于骨端，皂泡状改变，无钙化，发病年龄较轻（20-40岁）。"
+      }
+    },
+    {
+      name: "骨肉瘤（Osteosarcoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是一种瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨。",
+        "好发人群：好发于青少年及儿童（10-20岁），男女比约1.7:1。",
+        "好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端。",
+        "临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高。"
+      ],
+      signs: [
+        "骨质破坏",
+        "瘤骨形成",
+        "骨膜反应",
+        "软组织肿块",
+        "Codman三角"
+      ],
+      features: [
+        "X线表现：骨质破坏（斑状、大片状、虫蚀状、筛孔状）；瘤骨（象牙质样、云絮状、针状）；骨膜增生（平行型、葱皮型、Codman三角、放射状）；软组织肿块。",
+        "CT表现：不规则溶骨性破坏，骨皮质变薄或中断；软组织肿块形成；瘤骨分布于骨质破坏区或软组织内；增强后实质部分强化，中心可见坏死液化区。",
+        "MRI表现：不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤；瘤骨、瘤软骨钙化呈低信号。",
+        "典型表现：骨质破坏+瘤骨形成+骨膜反应+软组织肿块，青少年长骨干骺端。"
+      ],
+      differential: {
+        "软骨肉瘤": "环形钙化为主，无瘤骨形成，发病年龄较大（50岁以上）。",
+        "骨巨细胞瘤": "位于骨端，皂泡状改变，无瘤骨，无骨膜反应，发病年龄20-40岁。",
+        "尤文肉瘤": "骨干多见，葱皮样骨膜反应，无瘤骨形成，发病年龄5-15岁。",
+        "骨髓炎": "病史长，有感染症状，骨质破坏与增生并存，无软组织肿块。"
+      }
+    },
+    {
+      name: "造釉细胞瘤（Ameloblastoma）",
+      module: "musculoskeletal",
+      category: "牙源性肿瘤",
+      clinical: [
+        "定义：是颌骨最常见的牙源性肿瘤，具有局部侵袭性，多呈缓慢持续生长。",
+        "好发人群：中年人好发，发病高峰年龄是30-40岁，男女发病率相近。",
+        "好发部位：好发于下颌磨牙区和下颌升支，上颌骨少见。",
+        "临床特征：常以颌面部肿块就诊，颌面局部变形；较大肿块影响下颌骨运动，甚至发生吞咽、咀嚼和呼吸障碍；肿瘤区牙齿松动或脱落；触之有乒乓球感。"
+      ],
+      signs: [
+        "多囊状改变",
+        "蜂窝状",
+        "牙根吸收",
+        "骨皮质膨胀",
+        "壁结节强化"
+      ],
+      features: [
+        "X线表现：多囊型（多见）呈蜂窝状或肥皂泡状低密度影，边界清晰，边缘围绕高密度骨反应线；单囊型呈单囊状低密度，边缘可有切迹；牙根呈锯齿状吸收。",
+        "CT表现：囊内含有实质性成分，增强后有强化（区别于囊肿的特征性表现）；病变可突破膨隆的骨皮质侵犯邻近软组织；多房型可见分房大小不等，间隔厚薄不均。",
+        "MRI表现：T1WI混杂信号（囊性呈低信号，实性可呈高信号）；T2WI混杂信号；增强可见壁结节强化（代表'肿瘤生长中心'），分隔强化，实性区域快速强化（约60秒达峰值）。",
+        "典型表现：多囊状或蜂窝状改变，牙根锯齿状吸收，壁结节强化。"
+      ],
+      differential: {
+        "牙源性角化囊肿": "单囊多见，沿颌骨长轴生长，牙根吸收较轻，无壁结节强化，易复发。",
+        "根尖囊肿": "与龋齿相关，位于牙根方，边缘光滑，无分隔，无强化。",
+        "颌骨中心性鳞癌": "边界不清，溶骨性破坏，无多囊改变，发病年龄较大（40-60岁）。",
+        "骨巨细胞瘤": "位于骨端，皂泡状，无牙根吸收，发病部位不同。"
+      }
+    },
+    {
+      name: "脊索瘤（Chordoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是起源于脊索残余组织的低度恶性肿瘤，局部侵袭性强，生长缓慢。",
+        "好发人群：发病年龄以20-40岁成人多见，男性略多于女性。",
+        "好发部位：好发于骶尾部（50%）、颅底（35%）、颈椎（15%）。",
+        "临床特征：骶尾部：疼痛、便秘、下肢麻木；颅底：头痛、颅神经麻痹、视力障碍。"
+      ],
+      signs: [
+        "溶骨性破坏",
+        "软组织肿块",
+        "残留骨片",
+        "钙化",
+        "T2高信号"
+      ],
+      features: [
+        "X线表现：骶尾部或颅底溶骨性破坏，边界不清，可见残留骨片；软组织肿块较大，可向前突入盆腔或向后突入臀肌。",
+        "CT表现：骨质破坏区呈低密度，内可见残留骨片或钙化；软组织肿块密度不均，增强后不均匀强化。",
+        "MRI表现：T1WI呈等或低信号；T2WI呈显著高信号（特征性，因含大量黏液）；增强扫描不均匀强化，呈蜂窝状或分隔状。",
+        "典型表现：中线部位（骶尾/颅底）溶骨性破坏伴巨大软组织肿块，T2显著高信号。"
+      ],
+      differential: {
+        "骨巨细胞瘤": "位于骶骨上部，偏心性，无T2显著高信号，发病年龄较轻。",
+        "软骨肉瘤": "可见环形钙化，T2高信号但不如脊索瘤显著，发病部位不限于中线。",
+        "转移瘤": "发病年龄较大，有原发肿瘤病史，多发，无T2显著高信号。",
+        "浆细胞瘤": "边界较清楚，无T2显著高信号，尿本周蛋白阳性。"
+      }
+    },
+    {
+      name: "浆细胞瘤（Plasmacytoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：孤立性浆细胞瘤是多发性骨髓瘤的临床变异或早期阶段，由单克隆浆细胞异常增殖形成。",
+        "好发人群：发病年龄比多发骨髓瘤年轻，40-50岁多见，男性多于女性。",
+        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨、颅骨），长骨少见。",
+        "临床特征：局部疼痛，病理性骨折；可进展为多发性骨髓瘤（孤立性者50%以上会转化）。"
+      ],
+      signs: [
+        "穿凿样骨质破坏",
+        "软组织肿块",
+        "病理性骨折",
+        "骨质疏松"
+      ],
+      features: [
+        "X线表现：穿凿样溶骨性骨质破坏，边界清楚，无硬化边，无骨膜反应；可呈膨胀性改变；病理性骨折常见。",
+        "CT表现：骨质破坏区呈软组织密度，边界清楚；可伴软组织肿块；增强扫描轻到中度强化。",
+        "MRI表现：T1WI呈低信号；T2WI呈高信号；增强扫描明显强化；可显示骨髓浸润范围。",
+        "典型表现：中轴骨穿凿样溶骨性破坏，边界清楚，可伴软组织肿块。"
+      ],
+      differential: {
+        "转移瘤": "发病年龄较大，有原发肿瘤病史，多发常见，骨质破坏边界不如浆细胞瘤清楚。",
+        "淋巴瘤": "骨质破坏伴硬化边，软组织肿块相对较小，全身症状明显。",
+        "骨巨细胞瘤": "位于骨端，皂泡状，发病部位不同（长骨多见）。"
+      }
+    },
+    {
+      name: "骨转移瘤（Bone Metastasis）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是原发于其他器官的恶性肿瘤通过血行、淋巴或直接侵犯转移至骨骼。",
+        "好发人群：发病年龄较大，常有原发肿瘤病史，中老年多见。",
+        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨）和四肢骨近端（股骨、肱骨）。",
+        "临床特征：局部疼痛，病理性骨折，脊髓压迫症状；部分患者以骨转移为首发症状。"
+      ],
+      signs: [
+        "多发骨质破坏",
+        "成骨性转移",
+        "混合性转移",
+        "软组织肿块",
+        "病理性骨折"
+      ],
+      features: [
+        "X线表现：溶骨性转移（肺癌、甲状腺癌、肾癌）：边界不清的溶骨性破坏；成骨性转移（前列腺癌）：斑片状或结节状高密度影；混合性转移（乳腺癌）：溶骨与成骨并存。",
+        "CT表现：清晰显示骨质破坏范围和软组织肿块；溶骨性转移呈低密度，成骨性转移呈高密度。",
+        "MRI表现：T1WI呈低信号，T2WI呈高信号（溶骨性）或低信号（成骨性）；增强扫描强化；可早期发现骨髓转移。",
+        "典型表现：多发骨质破坏，中老年，有原发肿瘤病史或同时发现原发灶。"
+      ],
+      differential: {
+        "多发性骨髓瘤": "穿凿样破坏，边界清楚，尿本周蛋白阳性，无原发肿瘤病史。",
+        "骨淋巴瘤": "骨质破坏伴硬化边，软组织肿块相对较小。",
+        "甲状旁腺功能亢进": "全身骨质疏松，指骨骨膜下吸收，血钙升高。"
+      }
+    },
+    {
+      name: "骨淋巴瘤（Lymphoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是起源于淋巴造血系统的恶性肿瘤侵犯骨骼，可为原发性或继发性。",
+        "好发人群：各年龄均可发病，以中老年人多见，男性多于女性。",
+        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨、颅骨），长骨也可受累。",
+        "临床特征：局部疼痛，软组织肿块，病理性骨折；可伴有全身症状（发热、盗汗、体重减轻）。"
+      ],
+      signs: [
+        "溶骨性破坏",
+        "骨质硬化",
+        "软组织肿块",
+        "骨膜反应"
+      ],
+      features: [
+        "X线表现：溶骨性骨质破坏，边界不清或呈虫蚀状；可伴有骨质硬化；骨膜反应可见；软组织肿块较大而与骨质破坏程度不成比例。",
+        "CT表现：骨质破坏区呈软组织密度，边界不清；软组织肿块明显；增强扫描均匀强化。",
+        "MRI表现：T1WI呈低信号；T2WI呈等或稍高信号；增强扫描明显均匀强化；可显示骨髓浸润和软组织肿块范围。",
+        "典型表现：骨质破坏伴明显软组织肿块，肿块与骨破坏程度不成比例，脊柱相对特征。"
+      ],
+      differential: {
+        "转移瘤": "多发常见，有原发肿瘤病史，软组织肿块相对较小。",
+        "骨髓瘤": "穿凿样破坏，边界清楚，尿本周蛋白阳性。",
+        "尤文肉瘤": "发病年龄小（5-15岁），葱皮样骨膜反应，骨干多见。"
+      }
+    },
+{
     name: "骨纤维结构不良（Fibrous Dysplasia，FD）",
     module: "bone",
     category: "良性骨病",
@@ -168,7 +477,6 @@ const DATA = [
     }
   },
 
-  // ==================== 骨肌系统（续） ====================
   {
     name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst，ABC）",
     module: "bone",
@@ -193,7 +501,6 @@ const DATA = [
     }
   },
 
-  // ==================== 骨肌系统（续） ====================
   {
     name: "纤维骨皮质缺损/非骨化性纤维瘤（FCD/NOF）",
     module: "bone",
@@ -217,7 +524,6 @@ const DATA = [
     }
   },
 
-  // ==================== 骨肌系统（续） ====================
   {
     name: "骨化性纤维瘤（Ossifying Fibroma，OF）",
     module: "bone",
@@ -241,7 +547,6 @@ const DATA = [
     }
   },
 
-  // ==================== 骨肌系统（续） ====================
   {
     name: "骨巨细胞瘤（Giant Cell Tumor of Bone，GCT）",
     module: "bone",
@@ -259,8 +564,11 @@ const DATA = [
     features: [
       "X线及CT表现：地图样溶骨性破坏，边缘清晰但无硬化边（重要鉴别点），病灶内无钙化；约30%呈'皂泡状'改变（分房样）；病灶位于骨端（关节面下），常横向偏心生长；一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应（花边样骨膜新生骨）；肿瘤可突破骨皮质形成软组织肿块",
       "MRI表现：T1WI多表现为不均匀的低或等信号，出血可呈明显高信号；T2WI常为低、等、高混杂信号；约63%的骨巨细胞瘤可出现含铁血黄素沉着，表现为T2WI上结节状、带状甚至弥漫分布的低信号区（特征性表现）；增强扫描明显不均匀强化；可清楚显示肿瘤对关节、软组织的侵犯",
-      "病理特点：肿瘤由梭形基质细胞和散在分布的大量破骨细胞样多核巨细胞组成；免疫组化：H3.3G34W（+）（特异性标记，约90%病例阳性），CD68（+）（巨细胞），S-100（部分+），Ki-67（良性<5%，恶性>10%）",
       "典型表现：20-40岁 + 膝关节周围骨端 + 偏心性地图样溶骨破坏无硬化边 + T2WI含铁血黄素低信号 + H3.3G34W（+）"
+    ],
+    pathology: [
+      "肿瘤由梭形基质细胞和散在分布的大量破骨细胞样多核巨细胞组成",
+      "免疫组化：H3.3G34W（+）（特异性标记，约90%病例阳性），CD68（+）（巨细胞），S-100（部分+），Ki-67（良性<5%，恶性>10%）"
     ],
     differential: {
       "单纯性骨囊肿": "20岁以下儿童，位于干骺端（非骨端），中心性膨胀，有硬化边，囊内无骨嵴，无强化，T2WI均匀高信号",
@@ -269,7 +577,6 @@ const DATA = [
     }
   },
 
-  // ==================== 骨肌系统（续） ====================
   {
     name: "单纯性骨囊肿（Simple Bone Cyst，SBC）",
     module: "bone",
@@ -294,7 +601,6 @@ const DATA = [
     }
   },
 
-  
   // ==================== 心血管系统 ====================
   
   // ==================== 乳腺系统 ====================
@@ -387,7 +693,16 @@ function filterCards() {
   // 搜索过滤
   if (q) {
     filtered = filtered.filter(d => {
-      const searchable = [d.name, d.subtitle, d.category, ...(d.keywords || []), ...(d.signs || []), ...(d.features || [])].join(" ").toLowerCase();
+      const searchable = [
+        d.name, 
+        d.category, 
+        ...(d.clinical || []),
+        ...(d.signs || []), 
+        ...(d.features || []),
+        ...(d.pathology || []),
+        ...(Object.keys(d.differential || {})),
+        ...(Object.values(d.differential || {}))
+      ].join(" ").toLowerCase();
       return searchable.includes(q) || d.name.toLowerCase().includes(q);
     });
   }
@@ -423,11 +738,60 @@ function renderList(data) {
         <span class="arrow" id="arrow${i}">▶</span>
       </div>
       <div class="card-body" id="body${i}">
-        ${d.subtitle ? `<div class="info-row"><div class="info-label">别名</div><div class="info-text" style="color:#888">${d.subtitle}</div></div>` : ""}
-        ${d.age ? `<div class="info-row"><div class="info-label">好发年龄</div><div class="info-text">${d.age}</div></div>` : ""}
-        ${d.types ? d.types.map(t => `<div class="info-row"><div class="info-label">分型</div><div class="info-text"><strong>${t.label}</strong>：${t.desc}</div></div>`).join("") : ""}
-        ${d.signs && d.signs.length ? `<div class="info-row"><div class="info-label">影像征象</div><div class="info-text">${d.signs.map(s => `<span class="sign-tag">${s}</span>`).join("")}</div></div>` : ""}
-        ${d.features && d.features.length ? `<div class="info-row"><div class="info-label">影像特征</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.features.map(f => `<li>${f}</li>`).join("")}</ul></div></div>` : ""}
+        
+        <!-- 临床概述 -->
+        ${d.clinical && d.clinical.length ? `
+          <div class="info-section clinical">
+            <div class="info-label">临床概述</div>
+            <div class="info-text">
+              <ul>${d.clinical.map(item => `<li>${item}</li>`).join("")}</ul>
+            </div>
+          </div>
+        ` : ""}
+        
+        <!-- 影像征象 -->
+        ${d.signs && d.signs.length ? `
+          <div class="info-section signs">
+            <div class="info-label">影像征象</div>
+            <div class="info-text">${d.signs.map(s => `<span class="sign-tag">${s}</span>`).join("")}</div>
+          </div>
+        ` : ""}
+        
+        <!-- 影像特征 -->
+        ${d.features && d.features.length ? `
+          <div class="info-section features">
+            <div class="info-label">影像特征</div>
+            <div class="info-text">
+              <ul>${d.features.map(f => `<li>${f}</li>`).join("")}</ul>
+            </div>
+          </div>
+        ` : ""}
+        
+        <!-- 病理特点 -->
+        ${d.pathology && d.pathology.length ? `
+          <div class="info-section pathology">
+            <div class="info-label">病理特点</div>
+            <div class="info-text">
+              <ul>${d.pathology.map(p => `<li>${p}</li>`).join("")}</ul>
+            </div>
+          </div>
+        ` : ""}
+        
+        <!-- 鉴别诊断 -->
+        ${d.differential && Object.keys(d.differential).length ? `
+          <div class="info-section differential">
+            <div class="info-label">鉴别诊断</div>
+            <div class="info-text">
+              ${Object.entries(d.differential).map(([key, val]) => `
+                <div class="differential-item">
+                  <strong>${key}</strong>
+                  <div class="diff-text">${val}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        ` : ""}
+        
       </div>
     </div>
   `).join("");
