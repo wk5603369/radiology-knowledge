@@ -3,24 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>影像诊断知识库 · 仁慈医院放射科</title>
+<title>影像诊断知识库</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="影像诊断">
-<meta name="theme-color" content="#06111f">
+<meta name="theme-color" content="#1a5276">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a5276'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>🫁</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#06111f;
-  --panel:rgba(12,31,52,.78);
-  --line:rgba(92,212,255,.24);
-  --text:#e9f8ff;
-  --muted:#8fb6c9;
-  --cyan:#42d9ff;
-  --cyan2:#00f0ff;
-  --green:#4dffbf;
+  --primary:#1a5276;
+  --accent:#2980b9;
+  --bg:#f5f7fa;
+  --card:#fff;
+  --text:#2c3e50;
+  --light:#ecf0f1;
+  --tag-bg:#e8f4fd;
+  --tag-active:#2980b9;
+  --tag-active-text:#fff;
   --safe-top:env(safe-area-inset-top,0px);
   --safe-bottom:env(safe-area-inset-bottom,0px);
+  /* 模块颜色 */
   --brain:#6c5ce7;
   --head:#00b894;
   --lung:#e17055;
@@ -28,1292 +31,418 @@
   --bone:#74b9ff;
   --cardio:#e84393;
   --breast:#00cec9;
-  --retroperitoneum:#8e44ad;
-  --spine:#16a085;
 }
-body{
-  min-height:100vh;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 70% 18%,rgba(66,217,255,.18),transparent 30%),
-    radial-gradient(circle at 20% 70%,rgba(63,124,255,.14),transparent 32%),
-    linear-gradient(145deg,#04101d 0%,#06111f 44%,#0b1f33 100%);
-  overflow-x:hidden;
-  padding-bottom:calc(30px + var(--safe-bottom));
-}
-body:before{
-  content:"";
-  position:fixed;inset:0;pointer-events:none;opacity:.20;z-index:0;
-  background-image:
-    linear-gradient(rgba(66,217,255,.14) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(66,217,255,.14) 1px,transparent 1px);
-  background-size:42px 42px;
-  -webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%);
-  mask-image:radial-gradient(circle at 50% 40%,#000,transparent 75%);
-}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 60px)}
 
-/* ===== Hero头部 ===== */
-.hero{
-  position:relative;overflow:hidden;
-  border:1px solid var(--line);border-radius:24px;
-  margin:20px 18px 0;
-  padding:28px 24px 20px;
-  background:linear-gradient(135deg,rgba(10,31,54,.92),rgba(8,20,36,.82));
-  box-shadow:0 18px 60px rgba(0,0,0,.38);
-}
-.hero:before{content:"";position:absolute;right:-100px;top:-90px;width:320px;height:320px;border-radius:50%;border:1px solid rgba(66,217,255,.22);box-shadow:0 0 80px rgba(66,217,255,.12) inset,0 0 80px rgba(66,217,255,.08)}
-.hero:after{content:"";position:absolute;right:20px;bottom:10px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(66,217,255,.14) 0 2px,transparent 3px),radial-gradient(circle at center,transparent 42%,rgba(66,217,255,.16) 43%,transparent 44%,transparent 58%,rgba(66,217,255,.20) 59%,transparent 60%);background-size:22px 22px,100% 100%;opacity:.55;filter:drop-shadow(0 0 18px rgba(66,217,255,.28))}
-.scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan2),transparent);animation:scan 3.2s linear infinite;opacity:.7;z-index:2;top:0}
-@keyframes scan{0%{top:0}100%{top:100%}}
+/* 头部 */
+.header{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:16px 20px;padding-top:calc(16px + var(--safe-top));position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header h1{font-size:18px;font-weight:600}
+.header p{font-size:12px;opacity:.8;margin-top:2px}
 
-.hero-inner{position:relative;z-index:2}
-.hero-en{font-size:11px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:4px;font-weight:300}
-.hero-title{font-size:clamp(24px,5vw,40px);line-height:1.15;letter-spacing:1px;margin-top:10px;font-weight:700;max-width:600px}
-.hero-sub{margin-top:8px;color:var(--muted);font-size:13px;letter-spacing:1px}
-
-/* ===== 模块导航 ===== */
-.module-nav{
-  position:relative;z-index:2;
-  display:flex;gap:8px;overflow-x:auto;
-  padding:14px 4px 6px;margin-top:6px;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
-}
+/* 模块导航 */
+.module-nav{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:#fff;position:sticky;top:0;z-index:99}
 .module-nav::-webkit-scrollbar{display:none}
-.module-btn{
-  flex-shrink:0;padding:7px 15px;border-radius:999px;
-  font-size:12px;cursor:pointer;
-  border:1px solid rgba(66,217,255,.22);
-  background:rgba(13,34,57,.68);color:var(--muted);
-  transition:.2s;white-space:nowrap;
-}
-.module-btn:hover{border-color:rgba(66,217,255,.55);color:#fff}
-.module-btn.active{color:#03111d;background:linear-gradient(135deg,var(--cyan),var(--green));border-color:transparent;box-shadow:0 0 22px rgba(66,217,255,.22)}
+.module-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#666;transition:all .2s;white-space:nowrap}
+.module-btn.active{color:#fff;border-color:transparent}
+.module-btn[data-module="brain"].active{background:var(--brain)}
+.module-btn[data-module="head"].active{background:var(--head)}
+.module-btn[data-module="lung"].active{background:var(--lung)}
+.module-btn[data-module="abdomen"].active{background:var(--abdomen);color:#333}
+.module-btn[data-module="bone"].active{background:var(--bone)}
+.module-btn[data-module="cardio"].active{background:var(--cardio)}
+.module-btn[data-module="breast"].active{background:var(--breast)}
+.module-btn[data-module="all"].active{background:var(--primary)}
 
-/* ===== 搜索框 ===== */
-.search-wrap{position:relative;margin-top:12px;position:relative;z-index:2}
-.search-wrap input{
-  width:100%;height:48px;border-radius:16px;
-  border:1px solid rgba(66,217,255,.30);
-  background:rgba(8,24,42,.86);color:var(--text);
-  outline:none;padding:0 16px 0 44px;font-size:14px;
-  box-shadow:inset 0 0 20px rgba(66,217,255,.03);
-  transition:.2s;
-}
-.search-wrap input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(66,217,255,.10),inset 0 0 20px rgba(66,217,255,.06)}
-.search-wrap input::placeholder{color:rgba(233,248,255,.35)}
-.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:15px;pointer-events:none}
+/* 分类标签 */
+.tags{padding:8px 16px 12px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--bg);position:sticky;top:0;z-index:98}
+.tags::-webkit-scrollbar{display:none}
+.tag{flex-shrink:0;padding:5px 14px;border-radius:16px;font-size:12px;background:var(--tag-bg);color:var(--accent);cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
+.tag.active{background:var(--tag-active);color:var(--tag-active-text)}
 
-/* ===== 固定欢迎页 ===== */
-.welcome{
-  margin:20px 18px 0;
-  border:1px solid var(--line);border-radius:22px;
-  background:linear-gradient(160deg,rgba(10,31,54,.88),rgba(8,20,36,.78));
-  padding:0;position:relative;overflow:hidden;
-  min-height:280px;
-}
-.welcome:before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(66,217,255,.03) 4px,rgba(66,217,255,.03) 5px);
-  pointer-events:none;
-}
-.welcome-inner{
-  position:relative;z-index:1;
-  display:grid;
-  grid-template-columns:1fr 260px;
-  gap:24px;align-items:start;
-  padding:28px 28px;
-}
-.welcome-main{}
-.welcome-badge{
-  font-size:11px;letter-spacing:3px;
-  color:var(--cyan);margin-bottom:6px;
-  font-weight:600;text-transform:uppercase;
-}
-.welcome-heading{
-  font-size:clamp(20px,4vw,28px);
-  font-weight:700;color:#fff;
-  line-height:1.2;
-}
-.welcome-lead{
-  font-size:13px;color:var(--muted);
-  line-height:1.8;margin-top:10px;
-  max-width:460px;
-}
-.welcome-tags{
-  display:flex;gap:6px;flex-wrap:wrap;
-  margin-top:16px;
-}
-.w-tag{
-  font-size:11px;padding:3px 9px;
-  border:1px solid rgba(66,217,255,.18);
-  border-radius:999px;color:var(--muted);
-  background:rgba(255,255,255,.03);
-}
-.welcome-side{
-  display:flex;flex-direction:column;gap:10px;
-  padding-top:6px;
-}
-.w-stat-card{
-  display:flex;align-items:center;gap:12px;
-  border:1px solid rgba(66,217,255,.16);
-  border-radius:14px;
-  padding:12px 14px;
-  background:rgba(7,20,35,.50);
-  backdrop-filter:blur(6px);
-  transition:.2s;
-}
-.w-stat-card:hover{border-color:rgba(66,217,255,.35)}
-.w-stat-icon{font-size:22px;line-height:1}
-.w-stat-body{}
-.w-stat-num{font-size:18px;font-weight:700;color:#fff}
-.w-stat-label{font-size:11px;color:var(--muted);margin-top:1px;letter-spacing:.5px}
+.search-box{padding:12px 16px;background:var(--bg);position:sticky;top:0;z-index:97}
+.search-box input{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:20px;font-size:14px;background:var(--card);outline:none;transition:border .2s}
+.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(41,128,185,.15)}
 
-/* ===== 疾病列表 ===== */
-.disease-list{padding:16px 18px 100px;display:none;columns:2 280px;column-gap:12px}
-.disease-list.show{display:block}
-.disease-list.show .disease-card{display:inline-block;width:100%;break-inside:avoid;vertical-align:top}
-
-
-
-.disease-card{
-  background:#ffffff;
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:18px;margin-bottom:12px;
-  box-shadow:0 4px 20px rgba(0,0,0,.10);
-  overflow:hidden;transition:transform .2s;
-}
-.disease-card:hover{transform:translateY(-1px);border-color:rgba(66,217,255,.4);box-shadow:0 6px 24px rgba(0,0,0,.13)}
-.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:linear-gradient(135deg,rgba(66,217,255,.06),rgba(77,255,191,.04));border-bottom:1px solid rgba(0,0,0,.06)}
-.card-header h3{font-size:15px;font-weight:700;color:#0a1f36;flex:1}
-.card-header .arrow{font-size:12px;color:#8fb6c9;transition:transform .3s;margin-left:8px}
+.stats{padding:8px 16px;font-size:12px;color:#888;background:var(--bg)}
+.disease-list{padding:0 16px 100px}
+.disease-card{background:var(--card);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;transition:transform .2s}
+.disease-card:active{transform:scale(.98)}
+.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.card-header h3{font-size:15px;font-weight:600;color:var(--primary);flex:1}
+.card-header .arrow{font-size:12px;color:#aaa;transition:transform .3s;margin-left:8px}
 .card-header .arrow.open{transform:rotate(90deg)}
-.card-body{display:none;padding:10px 16px 14px;border-top:1px solid rgba(0,0,0,.06);background:#ffffff}
+.card-body{display:none;padding:0 16px 14px;border-top:1px solid var(--light)}
 .card-body.open{display:block}
 .info-row{margin-top:10px}
-.info-label{font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:4px;text-transform:uppercase}
-/* 各字段标签颜色在浅色背景下改用深色系 */
-.info-label{color:#0a1f36}
-.info-text{font-size:13px;color:#2d3748;line-height:1.75}
-.sign-tag{display:inline-block;background:#fef9e7;color:#b8860b;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #f0d060}
-.feature-tag{display:inline-block;background:#e6f9f0;color:#0d7a4f;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #4dffbf}
-.clinical-tag{display:inline-block;background:#fff0f3;color:#c2185b;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #ff6b8a}
-.pathology-tag{display:inline-block;background:#f3e5f5;color:#6a1b9a;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #ba68c8}
-.imaging-tag{display:inline-block;background:#e0f7fa;color:#006064;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #4dd0e1}
-.empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+.info-label{font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.info-text{font-size:13px;color:#555;line-height:1.7}
+.sign-tag{display:inline-block;background:#fef9e7;color:#d4a017;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #f9e79f}
+.feature-tag{display:inline-block;background:#eafaf1;color:#1e8449;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px 4px 2px 0;border:1px solid #a9dfbf}
+.empty{padding:40px 20px;text-align:center;color:#aaa;font-size:14px}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.coming-soon{background:#fff3cd;border:1px dashed #ffc107;border-radius:12px;padding:20px;text-align:center;color:#856404;margin-bottom:12px}
+.coming-soon .icon{font-size:32px;margin-bottom:8px}
+.coming-soon .title{font-weight:600;margin-bottom:4px}
 
-.back-top{
-  position:fixed;right:18px;bottom:calc(20px + var(--safe-bottom));
-  width:44px;height:44px;border-radius:50%;
-  border:1px solid rgba(66,217,255,.40);
-  background:rgba(8,24,42,.88);color:var(--cyan);
-  font-size:18px;box-shadow:0 0 20px rgba(66,217,255,.15);
-  cursor:pointer;display:none;z-index:30;
-}
+/* 空模块提示 */
+.module-empty{padding:40px 20px;text-align:center}
+.module-empty .module-icon{font-size:64px;margin-bottom:16px;opacity:.3}
+.module-empty .module-title{font-size:18px;font-weight:600;color:#333;margin-bottom:8px}
+.module-empty .module-desc{font-size:14px;color:#888;margin-bottom:16px}
+.module-empty .module-count{font-size:12px;color:var(--accent)}
 
-@media(max-width:900px){
-  .welcome-inner{grid-template-columns:1fr}
-  .welcome-side{flex-direction:row;flex-wrap:wrap}
-}
-@media(max-width:600px){
-  .hero{padding:20px 16px 16px;margin:12px 10px 0}
-  .hero-title{font-size:22px}
-  .welcome{padding:0;margin:16px 10px 0}
-  .welcome-inner{padding:22px 18px}
-  .disease-list{padding:12px 10px 100px}
-  .w-stat-card{min-width:90px;padding:10px 12px}
+.back-top{position:fixed;right:16px;bottom:calc(24px + var(--safe-bottom));width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;z-index:200}
+.back-top:hover{background:var(--primary)}
+
+@media(min-width:768px){
+.disease-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stats{grid-column:1/-1}
 }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="scan-line"></div>
-  <div class="hero-inner">
-    <div class="hero-en">RADIOLOGY . MEDICAL IMAGING</div>
-    <div class="hero-title">影像诊断知识检索</div>
-    <div class="hero-sub">仁慈医院 . 放射科</div>
-  </div>
-
-  <div class="module-nav" id="moduleNav">
-    <button class="module-btn active" data-module="all" onclick="setModule('all')">全部</button>
-    <button class="module-btn" data-module="brain" onclick="setModule('brain')">. 中枢神经</button>
-    <button class="module-btn" data-module="head" onclick="setModule('head')">. 头颈五官</button>
-    <button class="module-btn" data-module="respiratory" onclick="setModule('respiratory')">. 呼吸系统</button>
-    <button class="module-btn" data-module="mediastinum" onclick="setModule('mediastinum')">. 纵隔</button>
-    <button class="module-btn" data-module="abdomen" onclick="setModule('abdomen')">. 消化系统</button>
-    <button class="module-btn" data-module="retroperitoneum" onclick="setModule('retroperitoneum')">. 腹膜后</button>
-    <button class="module-btn" data-module="bone" onclick="setModule('bone')">. 骨肌系统</button>
-    <button class="module-btn" data-module="spine" onclick="setModule('spine')">. 椎管</button>
-    <button class="module-btn" data-module="cardio" onclick="setModule('cardio')">. 心血管</button>
-    <button class="module-btn" data-module="breast" onclick="setModule('breast')">. 乳腺</button>
-  </div>
-
-  <div class="search-wrap">
-    <span class="search-icon">&#8981;</span>
-    <input type="text" id="search" placeholder="搜索疾病名称、影像特征、英文名称..." oninput="filterCards()">
-  </div>
+<div class="header">
+<h1>🫁 影像诊断知识库</h1>
+<p>放射科日常工作速查手册</p>
 </div>
 
-<!-- 固定欢迎页（默认隐藏） -->
-<div class="welcome" id="welcome" style="display:none;">
-  <div class="welcome-inner">
-    <div class="welcome-main">
-      <div class="welcome-badge">RENCI HOSPITAL . RADIOLOGY DEPT.</div>
-      <h2 class="welcome-heading">影像诊断知识库</h2>
-      <p class="welcome-lead">收录放射科各系统常见疾病的影像诊断要点，按模块分类，支持关键词检索，助力日常阅片与诊断。</p>
-      <div class="welcome-tags">
-        <span class="w-tag">中枢神经</span>
-        <span class="w-tag">头颈五官</span>
-        <span class="w-tag">呼吸系统</span>
-        <span class="w-tag">纵隔</span>
-        <span class="w-tag">消化系统</span>
-        <span class="w-tag">腹膜后</span>
-        <span class="w-tag">骨肌系统</span>
-        <span class="w-tag">椎管</span>
-        <span class="w-tag">心血管</span>
-        <span class="w-tag">乳腺</span>
-      </div>
-    </div>
-    <div class="welcome-side">
-      <div class="w-stat-card">
-        <div class="w-stat-icon">&#128218;</div>
-        <div class="w-stat-body">
-          <div class="w-stat-num" id="totalCount">0</div>
-          <div class="w-stat-label">收录疾病</div>
-        </div>
-      </div>
-      <div class="w-stat-card">
-        <div class="w-stat-icon">&#128172;</div>
-        <div class="w-stat-body">
-          <div class="w-stat-num">CT / MRI</div>
-          <div class="w-stat-label">影像特征</div>
-        </div>
-      </div>
-      <div class="w-stat-card">
-        <div class="w-stat-icon">&#9889;</div>
-        <div class="w-stat-body">
-          <div class="w-stat-num">单页检索</div>
-          <div class="w-stat-label">无需跳转</div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- 模块导航 -->
+<div class="module-nav" id="moduleNav">
+<button class="module-btn active" data-module="all">全部</button>
+<button class="module-btn" data-module="brain">🧠 中枢神经</button>
+<button class="module-btn" data-module="head">👁 头颈五官</button>
+<button class="module-btn" data-module="lung">🫁 呼吸系统</button>
+<button class="module-btn" data-module="abdomen">🍽 消化系统</button>
+<button class="module-btn" data-module="bone">🦴 骨肌系统</button>
+<button class="module-btn" data-module="cardio">❤️ 心血管</button>
+<button class="module-btn" data-module="breast">🤝 乳腺</button>
 </div>
 
-<!-- 疾病列表（默认显示） -->
-<div class="disease-list show" id="list"></div>
+<div class="search-box">
+<input type="text" id="search" placeholder="🔍 搜索疾病名称、影像特征..." oninput="filterCards()">
+</div>
 
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+<div class="tags" id="tags"></div>
+
+<div class="stats" id="stats"></div>
+
+<div class="disease-list" id="list"></div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
 // =============================================
-// 疾病数据
+// 疾病数据 - 按系统分类
 // =============================================
 const DATA = [
+  // ==================== 中枢神经系统 ====================
+  
+  // ==================== 头颈五官系统 ====================
+  
+  // ==================== 呼吸系统 ====================
+  
+  // ==================== 消化系统 ====================
+  
+  // ==================== 骨肌系统 ====================
   {
-    name: "脑梗死",
-    subtitle: "Cerebral Infarction",
-    module: "brain",
-    category: "脑血管",
-    clinical: ["定义：脑梗死是由于脑供血动脉闭塞导致局部脑组织缺血坏死的疾病","好发人群：中老年，常有高血压、糖尿病等基础病","好发部位：大脑中动脉供血区最常见","临床特征：突发偏瘫、失语，起病急，多在安静状态下发病"],
-    signs: ["DWI高信号", "MCA高密度", "陈旧性软化灶"],
-    features: ["超急性期（<6h）：CT可能正常，DWI呈高信号","急性期（6-24h）：CT低密度，DWI明显高信号","责任血管供血区分布，符合血管分布","大脑中动脉高密度征提示急性血栓形成"],
-    differential: {"脑出血":"高密度血肿，CT值>50HU，病情常急剧进展"}
-  },
-  {
-    name: "脑出血",
-    subtitle: "Intracerebral Hemorrhage",
-    module: "brain",
-    category: "脑血管",
-    clinical: ["定义：非外伤性脑实质内出血","好发人群：高血压人群，40-70岁","好发部位：基底节区（尤其壳核）最常见","临床特征：突发剧烈头痛、呕吐、偏瘫，病情进展快"],
-    signs: ["CT高密度", "脑室出血", "蛛网膜下腔出血"],
-    features: ["急性期CT高密度（50-80HU），边缘相对清楚","血肿形态可不规则，可破入脑室系统","亚急性期CT密度逐渐减低","MRI信号随血红蛋白演变，超急性T2*低信号"],
-    differential: {"脑梗死":"DWI高信号、ADC低信号，CT为低密度"}
-  },
-  {
-    name: "脑膜瘤",
-    subtitle: "Meningioma",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：起源于蛛网膜帽状细胞的颅内常见良性肿瘤","好发人群：40-60岁女性多见","好发部位：大脑凸面、矢状窦旁、蝶骨嵴","临床特征：生长缓慢，病程长，癫痫或局灶神经功能障碍"],
-    signs: ["宽基底", "硬膜尾征", "均匀强化", "钙化"],
-    features: ["脑外肿瘤，与硬膜关系密切","宽基底贴于颅骨内板或硬脑膜","增强后均匀明显强化","常见硬膜尾征及钙化，邻近骨质可增生硬化"],
-    differential: {"胶质瘤":"脑内肿瘤，无宽基底及硬膜尾征，多不规则环状强化"}
-  },
-  {
-    name: "胶质母细胞瘤",
-    subtitle: "Glioblastoma Multiforme",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：WHO IV级星形细胞肿瘤，恶性程度最高","好发人群：50-70岁，男性略多","好发部位：大脑半球白质，额叶、颞叶多见","临床特征：病程短、进展快，头痛、癫痫、神经功能缺损"],
-    signs: ["花环状强化", "坏死囊变", "水肿", "蝴蝶征"],
-    features: ["位于脑白质内，位置较深","边界不清，浸润性生长","花环状或不规则环形强化，壁结节不规则","中心坏死、囊变明显，周围水肿及占位效应显著"],
-    differential: {"转移瘤":"多见灰白质交界，小病灶大水肿，多为多发病灶"}
-  },
-  {
-    name: "多发性硬化",
-    subtitle: "Multiple Sclerosis",
-    module: "brain",
-    category: "脱髓鞘",
-    clinical: ["定义：中枢神经系统慢性炎性脱髓鞘疾病","好发人群：20-40岁女性多见","好发部位：侧脑室旁白质、视神经、脊髓","临床特征：病程反复缓解与复发，多灶性神经功能障碍"],
-    signs: ["Dawson手指", "室管膜下病变", "新旧不等"],
-    features: ["侧脑室旁白质病变，沿室管膜分布","Dawson手指征：垂直于脑室的条状病灶","急性期可强化，慢性期不强化","具有时间多发性和空间多发性"],
-    differential: {"缺血性白质病变":"多见于老年人，病变多对称，无强化，无时间多发"}
-  },
-  {
-    name: "鼻咽癌",
-    subtitle: "Nasopharyngeal Carcinoma",
-    module: "head",
-    category: "肿瘤",
-    clinical: ["定义：发生于鼻咽部黏膜的恶性肿瘤，与EB病毒感染密切相关","好发人群：40-60岁，华南地区高发","好发部位：鼻咽顶后壁、咽隐窝","临床特征：涕中带血、鼻塞、耳鸣，易早期淋巴结转移"],
-    signs: ["咽隐窝变浅", "颈部淋巴结肿大", "颅底骨质破坏"],
-    features: ["鼻咽顶后壁或咽隐窝软组织肿块","增强后不均匀强化","易侵犯颅底骨质及颅神经","颈部淋巴结转移常见，可表现为淋巴结融合"],
-    differential: {"鼻咽部淋巴瘤":"发病年龄较轻，病变范围较弥漫，强化相对均匀"}
-  },
-  {
-    name: "肺癌",
-    subtitle: "Lung Cancer",
-    module: "respiratory",
-    category: "肿瘤",
-    clinical: ["定义：起源于支气管黏膜上皮的恶性肿瘤","好发人群：40岁以上，长期吸烟史","好发部位：右肺多于左肺，上叶多于下叶","临床特征：咳嗽、咯血、胸痛，晚期可有远处转移"],
-    signs: ["分叶征", "毛刺征", "胸膜凹陷征", "空泡征"],
-    features: ["周围型肺癌：肺内结节或肿块，分叶状、边缘毛刺","中央型肺癌：肺门肿块伴阻塞性肺炎/肺不张","增强后中度强化，可伴坏死","常见纵隔淋巴结转移"],
-    differential: {"结核球":"多见于上叶尖后段，边缘光滑，常有钙化，无强化或环形强化"}
-  },
-  {
-    name: "肺结核",
-    subtitle: "Pulmonary Tuberculosis",
-    module: "respiratory",
-    category: "感染",
-    clinical: ["定义：结核分枝杆菌引起的慢性感染性疾病","好发人群：青少年及免疫力低下者","好发部位：上叶尖后段、下叶背段","临床特征：咳嗽、低热、盗汗、体重下降，病程慢性"],
-    signs: ["上叶尖后段", "树芽征", "空洞", "钙化"],
-    features: ["原发性肺结核：肺门淋巴结肿大为主","血行播散性：粟粒样结节，随机分布","继发性：上叶尖后段病变，可伴空洞、钙化","支气管播散：树芽征，沿支气管分布的小结节"],
-    differential: {"真菌病":"多见于免疫力低下者，结节伴晕征，可发生空洞"}
-  },
-  {
-    name: "胸腺瘤",
-    subtitle: "Thymoma",
-    module: "mediastinum",
-    category: "肿瘤",
-    clinical: ["定义：起源于胸腺上皮细胞的纵隔常见肿瘤","好发人群：40-60岁","好发部位：前上纵隔","临床特征：可伴重症肌无力，部分患者无症状偶然发现"],
-    signs: ["前上纵隔肿块", "均匀强化", "囊变坏死"],
-    features: ["前上纵隔圆形或分叶状肿块","CT平扫呈等密度，增强后轻中度强化","可伴囊变、坏死、钙化","与重症肌无力密切相关（约30-50%）"],
-    differential: {"畸胎瘤":"含脂肪、钙化、软组织多种成分，CT值不均质"}
-  },
-  {
-    name: "肝癌",
-    subtitle: "Hepatocellular Carcinoma",
-    module: "abdomen",
-    category: "肿瘤",
-    clinical: ["定义：起源于肝细胞的恶性肿瘤，是我国常见恶性肿瘤","好发人群：40-60岁，男性多见，多有乙肝/肝硬化背景","好发部位：多叶多发，以右叶多见","临床特征：肝区疼痛、消瘦、AFP升高，晚期可出现腹水"],
-    signs: ["快进快出", "假包膜", "门静脉癌栓"],
-    features: ["动脉期明显强化，门脉期及延迟期强化减退（快进快出）","常可见完整或不完整假包膜","可侵犯门静脉形成癌栓","常伴肝硬化背景，可伴肝内转移"],
-    differential: {"肝血管瘤":"各期持续填充式强化，无快进快出表现"}
-  },
-  {
-    name: "腰椎间盘突出",
-    subtitle: "Lumbar Disc Herniation",
+    name: "骨纤维结构不良（Fibrous Dysplasia，FD）",
     module: "bone",
-    category: "退行性",
-    clinical: ["定义：椎间盘纤维环破裂，髓核突出压迫神经根","好发人群：20-50岁，久坐、重体力劳动者","好发部位：L4-5、L5-S1节段最常见","临床特征：腰痛伴下肢放射痛，咳嗽/用力时加重"],
-    signs: ["椎间盘后突", "神经根受压", "硬膜囊受压"],
-    features: ["椎间盘向后方或侧后方突出，超出椎体后缘","突出椎间盘与母体椎间盘相连","T2WI信号减低提示椎间盘脱水退变","可伴钙化，邻近椎体骨质增生"],
-    differential: {"椎管内肿瘤":"椎管内占位，与椎间盘不相连，增强后明显强化"}
-  },
-  {
-    name: "椎管内神经鞘瘤",
-    subtitle: "Spinal Schwannoma",
-    module: "spine",
-    category: "肿瘤",
-    clinical: ["定义：起源于神经鞘膜施万细胞的良性肿瘤","好发人群：30-50岁","好发部位：髓外硬膜下，胸段、颈段多见","临床特征：慢性进展性神经根痛，逐渐出现脊髓压迫症状"],
-    signs: ["髓外硬膜下肿块", "明显强化", "脊髓受压移位"],
-    features: ["髓外硬膜下圆形或椭圆形肿块","T1WI等信号，T2WI高信号，明显均匀强化","可经过神经孔向椎管外生长（哑铃形）","脊髓受压移位，可伴脊髓水肿"],
-    differential: {"脊膜瘤":"女性多见，钙化更常见，基底多较宽附于硬脊膜"}
-  },
-  {
-    name: "主动脉夹层",
-    subtitle: "Aortic Dissection",
-    module: "cardio",
-    category: "血管疾病",
-    clinical: ["定义：主动脉内膜撕裂，血液进入血管壁形成真假两腔","好发人群：中老年，高血压是最主要危险因素","好发部位：升主动脉、主动脉弓多见","临床特征：突发剧烈胸痛，呈撕裂样，可向背部放射"],
-    signs: ["内膜片", "真假腔", "主动脉增宽"],
-    features: ["CT增强见主动脉腔内线状低密度内膜片","真假两腔，真腔小、假腔大，假腔强化延迟","可伴主动脉瘤样扩张","Stanford A型累及升主动脉，需紧急手术"],
-    differential: {"主动脉壁间血肿":"无明确内膜破口，主动脉壁环形或新月形增厚"}
-  },
-  {
-    name: "乳腺癌",
-    subtitle: "Breast Cancer",
-    module: "breast",
-    category: "肿瘤",
-    clinical: ["定义：起源于乳腺导管或小叶上皮的恶性肿瘤","好发人群：40-60岁女性","好发部位：外上象限最常见","临床特征：无痛性肿块，质地硬、边界不清，可伴皮肤凹陷"],
-    signs: ["边缘毛刺", "钙化", "结构扭曲", "强化肿块"],
-    features: ["X线：肿块边缘毛刺，可见细小多形性钙化","MRI：T1WI等/低信号，增强后快速明显强化","可伴皮肤增厚、乳头凹陷、腋窝淋巴结转移","动态增强曲线多为流出型"],
-    differential: {"乳腺纤维腺瘤":"边缘光滑清晰，强化均匀，钙化粗大"}
-  },
-  {
-    name: "肾透明细胞癌",
-    subtitle: "Clear Cell Renal Cell Carcinoma",
-    module: "retroperitoneum",
-    category: "肿瘤",
-    clinical: ["定义：起源于肾近曲小管上皮细胞的恶性肿瘤，是肾细胞癌最常见的亚型，占RCC的65-70%","好发人群：50-70岁，男性多见（男女比约2:1）","好发部位：肾皮质，单侧或双侧，可多灶性发生","临床特征：腰痛、血尿、腹部肿块三联征，晚期可出现体重下降、贫血及发热，约25-30%为体检偶然发现"],
-    signs: ["快进快出强化", "囊变坏死", "钙化", "假包膜"],
-    features: ["CT平扫多呈等或稍低密度，体积较大者可伴钙化","T1WI低信号，T2WI不均匀高信号，脂肪抑制序列有助于显示出血","增强扫描动脉期显著强化（快进），排泄期强化迅速减退（快出），此为其最具特征性的影像表现","较大的肿块内部易出现出血、坏死、囊变，增强后强化不均匀","可突破肾包膜向肾周脂肪间隙蔓延，肾静脉癌栓形成是常见转移方式（约10-20%）","假包膜征象：肿瘤周围低信号环，提示预后相对较好"],
-    differential: {"肾血管平滑肌脂肪瘤（AML）":"若能检出脂肪成分（CT值<-20HU）则为AML，若脂肪阴性则难以与RCC鉴别；AML强化程度通常低于透明细胞癌","嫌色细胞癌":"强化相对均匀，常见中央星芒状瘢痕，出血坏死较少；透明细胞癌易出血坏死，强化不均匀","乳头状肾细胞癌":"强化程度相对较低且持续强化，与透明细胞癌快进快出不同；乳头状癌更易出现淋巴结转移"}
-  },
-  ,
-  {
-    name: "内生软骨瘤（Enchondroma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：为移位进入髓内松质骨的良性成熟的透明软骨残余，由软骨细胞和软骨基质构成","好发人群：初诊年龄10~40岁，男女比例相等，非常常见","好发部位：最常见于手足短管骨，位于干骺端、骨干近端、远端；单发性多见于骨干髓腔","临床特征：多为偶然发现，少数可有局部酸胀不适，病理性骨折少见"],
-    signs: ["小环形钙化", "点状钙化", "偏心性生长", "硬化缘"],
-    features: ["X线：病变常开始于干骺部，随骨生长而渐移向骨干；病变位于骨干者多为中心性生长，位于干骺端者以偏心性生长为主","表现为边界清楚的类圆形骨质破坏区，多有硬化缘与正常骨质相隔；骨破坏区内可见小环形、点状或不规则钙化影，以中心部位较多","CT：可显示髓腔内异常软组织影，密度略低于肌肉，其内可见小环形、点状或不规则钙化影；邻近皮质膨胀变薄，边缘光整、锐利，一般无中断，其内缘凹凸不平；增强扫描可见肿瘤轻度强化","MRI：未钙化的瘤软骨呈长T1、长T2信号；已钙化部分均呈低信号，但MRI较难显示较小的钙化灶"],
-    differential: {"软骨肉瘤":"多见于50岁以上，钙化更粗糙不规则，可见软组织肿块，内生软骨瘤一般无软组织肿块"}
-  },
-  {
-    name: "软骨肉瘤（Chondrosarcoma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：起源于软骨或成软骨结缔组织的较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%","好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上","好发部位：发病部位以股骨及胫骨最为多见，其次骶骨以外的骨盆骨也是好发部位","临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；分为中心型（骨髓起源）和周围型（骨表面起源）"],
-    signs: ["环形钙化", "半环形钙化", "软组织肿块", "溶骨性破坏"],
-    features: ["X线：中心型软骨肉瘤在骨内呈溶骨性破坏，破坏区边界多不清楚，少数边缘可稍显硬化；邻近骨皮质可有不同程度的膨胀、变薄，骨皮质或骨性包壳可被破坏并形成大小不等的软组织肿块","骨破坏区和软组织肿块内可见密度不均的边缘清楚或模糊的环形、半环形或沙砾样钙化影，环形钙化影具有确定其为软骨来源的定性价值；也可见到斑片状的软骨内骨化征象","分化差的肿瘤可能仅见数个散在的点状钙化甚至不见钙化影；肿瘤的非钙化部分密度均匀，呈软组织密度","CT：可见骨破坏区、软组织肿块和钙化、骨化影；典型钙化是点状、环形或半环形钙化；非钙化部分密度可不均匀，可见肿瘤坏死、囊变等更低密度影","MRI：T1WI上软骨肉瘤表现为等或低信号，恶性度高的信号强度常更低；T2WI上，恶性度低的肿瘤因含透明软骨而呈均匀的高信号，恶性度高的软骨肉瘤信号强度常不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化"],
-    differential: {"内生软骨瘤":"多见于40岁以下，无软组织肿块，钙化细小规则，病史长、进展慢"}
-  },
-  {
-    name: "软骨母细胞瘤（Chondroblastoma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%","好发人群：好发于未成熟骨骼，10~25岁男性为主","好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨；软骨母细胞瘤几乎都是孤立性病变，发生于长骨时，肿瘤常仅累及骨骺或骨骺伴干骺端","临床特征：局部疼痛、肿胀，关节活动受限；发生在骨骺可跨越骺线生长"],
-    signs: ["偏心性溶骨破坏", "斑点状钙化", "骨骺受累", "无骨膜反应"],
-    features: ["X线：典型表现为界限清楚、偏心性、溶骨性病变，周围有薄层硬化骨形成的边缘；病变一般较小(3～6cm)，病变范围常小于骨骺的50%","矿化程度不等，中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄，但病变局限于骨内，骨皮质破坏并侵犯软组织罕见；一般没有骨膜反应","CT：有助于定性诊断和确定病变范围","MRI：T1WI低信号，T2WI混杂信号（低-钙化、中-透明软骨基质、高-液化和出血）；软组织及骨髓水肿在MRI上显示清楚；增强扫描可有不同程度的强化，病灶内可见多发液-液平面及低信号分隔影"],
-    differential: {"内生软骨瘤":"多见于骨干髓腔，无骨骺受累，钙化形态不同；软骨母细胞瘤特征性位于骨骺"}
-  },
-  {
-    name: "骨肉瘤（Osteosarcoma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨，还可见肿瘤性软骨组织和纤维组织","好发人群：好发于青少年及儿童（10-20岁），男:女约1.7:1","好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端","临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高"],
-    signs: ["Codman三角", "针状瘤骨", "软组织肿块", "虫蚀状破坏"],
-    features: ["X线：骨质破坏呈斑状或大片状、虫蚀状或筛孔及发丝状透明区；瘤骨呈象牙质样、云絮状或斑片状；骨膜增生呈平行型或葱皮型，三角型(Codman三角)、放射状或垂直状","软组织肿块边界常模糊，其内可有瘤骨、瘤软骨钙化及出血、坏死、囊变等","CT：瘤组织不均匀强化，中心部位可显示无强化的坏死液化区","MRI：典型骨肉瘤表现不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤","瘤骨、瘤软骨钙化和骨膜增生表现为T1WI、T2WI低信号","成骨型骨肉瘤可见大量瘤骨形成，溶骨型则骨质破坏为主，混合型两者兼有"],
-    differential: {"软骨肉瘤":"发病年龄较大（50岁以上），钙化呈环形/半环形，骨肉瘤瘤骨呈针状或云絮状"}
-  },
-  {
-    name: "骨巨细胞瘤（Giant Cell Tumor of Bone, GCT）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：由单核间质细胞和具有破骨细胞活性特征的多核巨细胞组成的良性肿瘤，是一种局部侵袭性的原发性骨肿瘤","好发人群：好发于20~40岁女性","好发部位：好发于四肢长骨骨端和骨突部，即骨骺闭合后的骨骺部位","临床特征：局部疼痛、肿胀，邻近关节时可出现活动受限；具有局部侵袭性，可复发，少数可远处转移"],
-    signs: ["皂泡状透亮区", "偏心性生长", "横向生长", "无钙化"],
-    features: ["X线：肿瘤呈膨胀性单房或多房性偏心性骨破坏区；多房者瘤内可见骨性间隔，致肿瘤出现皂泡状透亮区为其典型表现","骨破坏区内无钙化；肿瘤相邻的骨皮质变薄、膨胀、甚至骨壳形成；一般无骨膜反应及增生硬化","当骨破坏区出现侵袭性表现如骨壳及骨性间隔残缺不全、骨膜明显增生、软组织肿块较大、肿瘤生长迅速等，常提示肿瘤为恶性或恶变","CT平扫：地图样溶骨性破坏，边缘清晰，无硬化边，病灶内无钙化；约30%呈'皂泡状'改变；病灶位于骨端，常横向偏心生长","一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应，称为花边样骨膜新生骨","MRI：优势在于显示肿瘤周围的软组织情况；瘤体的MR信号是非特异性的，多数肿瘤在MRI图像上边界清楚，周围无低信号环","T1WI呈均匀低或中等信号，T2WI信号不均匀，呈混杂信号；增强扫描可有不同程度的强化"],
-    differential: {"单纯性骨囊肿":"多为中心性生长，无皂泡状分隔，增强扫描囊壁无明显强化，骨巨细胞瘤呈偏心性且有强化"}
-  },
-  {
-    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst, ABC）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：一种良性、溶骨性、膨胀性和出血性病变，由大小不等的囊腔及结缔组织间隔组成，囊腔内充满血液；分为原发性和继发性","好发人群：原发性ABC好发于20岁以下","好发部位：病变多累及长管状骨的干骺端","临床特征：局部肿胀疼痛，靠近关节时则可发生运动障碍，有时可触及肿块，听诊可闻及杂音"],
-    signs: ["液-液平面", "膨胀性分房样改变", "囊状低密度", "边缘硬化"],
-    features: ["X线表现：病变在早期多为单纯溶骨性改变，生长期发展较快，显示进行性骨破坏，边界不清；稳定期多呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点","CT表现：可显示病变的范围、大小及数量不一的囊性区，还可显示病变内液-液平面，是本病变较特异性征象；增强扫描囊间隔强化，病变显示更清楚","MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（代表骨壳或纤维性包膜）","病灶内亦可见同样低信号的间隔；内可见液-液平面，T1WI上液-液平面上、下方的液体内均可见到高信号，T2WI上层为较高信号，下层为较低信号，多数学者认为此征象为特征性表现","增强扫描不均匀强化"],
-    differential: {"单纯性骨囊肿":"无液-液平面，多为中心性生长，膨胀程度较轻，动脉瘤样骨囊肿强化更明显"}
+    category: "良性骨病",
+    clinical: [
+      "定义：骨的生长发育性疾病，发生于形成骨的间充质的发育畸形，骨内纤维组织增殖，在未成熟的编织阶段骨的发育停止，故不能形成正常的骨小梁",
+      "好发人群：任何年龄，幼年时发病，儿童或青少年时出现症状，成年后进展缓慢；无显著性别差异",
+      "好发部位：全身骨骼均可发病；单骨型多见于股骨颈、胫骨、肋骨；多骨型多见于长骨、颅骨、肋骨、骨盆，并有一侧性发病倾向",
+      "临床特征：轻微疼痛不适、肿胀及局部压痛；由于病变沿髓腔纵深发展和骨软化，导致肢体过长和弯曲畸形；病理性骨折是常见的并发症；成人期病灶多停止发展"
+    ],
+    signs: ["磨玻璃样改变", "囊状膨胀性改变", "丝瓜络样改变", "虫蚀样改变", "骨弯曲畸形"],
+    features: [
+      "X线和CT表现：①囊状膨胀性改变：骨干或骨骺端膨胀性低密度病变，边缘较清晰，可有线样硬化，骨皮质变薄，病变内呈大小不等之圆形、椭圆形低密度区，间或有条索状改变，可见短骨嵴；②磨玻璃样改变：病灶正常骨纹理消失，密度均匀，呈磨玻璃状，较正常骨皮质密度稍低；③丝瓜络样改变：骨小梁粗大扭曲，与骨干平行，表现为沿骨干纵轴方向走行的骨纹；④虫蚀样（地图样）改变：单发或多发大小不等的局限性溶骨性破坏，边缘锐利清晰",
+      "MRI表现：T1和T2加权像的信号强度和增强程度取决于骨小梁、细胞、胶原蛋白、囊变和出血的数量和程度；典型FD病变在T1WI上边界清晰，呈中等至低信号，在T2WI上呈中等至高信号；骨小梁数量越多，T2信号越低，反之骨小梁越少，T2信号越高；不同程度的强化：活动性病变强化明显，非活动性病变呈轻度强化",
+      "典型表现：磨玻璃样密度/信号 + 囊状膨胀性改变 + 骨弯曲畸形；单骨型多见，多骨型常一侧发病"
+    ],
+    differential: {
+      "骨化性纤维瘤": "20-40岁女性多见，好发于颌骨（尤其下颌骨），病灶内有骨化程度不一的不均匀高密度影，CT显示病灶内致密骨性间隔，无磨玻璃样改变",
+      "非骨化性纤维瘤": "8-20岁青少年，好发于股骨、胫骨远端干骺端，病灶多位于一侧皮质内或皮质下，呈单房或多房透光区，长轴与骨长轴一致，边缘硬化以髓腔侧明显",
+      "单纯性骨囊肿": "20岁以下儿童青少年，好发于肱骨、股骨近端干骺端，卵圆形中心性膨胀生长，囊内无明显骨嵴，无磨玻璃样改变，CT示均匀液体密度，病理性骨折可见骨片陷落征"
+    }
   },
 
+  // ==================== 骨肌系统（续） ====================
   {
-    name: "内生软骨瘤（Enchondroma）",
+    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst，ABC）",
     module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：为移位进入髓内松质骨的良性成熟的透明软骨残余，由软骨细胞和软骨基质构成","好发人群：初诊年龄10~40岁，男女比例相等，非常常见","好发部位：最常见于手足短管骨，位于干骺端、骨干近端、远端；单发性多见于骨干髓腔","临床特征：多为偶然发现，少数可有局部酸胀不适，病理性骨折少见"],
-    signs: ["小环形钙化", "点状钙化", "偏心性生长", "硬化缘"],
-    features: ["X线：病变常开始于干骺部，随骨生长而渐移向骨干；病变位于骨干者多为中心性生长，位于干骺端者以偏心性生长为主","表现为边界清楚的类圆形骨质破坏区，多有硬化缘与正常骨质相隔；骨破坏区内可见小环形、点状或不规则钙化影，以中心部位较多","CT：可显示髓腔内异常软组织影，密度略低于肌肉，其内可见小环形、点状或不规则钙化影；邻近皮质膨胀变薄，边缘光整、锐利，一般无中断，其内缘凹凸不平；增强扫描可见肿瘤轻度强化","MRI：未钙化的瘤软骨呈长T1、长T2信号；已钙化部分均呈低信号，但MRI较难显示较小的钙化灶"],
-    differential: {"软骨肉瘤":"多见于50岁以上，钙化更粗糙不规则，可见软组织肿块，内生软骨瘤一般无软组织肿块"}
-  },
-  {
-    name: "软骨肉瘤（Chondrosarcoma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：起源于软骨或成软骨结缔组织的较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%","好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上","好发部位：发病部位以股骨及胫骨最为多见，其次骶骨以外的骨盆骨也是好发部位","临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；分为中心型（骨髓起源）和周围型（骨表面起源）"],
-    signs: ["环形钙化", "半环形钙化", "软组织肿块", "溶骨性破坏"],
-    features: ["X线：中心型软骨肉瘤在骨内呈溶骨性破坏，破坏区边界多不清楚，少数边缘可稍显硬化；邻近骨皮质可有不同程度的膨胀、变薄，骨皮质或骨性包壳可被破坏并形成大小不等的软组织肿块","骨破坏区和软组织肿块内可见密度不均的边缘清楚或模糊的环形、半环形或沙砾样钙化影，环形钙化影具有确定其为软骨来源的定性价值；也可见到斑片状的软骨内骨化征象","分化差的肿瘤可能仅见数个散在的点状钙化甚至不见钙化影；肿瘤的非钙化部分密度均匀，呈软组织密度","CT：可见骨破坏区、软组织肿块和钙化、骨化影；典型钙化是点状、环形或半环形钙化；非钙化部分密度可不均匀，可见肿瘤坏死、囊变等更低密度影","MRI：T1WI上软骨肉瘤表现为等或低信号，恶性度高的信号强度常更低；T2WI上，恶性度低的肿瘤因含透明软骨而呈均匀的高信号，恶性度高的软骨肉瘤信号强度常不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化"],
-    differential: {"内生软骨瘤":"多见于40岁以下，无软组织肿块，钙化细小规则，病史长、进展慢"}
-  },
-  {
-    name: "软骨母细胞瘤（Chondroblastoma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%","好发人群：好发于未成熟骨骼，10~25岁男性为主","好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨；软骨母细胞瘤几乎都是孤立性病变，发生于长骨时，肿瘤常仅累及骨骺或骨骺伴干骺端","临床特征：局部疼痛、肿胀，关节活动受限；发生在骨骺可跨越骺线生长"],
-    signs: ["偏心性溶骨破坏", "斑点状钙化", "骨骺受累", "无骨膜反应"],
-    features: ["X线：典型表现为界限清楚、偏心性、溶骨性病变，周围有薄层硬化骨形成的边缘；病变一般较小(3～6cm)，病变范围常小于骨骺的50%","矿化程度不等，中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄，但病变局限于骨内，骨皮质破坏并侵犯软组织罕见；一般没有骨膜反应","CT：有助于定性诊断和确定病变范围","MRI：T1WI低信号，T2WI混杂信号（低-钙化、中-透明软骨基质、高-液化和出血）；软组织及骨髓水肿在MRI上显示清楚；增强扫描可有不同程度的强化，病灶内可见多发液-液平面及低信号分隔影"],
-    differential: {"内生软骨瘤":"多见于骨干髓腔，无骨骺受累，钙化形态不同；软骨母细胞瘤特征性位于骨骺"}
-  },
-  {
-    name: "骨肉瘤（Osteosarcoma）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨，还可见肿瘤性软骨组织和纤维组织","好发人群：好发于青少年及儿童（10-20岁），男:女约1.7:1","好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端","临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高"],
-    signs: ["Codman三角", "针状瘤骨", "软组织肿块", "虫蚀状破坏"],
-    features: ["X线：骨质破坏呈斑状或大片状、虫蚀状或筛孔及发丝状透明区；瘤骨呈象牙质样、云絮状或斑片状；骨膜增生呈平行型或葱皮型，三角型(Codman三角)、放射状或垂直状","软组织肿块边界常模糊，其内可有瘤骨、瘤软骨钙化及出血、坏死、囊变等","CT：瘤组织不均匀强化，中心部位可显示无强化的坏死液化区","MRI：典型骨肉瘤表现不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤","瘤骨、瘤软骨钙化和骨膜增生表现为T1WI、T2WI低信号","成骨型骨肉瘤可见大量瘤骨形成，溶骨型则骨质破坏为主，混合型两者兼有"],
-    differential: {"软骨肉瘤":"发病年龄较大（50岁以上），钙化呈环形/半环形，骨肉瘤瘤骨呈针状或云絮状"}
-  },
-  {
-    name: "骨巨细胞瘤（Giant Cell Tumor of Bone, GCT）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：由单核间质细胞和具有破骨细胞活性特征的多核巨细胞组成的良性肿瘤，是一种局部侵袭性的原发性骨肿瘤","好发人群：好发于20~40岁女性","好发部位：好发于四肢长骨骨端和骨突部，即骨骺闭合后的骨骺部位","临床特征：局部疼痛、肿胀，邻近关节时可出现活动受限；具有局部侵袭性，可复发，少数可远处转移"],
-    signs: ["皂泡状透亮区", "偏心性生长", "横向生长", "无钙化"],
-    features: ["X线：肿瘤呈膨胀性单房或多房性偏心性骨破坏区；多房者瘤内可见骨性间隔，致肿瘤出现皂泡状透亮区为其典型表现","骨破坏区内无钙化；肿瘤相邻的骨皮质变薄、膨胀、甚至骨壳形成；一般无骨膜反应及增生硬化","当骨破坏区出现侵袭性表现如骨壳及骨性间隔残缺不全、骨膜明显增生、软组织肿块较大、肿瘤生长迅速等，常提示肿瘤为恶性或恶变","CT平扫：地图样溶骨性破坏，边缘清晰，无硬化边，病灶内无钙化；约30%呈'皂泡状'改变；病灶位于骨端，常横向偏心生长","一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应，称为花边样骨膜新生骨","MRI：优势在于显示肿瘤周围的软组织情况；瘤体的MR信号是非特异性的，多数肿瘤在MRI图像上边界清楚，周围无低信号环","T1WI呈均匀低或中等信号，T2WI信号不均匀，呈混杂信号；增强扫描可有不同程度的强化"],
-    differential: {"单纯性骨囊肿":"多为中心性生长，无皂泡状分隔，增强扫描囊壁无明显强化，骨巨细胞瘤呈偏心性且有强化"}
-  },
-  {
-    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst, ABC）",
-    module: "bone",
-    category: "肿瘤",
-    clinical: ["定义：一种良性、溶骨性、膨胀性和出血性病变，由大小不等的囊腔及结缔组织间隔组成，囊腔内充满血液；分为原发性和继发性","好发人群：原发性ABC好发于20岁以下","好发部位：病变多累及长管状骨的干骺端","临床特征：局部肿胀疼痛，靠近关节时则可发生运动障碍，有时可触及肿块，听诊可闻及杂音"],
-    signs: ["液-液平面", "膨胀性分房样改变", "囊状低密度", "边缘硬化"],
-    features: ["X线表现：病变在早期多为单纯溶骨性改变，生长期发展较快，显示进行性骨破坏，边界不清；稳定期多呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点","CT表现：可显示病变的范围、大小及数量不一的囊性区，还可显示病变内液-液平面，是本病变较特异性征象；增强扫描囊间隔强化，病变显示更清楚","MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（代表骨壳或纤维性包膜）","病灶内亦可见同样低信号的间隔；内可见液-液平面，T1WI上液-液平面上、下方的液体内均可见到高信号，T2WI上层为较高信号，下层为较低信号，多数学者认为此征象为特征性表现","增强扫描不均匀强化"],
-    differential: {"单纯性骨囊肿":"无液-液平面，多为中心性生长，膨胀程度较轻，动脉瘤样骨囊肿强化更明显"}
+    category: "良性骨病",
+    clinical: [
+      "定义：扩张性的溶骨性病变，内含充满血液的腔隙，分为原发性和继发性（在原有骨病变基础上发生），囊内血窦由纤维性间隔分隔",
+      "好发人群：原发性ABC好发于20岁以下儿童青少年，无显著性别差异；继发性可发生于任何年龄",
+      "好发部位：多累及长管状骨的干骺端，其次为脊柱（椎体和后方附件）、骨盆、肩胛骨",
+      "临床特征：局部肿胀疼痛，靠近关节时可出现运动障碍；有时可触及肿块，听诊可闻及杂音；病变进展较快，可引起病理性骨折"
+    ],
+    signs: ["液-液平面", "膨胀性分叶状改变", "低信号环", "囊间隔强化"],
+    features: [
+      "X线表现：早期多为单纯溶骨性改变，边界不清；进展期呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点；病灶呈吹气球样膨胀，骨皮质变薄",
+      "CT表现：可显示病变的范围、大小及数量不一的囊性区；特征性表现为病变内液-液平面（较特异性征象）；增强扫描囊间隔强化，病变显示更清楚；骨壳完整或局部缺损",
+      "MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（含铁血黄素沉积或骨壳）；病灶内亦可见同样低信号的间隔；内可见液-液平面：T1WI上液-液平面上、下方液体均呈高信号（蛋白含量高），T2WI上层为较高信号（浆液），下层为较低信号（血液/含铁血黄素）；增强后囊间隔明显强化",
+      "典型表现：长骨干骺端膨胀性分叶状病变 + 液-液平面（T2WI上层高信号下层低信号） + 边缘低信号环"
+    ],
+    differential: {
+      "单纯性骨囊肿": "20岁以下，好发于肱骨、股骨近端干骺端，中心性卵圆形膨胀，囊内无骨嵴或液-液平面，T2WI均匀高信号，无强化，病理性骨折可见骨片陷落征",
+      "骨巨细胞瘤": "20-40岁成人，好发于股骨下端、胫骨上端骨端（关节面下），偏心性地图样溶骨破坏，无硬化边，无液-液平面，T2WI常为低等高的混杂信号（含铁血黄素）",
+      "骨纤维结构不良": "任何年龄，磨玻璃样改变为特征，无液-液平面，骨小梁粗大扭曲呈丝瓜络样，无囊间隔强化"
+    }
   },
 
+  // ==================== 骨肌系统（续） ====================
+  {
+    name: "纤维骨皮质缺损/非骨化性纤维瘤（FCD/NOF）",
+    module: "bone",
+    category: "良性骨肿瘤",
+    clinical: [
+      "定义：由骨髓结缔组织源性的良性病变，无成骨活动；本质上FCD和NOF是同一种病变，只是发病部位和病灶大小不同",
+      "好发人群：FCD好发6-15岁儿童，无症状或仅轻症；NOF好发8-20岁青少年；均无显著性别差异",
+      "好发部位：好发于股骨、胫骨的干骺端（邻近骺板），多位于一侧骨皮质内",
+      "临床特征：FCD病灶小（<2-3cm），仅限于骨皮质，多无症状，体检意外发现；NOF病灶大，有症状，病变膨胀并有骨髓腔侵犯；均无骨膜反应，无软组织肿块"
+    ],
+    signs: ["皮质缺损", "硬化边", "无骨膜反应", "长轴与骨长轴一致"],
+    features: [
+      "FCD影像学表现：透明皮质内骨质缺陷；由硬化的边缘勾勒出轮廓；没有累及下面的髓腔；没有骨膜反应；增强扫描无强化；MRI：T1WI呈低信号，T2WI信号表现多样（取决于愈合阶段）",
+      "NOF影像学表现：多位于一侧皮质内或皮质下，呈单房或多房的透光区，长轴与骨的长轴一致；边缘有硬化，以髓腔侧明显；无骨膜反应，无软组织肿块；增强扫描轻度强化",
+      "典型表现：干骺端皮质内透光区 + 清晰硬化边 + 无骨膜反应；FCD病灶小限于皮质，NOF病灶大累及髓腔"
+    ],
+    differential: {
+      "骨纤维结构不良": "磨玻璃样改变为特征，病变位于骨髓腔中央而非皮质内，可有囊状膨胀、丝瓜络样改变，无清晰硬化边",
+      "骨巨细胞瘤": "20-40岁，位于骨端（关节面下）而非干骺端，偏心性地图样溶骨破坏，边缘无硬化边，常横向膨胀生长",
+      "慢性骨脓肿（Brodie脓肿）": "成人多见，好发于长骨干骺端，病灶内可见钙化或死骨，周围硬化明显，有感染史或反复发作史"
+    }
+  },
 
+  // ==================== 骨肌系统（续） ====================
+  {
+    name: "骨化性纤维瘤（Ossifying Fibroma，OF）",
+    module: "bone",
+    category: "良性骨肿瘤",
+    clinical: [
+      "定义：生长缓慢的良性成骨性肿瘤，由纤维组织和骨组织构成，极少数恶变",
+      "好发人群：女性多见，峰值年龄30-40岁",
+      "好发部位：常见于颌骨，尤其是下颌骨；偶见于长骨、肋骨",
+      "临床特征：生长缓慢，早期无症状；肿瘤增大后可引起面部畸形、牙齿移位；无疼痛或仅有轻微不适"
+    ],
+    signs: ["边界清楚", "硬化边", "轻度膨胀", "混合密度/信号"],
+    features: [
+      "X线及CT表现：病灶呈边缘清楚的骨质破坏区，边缘有硬化，有轻度膨胀，无骨膜反应；其内有骨化程度不一的不均匀高密度影、致密的骨性间隔和低密度囊变区；病变若以骨组织为主，则密度较高；若以纤维组织为主，则密度较低",
+      "MRI表现：病变区纤维及骨化部分在T1WI和T2WI均呈低信号；囊变部分因蛋白质含量不同，其信号强度不一（T1WI可呈低或高信号，T2WI呈高信号）；增强扫描纤维及骨化部分无明显强化，囊变部分可强化",
+      "典型表现：颌骨膨胀性骨质破坏 + 边界清楚 + 内见骨性间隔/高密度骨化影"
+    ],
+    differential: {
+      "骨纤维结构不良": "磨玻璃样改变为特征，无明确边界和硬化边，可累及骨髓腔全长，骨骼弯曲畸形常见，好发于长骨和颅骨",
+      "非骨化性纤维瘤": "8-20岁青少年，好发于股骨胫骨干骺端，病灶无骨化/钙化（密度低），无骨性间隔，增强无强化",
+      "骨巨细胞瘤": "20-40岁，位于骨端关节面下，偏心性溶骨破坏无硬化边，膨胀明显呈皂泡状，无骨化影"
+    }
+  },
 
+  // ==================== 骨肌系统（续） ====================
   {
-    name: "乳头状肾细胞癌（Papillary Renal Cell Carcinoma）",
-    module: "retroperitoneum",
-    category: "肿瘤",
-    clinical: ["定义：起源于肾小管上皮的恶性肿瘤，以乳头状或小管乳头状结构为主要生长方式，是RCC第二常见亚型，占10-15%","好发人群：50-70岁，男性多见，部分与终末期肾病或遗传性综合征（HPRCC）相关","好发部位：肾髓质及皮髓质交界区","临床特征：症状相对隐匿，表现为血尿、腰痛，侵袭性较透明细胞癌低，预后相对较好"],
-    signs: ["均匀延迟强化", "出血钙化", "单侧多灶"],
-    features: ["CT平扫多呈等或稍低密度，密度相对均匀，出血、钙化较透明细胞癌少见","T1WI低信号，T2WI呈相对低信号（与透明细胞癌高信号形成对比，有助于术前判断亚型）","增强扫描呈轻-中度强化，动脉期强化程度低于透明细胞癌，排泄期强化缓慢消退，呈持续性延迟强化模式，而非快进快出","常为单侧肾脏多灶性或双侧发生，提示与遗传因素相关","可伴陈旧性出血，钙化相对多见（25-30%可见砂砾样钙化）","淋巴结转移较透明细胞癌更常见，但远处转移发生率相对较低"],
-    differential: {"肾透明细胞癌":"透明细胞癌T2WI信号更高，增强扫描呈典型快进快出强化，出血坏死更常见，影像学表现更具侵袭性","嫌色细胞癌":"嫌色细胞癌强化相对均匀，无乳头状结构T2低信号特征；嫌色细胞癌常见中央星芒状瘢痕","肾嗜酸性细胞腺瘤":"通常较小且边界清晰，强化均匀，无出血坏死，影像学难以与乳头状RCC鉴别时需靠病理"]
-  },
-  {
-    name: "嫌色细胞癌（Chromophobe Renal Cell Carcinoma）",
-    module: "retroperitoneum",
-    category: "肿瘤",
-    clinical: ["定义：起源于集合管上皮B型插入细胞的RCC亚型，具有独特的嫌色细胞形态，是RCC中预后较好的亚型之一","好发人群：50-60岁，性别差异不明显","好发部位：肾皮质，单灶性为主","临床特征：通常表现为肾脏肿块，症状较轻，预后明显好于透明细胞癌，转移率低（约5-7%）"],
-    signs: ["均匀中度强化", "中央星芒状瘢痕", "蛋壳样钙化"],
-    features: ["CT平扫呈等密度，密度较均匀，出血、坏死罕见","T1WI等信号，T2WI呈等或稍低信号（介于透明细胞癌高信号与乳头状癌低信号之间）","增强扫描呈均匀轻-中度强化，强化程度低于透明细胞癌，无明显快进快出表现","中央星芒状瘢痕征（10-20%可见）：肿瘤内部呈放射状低密度纤维瘢痕，提示肿瘤生长缓慢","蛋壳样钙化相对特异：边缘弧形或环形钙化，可辅助诊断","体积通常较大，但边界清晰，周围侵犯相对少见，肾静脉癌栓发生率低"],
-    differential: {"肾透明细胞癌":"透明细胞癌强化更显著（T2WI更高信号），易出血坏死，常见肾静脉癌栓，影像学更具侵袭性","肾嗜酸性细胞腺瘤":"两者影像学表现高度重叠，均可出现星芒状瘢痕；但嗜酸腺瘤通常更小（<4cm），钙化率更低，影像难以区分时可参考嗜酸腺瘤常伴血嗜酸细胞增多","乳头状肾细胞癌":"乳头状癌T2WI呈更低信号，增强强化程度更低，常见多灶性发生"]
-  },
-  {
-    name: "肾嗜酸性细胞腺瘤（Renal Oncocytoma）",
-    module: "retroperitoneum",
-    category: "肿瘤",
-    clinical: ["定义：起源于肾近曲小管嗜酸性细胞的良性肿瘤，属于肾脏上皮性良性肿瘤，与RCC有潜在相关性（可出现杂交瘤）","好发人群：60-70岁，男性略多","好发部位：肾皮质，单侧单发多见","临床特征：常为体检偶然发现，无症状，体积较大者可出现腰部不适，极少出现血尿，预后良好"],
-    signs: ["均匀强化", "中央星芒状瘢痕", "包膜完整"],
-    features: ["CT平扫呈等或稍高密度，密度均匀，出血、坏死、钙化罕见","T1WI等信号，T2WI呈均匀等或低信号","增强扫描呈均匀中度持续性强化，无明显快进快出，也无显著坏死囊变","中央星芒状瘢痕（约30-40%可见）：放射状分布的纤维化区域，边界清楚，与嫌色细胞癌的星芒状瘢痕在影像上无法区分","边界清楚，包膜相对完整，周围组织推压而非侵犯","直径多<4cm，也可长得较大，直径>10cm时需警惕恶性可能"],
-    differential: {"嫌色细胞癌":"影像学上两者高度相似，均可出现星芒状瘢痕和均匀强化；嫌色细胞癌体积通常更大，星芒状瘢痕出现率略低，影像学难以可靠区分","乳头状肾细胞癌":"乳头状癌T2WI呈更低信号，增强强化程度更低，常伴陈旧性出血或钙化，影像学有助于鉴别","透明细胞癌":"透明细胞癌强化显著不均匀，易出血坏死，T2WI信号更高，星芒状瘢痕罕见"]
-  },
-  {
-    name: "肾血管平滑肌脂肪瘤（Angiomyolipoma）",
-    module: "retroperitoneum",
-    category: "肿瘤",
-    clinical: ["定义：肾脏最常见的良性错构性肿瘤，由异常增生的血管、平滑肌和脂肪组织按不同比例混合构成，属于血管周上皮样细胞肿瘤（PEComa）家族","好发人群：40-60岁女性多见（约80%为女性），常伴有结节性硬化症（TSC）或散发性发生","好发部位：肾皮质，可单侧或双侧发生，单发或多发","临床特征：多数无症状，为体检偶然发现；较大者（>4cm）可出现腰部钝痛、季肋部不适或肉眼血尿；AML破裂出血可导致急腹症和失血性休克，是泌尿外科急症之一"],
-    signs: ["脂肪成分", "桃核征", "不均匀强化", "出血"],
-    features: ["CT特征性表现：肿瘤内可见明确脂肪成分（CT值<-10HU，多为-40至-100HU），可含软组织结节和粗大扭曲的供血血管；脂肪阴性型（folliculin基因突变相关）则不含脂肪，影像学酷似RCC，诊断困难","MRI：脂肪在T1WI和T2WI均呈高信号，脂肪抑制序列信号显著减低，有助于检出微小脂肪成分","增强扫描：血管成分明显强化，脂肪和平滑肌成分渐进性强化，脂肪本身不强化（CT低密度区始终无强化是诊断关键）","桃核征（angio-myolipoma with a renal cyst）：AML伴发的肾囊肿，囊壁可见脂肪成分，是AML的特征性表现之一","典型的AML内部脂肪含量丰富，根据3:1法则（脂肪:平滑肌比例）可明确诊断","多发或双侧发生提示合并结节性硬化症（TSC），此类患者需定期随访，>4cm者有破裂出血风险"],
-    differential: {"肾透明细胞癌伴出血":"透明细胞癌出血时CT可见高密度出血区，但无明确脂肪成分；增强扫描呈快进快出，可与AML鉴别","腹膜后脂肪肉瘤":"腹膜后来源的脂肪肉瘤可含脂肪，但通常位于肾脏轮廓之外，与肾脏关系不密切，且强化模式与AML不同","肾脂肪瘤":"罕见，肿瘤完全由脂肪构成，无血管和平滑肌成分，增强扫描无强化，与AML不同"}
-  },
-  {
-    name: "脑膜瘤（Meningioma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：起源于蛛网膜颗粒的帽状细胞，是中枢神经系统第二大常见肿瘤，仅次于胶质瘤，占所有颅内肿瘤的36.7%","好发人群：主要发生于成年人，以中年女性多见，儿童比较少见","好发部位：好发于幕上（约89%），幕下少见；常见于大脑凸面、矢状窦旁、大脑镰旁、颅底嗅沟、鞍结节、桥小脑角及脑室内等部位","临床特征：起病缓慢、病程长，可达数年之久；常见的症状有头痛、癫痫、肢体无力、精神状态改变等，瘤体较大时可出现明显症状"],
-    signs: ["宽基底", "硬膜尾征", "均匀强化", "钙化"],
-    features: ["CT：表现为等密度或稍高密度，肿瘤内可发生钙化（约20-30%），与硬脑膜广基底相连、邻近骨质增生，增强扫描多呈明显均匀强化","MRI：大多数脑膜瘤T1WI呈稍低或等信号，T2WI呈稍高或等信号，大多与脑皮层信号相似","形态：边界清楚、光滑，圆形或半圆（宽基底紧贴颅骨），具有占位效应的脑外肿瘤","增强扫描：明显均匀强化，硬膜尾征（约60%），但不是特异性表现"],
-    differential: {"胶质瘤":"脑内肿瘤，无宽基底及硬膜尾征，多不规则环形强化，水肿更明显"}
-  },
-  {
-    name: "少突胶质细胞瘤（Oligodendroglioma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：基因分型为IDH突变伴1p/19q联合缺失型（WHO 2,3级），是相对分化良好的胶质瘤","好发人群：发病高峰30~50岁，男女无明显差异","好发部位：多发生于大脑半球浅表，常累及皮质","临床特征：常见癫痫发作、头痛、局灶性神经功能缺损；病史相对较长，生长缓慢"],
-    signs: ["钙化", "轻度水肿", "皮质受累", "慢生长"],
-    features: ["CT表现：多数伴有结节状或簇状的钙化是少突胶质细胞瘤的特点（约70%病例有钙化）；出血和水肿少见，多为轻度水肿","MRI表现：T1WI呈相对于灰质的低信号至等信号，T2和FLAIR呈高信号","钙化在T1和T2上均为低信号；肿瘤位置表浅，多累及皮质；可致颅骨增生、变薄或侵蚀","通常无弥散受限，约50%可强化（呈不均匀强化）","形态：实体性肿块，分化良好，生长缓慢，境界可辨，但无包膜"],
-    differential: {"脑膜瘤":"脑膜瘤宽基底贴颅骨，少突胶质细胞瘤为脑内肿瘤，多伴钙化","胶质母细胞瘤":"胶质母细胞瘤坏死出血更明显，强化更不规则，少突胶质细胞瘤钙化更常见"},
-  {
-    name: "表皮样囊肿（Epidermoid Cyst）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：亦称胆脂瘤，为起源于外胚层的先天性疾病，由于神经管闭合时神经系统从表皮外层不完全分裂，在神经沟内仍有异位的外胚层细胞存在，占颅内肿瘤的0.5%-1.8%","好发人群：20-40岁，男性多于女性","好发部位：好发于小脑脑桥角池或鞍上池，沿蛛网膜下腔匍匐生长","临床特征：早期多无症状，多以三叉神经痛为首发或主要症状，晚期可出现小脑、脑干受累的症状和体征及颅内压增高表现"],
-    signs: ["见缝就钻", "DWI弥散受限", "FLAIR不被抑制", "无强化"],
-    features: ["CT：形态不规则低密度影，呈匍匐式生长（'见缝就钻'），沿邻近蛛网膜下腔扩散蔓延，增强后不强化","MRI：多数表皮样囊肿内成分是固态胆固醇结晶与角化蛋白，T1WI信号低而不均匀，T2WI高信号与脑脊液相似，FLAIR通常不被抑制，DWI弥散受限，增强无明显强化","少数含液态胆固醇以及三酰甘油等纯脂肪成分，呈短T1长T2信号，可伴有脂液平","形态：不规则，沿脑池脑裂蔓延，不推移周围结构而是包绕血管神经","无瘤周水肿，无强化，是与胶质瘤和转移瘤鉴别的关键"],
-    differential: {"蛛网膜囊肿":"蛛网膜囊肿FLAIR被抑制，DWI无弥散受限，表皮样囊肿FLAIR不被抑制且DWI弥散受限，增强扫描均无强化"}
-  },
-  {
-    name: "转移瘤（Metastatic Tumor）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：脑内转移瘤多见于中老年人，男女发病无明显差异，是颅外恶性肿瘤转移至颅内的病变","好发人群：中老年人，多有原发肿瘤病史，以肺癌最为常见","好发部位：好发于顶、枕叶灰白质交界区，也可发生于小脑，脑干少见","临床特征：临床表现无特异性，可为顽固性进行性加剧的头痛而脑膜刺激征阴性，有时表现酷似脑卒中，预后差"],
-    signs: ["小病灶大水肿", "灰白质交界区", "环形强化", "多发结节"],
-    features: ["CT：平扫肿瘤密度不等（高、等、低、混杂密度均可），70%-80%为多发病灶","肿瘤小者为实性结节，大者中间多有坏死、出血；87%的病例有脑水肿，多表现为很小的肿瘤却有广泛水肿（转移瘤的特征）","增强扫描：95%瘤灶发生强化，多为结节状或环形强化","MRI：多表现为灰白质交界处的多发占位性病变（特征性表现），单发病灶也可见","瘤周多伴有明显水肿，即'小病灶、大水肿'，占位效应多明显；小脑转移瘤可无明显水肿","实性成分多呈稍长T1、稍长T2信号，DWI多呈高信号；中心常见坏死囊变区，内壁多不光整，外壁相对光整，囊壁厚薄不均，有时可见壁结节","增强扫描多呈不均匀环形明显强化或结节状强化，腺癌转移瘤可见病变内缘细小毛刷样征象"],
-    differential: {"胶质母细胞瘤":"胶质母细胞瘤多为单发、位于幕上深部脑实质，转移瘤多位于灰白质交界区且常为多发，小病灶大水肿更典型"}
-  },
-  {
-    name: "听神经鞘瘤（Acoustic/Vestibular Schwannoma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：绝大多数起源于前庭上神经鞘膜细胞（Schwann细胞）的良性肿瘤，又称前庭神经鞘瘤；占颅内肿瘤的8-10%，占桥小脑角区肿瘤的80%左右","好发人群：发病年龄30-50岁，95%以上为单侧，少数双侧者与NF2相关","好发部位：桥小脑角区，以内听道为中心","临床特征：早期首发症状以听神经症状为主（眩晕、单侧耳鸣及耳聋占75%以上），中晚期出现桥小脑角综合征（面神经、三叉神经受损以及小脑症状），肿瘤压迫第四脑室可导致脑积水"],
-    signs: ["以内听道为中心", "内听道扩大", "明显均匀强化", "锐角征"],
-    features: ["CT：圆形或类圆形略不规则等密度或稍高密度肿块，以内听道为中心，较大时常伴有囊变，无钙化；内听道扩大为特征性改变，是定性诊断的重要依据","增强实性部分明显均匀强化，囊性部分不强化；肿瘤常呈锐角与硬脑膜相交，边界清；较大病灶大多长轴垂直于颞骨岩部，区别于扁平宽基底生长的脑膜瘤","MRI：T1WI呈等低混杂信号，T2WI呈等高混杂信号；DWI上肿瘤呈等低信号，且以低信号为主（与其易囊变、瘤细胞不够密实有关）","增强后可见听神经增粗并与肿瘤分界不清；实质部分明显强化"],
-    differential: {"脑膜瘤":"脑膜瘤宽基底与颅骨相贴（钝角），常见沙粒样钙化，有硬膜尾征，内听道一般无扩大；听神经鞘瘤以内听道为中心，内听道扩大是特征性表现","表皮样囊肿":"表皮样囊肿呈匍匐生长（'见缝就钻'），DWI弥散受限，无强化；听神经鞘瘤实质部分明显强化，内听道扩大"}
-  },
-  {
-    name: "三叉神经鞘瘤（Trigeminal Schwannoma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：起源于三叉神经节（Meckel腔）或三叉神经根的Schwann细胞肿瘤，是颅内第2常见的神经鞘瘤（仅次于听神经鞘瘤），属于颅内少见肿瘤","好发人群：好发年龄30~40岁，生长缓慢，亦有报告发生于婴儿","好发部位：起源于三叉神经节者位于中颅窝（Meckel腔），沿神经纤维延伸可跨颅中后窝呈哑铃状；起源于三叉神经根者位于桥小脑角区后颅窝","临床特征：首发症状为三叉神经痛、面部麻木、咀嚼肌萎缩；其他包括复视、角膜反射减退、听力下降、共济失调等；较大者出现颅内压增高症状"],
-    signs: ["哑铃状", "跨颅中后窝", "岩尖骨质吸收", "三叉神经增粗"],
-    features: ["CT：平扫呈等低密度，囊变坏死出血呈混杂密度；骨窗常可见岩骨尖骨质吸收甚至破坏性改变；跨越中后颅窝延伸至鞍旁时肿瘤呈哑铃状；增强呈均匀或环状、不规则强化","MRI：T1WI低信号，T2WI稍高信号；囊变多见，呈长T1长T2信号；与三叉神经关系密切；实性部分呈T1稍低及T2/FLAIR高信号；DWI实性部分无或轻度扩散受限","增强扫描实性部分明显强化，较小的肿瘤可均匀强化；与三叉神经关系密切"],
-    differential: {"听神经鞘瘤":"听神经鞘瘤以内听道为中心，内听道扩大；三叉神经鞘瘤位于桥小脑角前方，呈哑铃状，邻近颞骨可有破坏，CPA区侵及第VIII对颅神经者易误诊为听神经瘤","脑膜瘤":"脑膜瘤宽基底贴颅骨，有硬膜尾征，信号与脑灰质相似，钙化多见；三叉神经鞘瘤囊变多见，肿瘤长轴与三叉神经走行一致"}
-  },
-  {
-    name: "颈静脉球瘤（Jugular Paraganglioma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：起源于颈静脉体外膜以及沿迷走神经耳支和舌咽神经鼓室支等部位分布的副神经节肿瘤，是颈静脉孔最常见的原发性肿瘤之一","好发人群：中年女性多见，多单发，生长缓慢，病程长，属于富血供肿瘤","好发部位：颈静脉孔区，呈球形或结节性生长","临床特征：搏动性耳鸣、传导性听力下降、可见蓝红色鼓室肿物；较大者出现后组颅神经麻痹（IX、X、XI对）"],
-    signs: ["椒盐征", "颈静脉孔扩大", "虫蚀样骨质破坏", "明显强化"],
-    features: ["CT：颈静脉窝扩大，边缘骨质呈虫蚀样、溶骨样改变；不均匀略高或等密度软组织影；坏死、囊变或钙化少见；增强后明显均一强化","MRI：T1WI等、略低或混杂信号；T2WI高、低混杂信号；在相对高信号的肿瘤背景内间有扭曲的条索状流空信号区，可见'椒-盐'征（'椒'代表多发血管流空信号，'盐'代表T1WI像上慢血流或亚急性期出血所致的高信号）","'椒-盐'征为颈静脉球瘤的特征性表现；增强后明显强化"],
-    differential: {"颈动脉体瘤":"颈动脉体瘤位于颈动脉分叉处，CT血管造影可见颈内外动脉分叉扩大（'高脚杯征'），MRI也可见椒盐征；颈静脉球瘤位于颈静脉孔区，以骨质破坏为主要特点"}
-  },
-  {
-    name: "垂体腺瘤（Pituitary Adenoma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：起源于垂体前叶分泌激素细胞的良性神经内分泌肿瘤，占颅内肿瘤的8~12%；按大小分：微腺瘤（≤10mm）、小腺瘤（10-20mm）、大腺瘤（20-50mm）、巨大腺瘤（>50mm）","好发人群：好发年龄25~60岁，女性多于男性","好发部位：鞍内，具有多方向生长的特点，向鞍上生长最多见","临床特征：功能性腺瘤引起内分泌改变（泌乳素瘤最常见，表现为闭经泌乳；生长激素瘤引起肢端肥大症；ACTH瘤引起Cushing综合征）；无功能腺瘤多为大腺瘤，表现为视力障碍（压迫视交叉）"],
-    signs: ["雪人征", "垂体柄偏移", "微腺瘤低信号", "大腺瘤均匀强化"],
-    features: ["CT：大腺瘤表现为鞍区等或稍高密度圆形/椭圆形肿块，可伴囊变、坏死、出血时密度不均匀，增强均匀或不均匀强化","MRI平扫：微腺瘤在T1WI呈低信号、T2WI呈高信号；大腺瘤在T1WI和T2WI与脑皮质等信号，合并囊变、坏死、出血时信号不均匀；肿瘤可突出蝶窦、侵及鞍上池压迫视交叉，也可累及鞍旁及两侧海绵窦","MRI增强：微腺瘤早期低信号，延迟逐渐强化，晚期与正常垂体呈等信号（垂体无血脑屏障，对比剂进入快，廓清快；微腺瘤血供不及垂体丰富，对比剂进入慢，廓清也慢）；大腺瘤均匀或不均一强化，冠状位可见'雪人征'，并能清楚显示海绵窦受累情况"],
-    differential: {"颅咽管瘤":"颅咽管瘤好发于儿童，以鞍上为主，钙化率高（90%），囊性为主，壁强化明显；垂体腺瘤起源于鞍内，向鞍上生长呈'雪人征'","Rathke囊肿":"Rathke囊肿以垂体为中心，增强无明显强化；垂体腺瘤增强有明显强化（微腺瘤延迟强化，大腺瘤均匀强化）"}
-  },
-  {
-    name: "Rathke裂囊肿（Rathke Cleft Cyst）",
-    module: "brain",
-    category: "先天发育",
-    clinical: ["定义：胚胎Rathke裂残留所形成的囊肿，囊壁为单层立方纤毛柱状上皮，囊内容物多样（黏液、胆固醇结晶、棕色液体等）","好发人群：各年龄均可见，常见于成年女性，好发年龄25~60岁，女性>男性","好发部位：以垂体为中心，多位于鞍内，类圆形，一般较小","临床特征：大多数囊肿很小，不引起临床症状；少数逐渐扩大压迫鞍内或鞍上结构，引起垂体内分泌功能障碍（男性易疲劳、性欲减退；绝经前女性月经不规则、溢乳）和视功能障碍"],
-    signs: ["鞍内囊肿", "无强化", "T1信号多变", "边界清楚"],
-    features: ["CT：鞍内类圆形低密度囊性病变，边界清楚，增强无强化","MRI：多位于鞍内，类圆形，一般较小，边界清楚；信号取决于囊内容物：最常见表现为长T1长T2信号；蛋白质浓度增高时可呈短T1（T1WI高信号）；增强无明显强化是关键特征","信号变化规律：影响T1弛豫时间主要是蛋白质浓度；蛋白质越多，T1越短，T1WI信号越高；囊内可见小结节（"蛋白质结节"，T1高信号，T2低信号）"],
-    differential: {"垂体腺瘤":"垂体腺瘤增强有明显强化（微腺瘤延迟强化）；Rathke囊肿增强无强化，且信号多变，常呈短T1高信号","颅咽管瘤":"颅咽管瘤好发于儿童，多位于鞍上，钙化多见，囊壁增强明显强化；Rathke囊肿多位于鞍内，增强无强化"}
-  },
-  {
-    name: "颅咽管瘤（Craniopharyngioma）",
-    module: "brain",
-    category: "肿瘤",
-    clinical: ["定义：起源于颅咽管上皮或Rathke囊残留（造釉型）或原始口凹残留的鳞状上皮细胞化生（乳头型），是鞍旁或鞍区生长缓慢的中枢神经系统良性肿瘤；约占所有颅内肿瘤5%以下，占儿童鞍区肿瘤50%以上","好发人群：好发于儿童和青少年（造釉型），另有中年发病高峰（乳头型），无明显性别差异","好发部位：多位于鞍上，少数完全位于鞍内；生长缓慢，病史较长","临床特征：临床表现因肿瘤部位及发展方向、患者年龄等不同；常见颅内高压症状和局部压迫症状（视力障碍、垂体功能减退、尿崩症等）"],
-    signs: ["钙化率90%", "囊实混合", "鞍上分叶状", "壁环形强化"],
-    features: ["CT：平扫绝大多数为囊实混合性肿物，钙化率高（90%），呈结节状或包壳状（乳头状型钙化罕见）；增强扫描多数呈实性结节状或边缘环状及层状强化；CTA显示鞍区动脉移位","MRI：信号因肿瘤成分不同而异，多为混杂信号；造釉细胞型囊性部分含较多蛋白成分及胆固醇结晶、出血时T1WI呈高信号，T2WI囊性部分为明显高信号，钙化呈低信号；FLAIR上囊性区呈高信号","增强T1WI：囊壁及实性部分明显强化；乳头状型则为等信号均匀强化；MRA可见鞍区动脉包绕及移位"],
-    differential: {"垂体腺瘤":"垂体腺瘤起源于鞍内向鞍上生长呈'雪人征'，成年人多见，钙化少见；颅咽管瘤好发于儿童，位于鞍上，钙化率极高（90%），囊性为主","Rathke囊肿":"Rathke囊肿位于鞍内，增强无强化，无钙化；颅咽管瘤多位于鞍上，钙化率极高，囊壁强化明显"}
-  },
-  {
-    name: "胸腺瘤（Thymoma）",
-    module: "mediastinum",
-    category: "肿瘤",
-    clinical: ["定义：起源于胸腺上皮细胞的肿瘤，是前纵隔最常见的原发肿瘤，分为低危（A、AB、B1型）和高危（B2、B3型）及胸腺癌；WHO分类从A型到C型（胸腺癌）恶性程度递增","好发人群：40~60岁，男女发病率相近，约30%~50%病例合并重症肌无力","好发部位：前上纵隔，常见于心脏大血管交界处","临床特征：多数无症状，体检偶然发现；部分合并重症肌无力（肌无力危象）、纯红细胞再生障碍性贫血等副肿瘤综合征"],
-    signs: ["前纵隔肿块", "包膜完整", "均匀强化", "胸膜播散"],
-    features: ["CT：平扫多为等密度，形态卵圆或分叶，边缘光整；低危组多边缘光滑、密度均匀、有完整包膜；高危组（B2、B3型）和胸腺癌呈浸润生长，伴囊变、坏死及不规则钙化，边界不规则","增强：低危组均匀中等强化；高危组和胸腺癌不均匀强化，可侵犯心脏大血管及邻近脂肪间隙","胸腺癌：前纵隔软组织肿块，边界不规则，无包膜或不完整包膜；囊变坏死多见，不均匀强化，可见微小钙化；可侵犯心脏大血管及邻近脂肪间隙；可有胸膜播散、淋巴结及远处转移"],
-    differential: {"淋巴瘤":"淋巴瘤多为多发淋巴结融合，可累及多个纵隔区，无完整包膜，常伴浅表及腹腔淋巴结肿大；胸腺瘤局限于前纵隔，低危组有包膜","纵隔神经内分泌癌":"神经内分泌癌好发中老年男性，分叶状大肿块，大片坏死，血管分隔样强化，纵隔淋巴结转移常见；胸腺瘤低危组密度均匀，钙化更多见"}
-  },
-  {
-    name: "节细胞神经瘤（Ganglioneuroma）",
-    module: "mediastinum",
-    category: "肿瘤",
-    clinical: ["定义：起源于胚胎神经嵴细胞的良性肿瘤，分化程度较好，是外周神经源性肿瘤中较为罕见的良性肿瘤；多无临床症状","好发人群：各年龄段均可发病，以青少年和成年人多见，无明显性别差异","好发部位：好发于后纵隔脊柱旁沟，因纵隔及腹膜后空间大、结缔组织疏松，生长于此处的节细胞神经瘤体积较大","临床特征：多无临床症状，某些可以合成儿茶酚胺，但很少导致高血压，偶尔导致严重腹泻，肿瘤切除后症状消失"],
-    signs: ["后纵隔脊柱旁", "嵌入式匍匐生长", "漩涡征", "渐进性强化"],
-    features: ["CT：平扫密度均匀或不均匀，低于肌肉；因瘤体质地较软，常沿周围器官间隙呈嵌入式匍匐生长，可紧贴于椎体，椎旁间隙消失；早期强化不明显，延迟扫描后肿瘤呈渐进性轻度强化；钙化发生率约40%~60%，典型表现为斑点状钙化","MRI：T1WI相对均匀的低信号，T2WI为显著高信号或中等到高信号；'漩涡征'为节细胞神经瘤的MRI特征表现，在T2WI高信号背景中见曲线形或线形的低信号影，代表纵横交错的Schwann细胞和胶原纤维；DWI呈高信号为主，未见明显弥散受限"],
-    differential: {"神经鞘瘤":"神经鞘瘤经邻近椎间孔向椎管内生长，呈'哑铃'状或'沙漏'状；节细胞神经瘤呈嵌入式匍匐生长，漩涡征为特征","神经纤维瘤":"影像学上难以区分，均需结合病理；节细胞神经瘤分化更好，预后更佳"}
-  },
-  {
-    name: "纵隔畸胎瘤（Mediastinal Teratoma）",
-    module: "mediastinum",
-    category: "肿瘤",
-    clinical: ["定义：起源于胚胎组织残留物的肿瘤，分为皮样囊肿（囊性畸胎瘤）和畸胎瘤（实性畸胎瘤）；是前纵隔最常见的生殖细胞肿瘤","好发人群：儿童和青少年发病率高，若肿瘤与支气管相通，可咳出毛发或豆渣样皮脂物质","好发部位：好发于前中纵隔，主动脉弓与心脏交界处","临床特征：多无症状，体检偶然发现；较大者可出现胸痛、咳嗽、气促等压迫症状；与支气管相通者可出现'毛发咳出'是特征性临床表现；短期内迅速增大应疑有恶变"],
-    signs: ["脂肪-液体平", "牙齿或骨影", "囊实混合", "前纵隔"],
-    features: ["CT：多呈圆或椭圆形，密度不均匀；内可见牙齿或骨影（钙化），亦可有脂肪（CT值-100HU左右），实性成分可见强化；囊性畸胎瘤可呈囊状低密度，囊壁可见弧形钙化","含有脂肪是特征性表现，CT上见脂液平面（脂-液平面）有助于诊断；MRI：T1WI脂肪呈高信号，脂肪抑制序列信号减低；实性成分T1等信号，T2高信号；增强扫描实性成分及囊壁强化","短期内迅速增大、边缘模糊、侵犯周围结构应疑有恶变（恶性畸胎瘤）"],
-    differential: {"胸腺瘤":"胸腺瘤无脂肪和骨化成分，密度相对均匀；纵隔畸胎瘤内脂肪和钙化（牙齿或骨）是特征性表现","囊性淋巴管瘤":"淋巴管瘤密度更低均匀，沿组织间隙蔓延，无脂肪和钙化成分"}
-  }
-  },,
-  {
-    name: "肝脏局灶性结节性增生（Focal Nodular Hyperplasia, FNH）",
-    module: "abdomen",
-    category: "肿瘤样病变",
+    name: "骨巨细胞瘤（Giant Cell Tumor of Bone，GCT）",
+    module: "bone",
+    category: "良性骨肿瘤（潜在恶性）",
     clinical: [
-      "肝细胞良性再生结节，并非真正的肿瘤，属于肿瘤样病变，是肝内次常见的良性病变（最常见为肝血管瘤）",
-      "好发于20-50岁女性，男女比例约1:8",
-      "好发于肝右叶，常为单发",
-      "一般无症状，常因体检偶然发现；AFP正常，无恶变倾向"
+      "定义：起源于骨间质组织的肿瘤，由梭形基质细胞和大量破骨细胞样多核巨细胞组成，生物学行为介于良恶性之间（潜在恶性），约2-5%可肺转移",
+      "好发人群：20-40岁青壮年，女性略多（女:男≈1.2:1）",
+      "好发部位：股骨下端、胫骨上端、桡骨下端（膝关节周围占50%以上）；脊柱和骨盆也可受累；多位于骨端关节面下",
+      "临床特征：局部疼痛、肿胀，关节活动受限；靠近关节时关节功能障碍明显；病理性骨折少见但可发生；复发率约10-15%"
     ],
-    signs: ["快进慢出", "中央瘢痕", "动脉期明显强化", "延迟期等密度"],
+    signs: ["皂泡状改变", "地图样溶骨", "偏心性生长", "无硬化边", "关节面下发病"],
+    types: [
+      {label: "Campanacci分级", desc: "I级（良性）：边界清楚，皮质变薄但完整；II级（交界性）：边界模糊，皮质破坏但无软组织肿块；III级（恶性）：软组织肿块，明显破坏"}
+    ],
     features: [
-      "CT平扫：等或稍低密度，病灶>3cm时约60%可见更低密度的中央纤维瘢痕",
-      "CT增强：动脉期明显均匀强化，门脉期渐趋等密度，延迟期为等密度（'快进慢出'）；中央瘢痕动脉期无强化，门脉期或延迟期强化",
-      "MRI：T1WI等或稍低信号，T2WI等或稍高信号；中央瘢痕T2WI呈高信号（内含血管）",
-      "特征性改变：中央星状纤维瘢痕向四周放射分隔肿块，增强后延迟强化"
+      "X线及CT表现：地图样溶骨性破坏，边缘清晰但无硬化边（重要鉴别点），病灶内无钙化；约30%呈'皂泡状'改变（分房样）；病灶位于骨端（关节面下），常横向偏心生长；一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应（花边样骨膜新生骨）；肿瘤可突破骨皮质形成软组织肿块",
+      "MRI表现：T1WI多表现为不均匀的低或等信号，出血可呈明显高信号；T2WI常为低、等、高混杂信号；约63%的骨巨细胞瘤可出现含铁血黄素沉着，表现为T2WI上结节状、带状甚至弥漫分布的低信号区（特征性表现）；增强扫描明显不均匀强化；可清楚显示肿瘤对关节、软组织的侵犯",
+      "病理特点：肿瘤由梭形基质细胞和散在分布的大量破骨细胞样多核巨细胞组成；免疫组化：H3.3G34W（+）（特异性标记，约90%病例阳性），CD68（+）（巨细胞），S-100（部分+），Ki-67（良性<5%，恶性>10%）",
+      "典型表现：20-40岁 + 膝关节周围骨端 + 偏心性地图样溶骨破坏无硬化边 + T2WI含铁血黄素低信号 + H3.3G34W（+）"
     ],
     differential: {
-      "肝细胞腺瘤（HCA）": "同样好发于育龄女性；HCA无中央瘢痕，有假包膜，易出血，门脉期持续强化",
-      "肝细胞性肝癌（HCC）": "多有肝硬化背景，AFP升高；'快进快出'，可见门静脉癌栓",
-      "肝血管瘤": "T2WI'灯泡征'，增强'早出晚归'，边缘结节状充填"
+      "单纯性骨囊肿": "20岁以下儿童，位于干骺端（非骨端），中心性膨胀，有硬化边，囊内无骨嵴，无强化，T2WI均匀高信号",
+      "动脉瘤样骨囊肿": "20岁以下儿童，干骺端发病（非骨端），明显膨胀性分叶状改变，液-液平面为特征，T2WI上层高信号下层低信号",
+      "软骨肉瘤": "30-60岁中老年，好发于骨盆、股骨近端，病灶内可见钙化（环弧状、斑点状），皮质破坏和软组织肿块更明显，无H3.3G34W表达"
     }
   },
-  {
-    name: "肝细胞腺瘤（Hepatocellular Adenoma, HCA）",
-    module: "abdomen",
-    category: "良性肿瘤",
-    clinical: [
-      "肝脏较少见的良性肿瘤，主要由层状或索状肝细胞和少量Kupffer细胞组成，不含胆管",
-      "好发于育龄妇女，男女比例约1:8~1:10；长期口服避孕药是主要危险因素",
-      "好发于肝右叶，常为单发",
-      "一般无症状，AFP正常；较大者可出现上腹部不适；易出血，有恶变可能但少见"
-    ],
-    signs: ["动脉期明显强化", "假包膜", "易出血", "无中央瘢痕"],
-    features: [
-      "CT平扫：等或稍低密度肿块，可有脂肪变性（密度减低）；出血时密度增高",
-      "CT增强：动脉期明显强化，门静脉期及延迟期持续均匀强化，假包膜延迟强化",
-      "MRI：T1WI等或稍高信号（含脂肪/出血），T2WI均匀高信号（抑脂序列仍高）；同反相位：腺瘤内脂肪变性时信号减低",
-      "与FNH鉴别：无中央瘢痕；与HCC鉴别：无肝硬化背景，AFP阴性，强化较均匀"
-    ],
-    differential: {
-      "肝脏FNH": "FNH有中央瘢痕，门脉期呈等密度，女性好发但AFP正常，无出血",
-      "肝细胞性肝癌（HCC）": "多有肝硬化；AFP升高；'快进快出'；门静脉癌栓",
-      "肝血管瘤": "T2WI'灯泡征'，增强'早出晚归'，边缘充填方式强化"
-    }
-  },
-  {
-    name: "肝细胞性肝癌（Hepatocellular Carcinoma, HCC）",
-    module: "abdomen",
-    category: "恶性肿瘤",
-    clinical: [
-      "起源于肝细胞的原发性恶性肿瘤，是最常见的原发性肝癌，占原发性肝癌的75%~85%",
-      "好发于中老年男性（40-60岁），男女比例约5:1；常有乙肝、肝硬化背景",
-      "好发于肝右叶，与肝硬化、肝炎密切相关",
-      "临床表现：肝区疼痛、腹部包块、消瘦、黄疸；AFP升高（>400ng/mL具有诊断意义）"
-    ],
-    signs: ["快进快出", "门静脉癌栓", "假包膜", "AFP升高"],
-    features: [
-      "CT平扫：单发或多发，密度混杂，瘤内坏死及囊变呈低密度，出血呈高密度",
-      "CT增强：'快进快出'——动脉期不均质强化，门静脉期及延迟期强化低于周围肝实质；假包膜延迟强化",
-      "MRI：T1WI稍低信号，T2WI稍高或高信号；瘤内坏死囊变呈长T1长T2；出血呈短T1长T2",
-      "转移征象：门静脉、肝静脉及下腔静脉内癌栓；淋巴结及肝内外转移；肝门区及肝内胆管扩张"
-    ],
-    differential: {
-      "肝内胆管细胞癌（ICC）": "HCC多有肝硬化，AFP升高；ICC缺乏血供，'慢进慢出'，CEA/CA199升高",
-      "肝脏FNH": "FNH无肝硬化背景，AFP正常，有中央瘢痕，门脉期等密度",
-      "肝转移瘤": "多发病灶，有原发恶性肿瘤病史，AFP一般不升高；'牛眼征'"
-    }
-  },
-  {
-    name: "肝内胆管细胞癌（Intrahepatic Cholangiocarcinoma, ICC）",
-    module: "abdomen",
-    category: "恶性肿瘤",
-    clinical: [
-      "起源于肝内小胆管或末梢胆管上皮的腺癌，是第二常见的原发性肝脏恶性肿瘤",
-      "好发于50-70岁，男性略多于女性",
-      "好发于肝左叶，与胆管炎症、胆石症有关",
-      "临床表现：上腹痛和腹部包块，胆管阻塞时可出现黄疸；HBsAg和AFP常阴性；ALP显著升高，CEA、CA199阳性"
-    ],
-    signs: ["慢进慢出", "延迟强化", "邻近胆管扩张", "肝包膜凹陷"],
-    features: [
-      "CT平扫：肝内不规则低密度肿块，边界不清，邻近肝包膜可见凹陷（纤维收缩）",
-      "CT增强：'慢进慢出'——动脉期边缘轻度强化，门脉期持续强化，延迟期造影剂逐渐内移填充（中心纤维化），呈'慢进慢出'特征",
-      "MRI：T1WI低信号，T2WI混杂高信号；强化方式同CT",
-      "伴随征象：邻近肝内胆管扩张（肿瘤阻塞），周围卫星灶，淋巴结转移"
-    ],
-    differential: {
-      "肝细胞性肝癌（HCC）": "HCC多有肝硬化，AFP升高，'快进快出'，常见门静脉癌栓",
-      "肝转移瘤": "多发，有原发肿瘤病史；'牛眼征'；转移瘤不伴胆管扩张",
-      "肝脓肿": "临床有发热等感染症状；液化坏死区明显，'双环征'或'三环征'"
-    }
-  },
-  {
-    name: "肝海绵状血管瘤（Hepatic Cavernous Hemangioma）",
-    module: "abdomen",
-    category: "良性肿瘤",
-    clinical: [
-      "肝脏最常见的良性肿瘤，由异常扩张的血窦组成，无包膜",
-      "女性好发，男女比例约1:4~1:6；可发生于任何年龄，以30-70岁多见",
-      "可发生于肝脏任何部位，右叶多见，单发或多发",
-      "一般无症状，较大者可有右上腹不适；AFP正常，无恶变风险"
-    ],
-    signs: ["早出晚归", "灯泡征", "边缘结节状强化", "向心性充填"],
-    features: [
-      "CT平扫：单发或多发类圆形低密度灶，边界清楚，密度均匀或不均匀（中心可有纤维瘢痕）",
-      "CT增强：'早出晚归'——动脉期出现边缘结节状/斑块状/环形强化，门脉期自边缘向中心充填，延迟期整个肿瘤强化呈等密度或高密度",
-      "MRI：T1WI低信号，T2WI明显高信号（'灯泡征'），信号均匀，边界清楚；强化方式与CT一致",
-      "小血管瘤可均匀强化，大血管瘤中央可见不强化纤维瘢痕"
-    ],
-    differential: {
-      "肝脏FNH": "FNH有中央瘢痕延迟强化；无'灯泡征'；'快进慢出'而非边缘充填",
-      "肝细胞性肝癌（HCC）": "HCC有肝硬化，AFP升高，'快进快出'；T2WI无'灯泡征'",
-      "肝转移瘤": "有原发肿瘤病史；多发，强化不典型；T2WI信号不如血管瘤均匀明亮"
-    }
-  },
-  {
-    name: "肝脓肿（Hepatic Abscess）",
-    module: "abdomen",
-    category: "感染",
-    clinical: [
-      "肝脏受到微生物感染后引起的化脓性病变；按病原学分为细菌性、阿米巴性、结核性和真菌性",
-      "细菌性肝脓肿多见于中老年人，男性略多；阿米巴性好发于热带地区",
-      "好发于肝右叶（70%），可单发或多发",
-      "典型三联征：右上腹持续性疼痛、寒战高热、肝肿大压痛；AFP正常，白细胞升高"
-    ],
-    signs: ["环征", "双环征", "三环征", "中央液化坏死"],
-    features: [
-      "CT平扫：境界清楚的圆形或类圆形低密度病灶，中央为脓腔（密度均匀或不均匀），可见气泡（产气杆菌）",
-      "CT增强：'环征'——中央低密度脓腔，周围环形强化；'双环征'——脓肿壁+周围水肿带；'三环征'——脓肿壁内层坏死（无强化）+外层纤维肉芽组织（强化）+周围水肿带",
-      "MRI：T1WI低信号，T2WI高信号脓腔，边缘低信号纤维壁；DWI脓液弥散受限（高信号）",
-      "动态增强多期扫描是鉴别肝脓肿与肝肿瘤的关键"
-    ],
-    differential: {
-      "肝细胞性肝癌（HCC）": "AFP升高，有肝硬化；无发热等感染症状；'快进快出'；DWI不均匀",
-      "肝转移瘤": "有原发肿瘤病史；多发；'牛眼征'；无感染症状及白细胞升高",
-      "肝囊肿": "囊液均匀，CT值接近水；无强化；无壁结节；无感染症状"
-    }
-  },
-  {
-    name: "肝转移瘤（Hepatic Metastasis）",
-    module: "abdomen",
-    category: "恶性肿瘤",
-    clinical: [
-      "肝脏最常见的恶性肿瘤，原发灶以结肠癌、胃癌、胰腺癌、乳腺癌和肺癌最为常见",
-      "中老年多见，男女差别不大；多有明确原发恶性肿瘤病史",
-      "77%涉及肝两叶，多发常见（仅10%为孤立病灶）",
-      "早期多无症状或被原发肿瘤掩盖；晚期出现乏力、纳差、腹胀、腹部包块；CEA可升高"
-    ],
-    signs: ["牛眼征", "环靶征", "多发病灶", "无肝硬化背景"],
-    features: [
-      "CT平扫：肝内单发或多发低密度病灶，界清或不清；可有囊变、钙化（黏液腺癌转移常见钙化）",
-      "CT增强：肿瘤强化，境界变清；'牛眼征'——病灶中心低密度，边缘高密度强化，最外层密度低于肝实质",
-      "MRI：T1WI稍低信号，T2WI稍高信号；'环靶征'——中心T1WI低、T2WI高；'亮环征（晕征）'——T2WI瘤周高信号环（瘤周水肿或丰富血供）",
-      "富血供转移（肾癌、神经内分泌肿瘤）：动脉期明显强化；乏血供转移（结肠癌）：仅边缘薄环状强化"
-    ],
-    differential: {
-      "肝细胞性肝癌（HCC）": "HCC多有肝硬化，AFP升高，'快进快出'；转移瘤AFP一般正常",
-      "肝内胆管细胞癌（ICC）": "ICC多为单发，伴胆管扩张；转移瘤多发，无胆管扩张",
-      "肝脓肿": "脓肿有感染症状，白细胞升高，DWI弥散受限；'三环征'与转移不同"
-    }
-  },
-,
-  {
-    name: "变应性支气管肺曲霉菌病（Allergic Bronchopulmonary Aspergillosis, ABPA）",
-    module: "respiratory",
-    category: "感染",
-    clinical: [
-      "机体对支气管内曲霉菌抗原发生超敏反应（I型+III型变态反应），并非真正侵袭性感染",
-      "好发于儿童及青年，常伴哮喘或囊性纤维化病史；女性略多",
-      "好发于双肺上叶中心性支气管（与普通支扩以下叶外周分布不同）",
-      "急性期：喘息、发热、咳棕色痰/咯血；实验室：嗜酸粒细胞增多，血清IgE显著升高（>1000IU/mL），GM试验阳性"
-    ],
-    signs: ["指套征", "树芽征", "双轨征", "中心性支气管扩张", "高密度黏液栓"],
-    features: [
-      "中心性支气管扩张：上叶为主，早期柱状，晚期囊状；支气管壁增厚呈'双轨征'",
-      "支气管黏液栓嵌顿：表现为V形、Y形或'指套征'；黏液栓密度较高（高于肌肉），可有钙化",
-      "小叶中心结节与'树芽征'：细支气管炎表现",
-      "病变具有反复发作和游走性特点；支气管阻塞致远端阻塞性肺炎或肺不张"
-    ],
-    differential: {
-      "普通支气管扩张": "普通支扩多见于下叶外周，黏液栓为低密度；ABPA以上叶中心性支扩为特征，高密度黏液栓",
-      "结核性支扩": "好发于上叶，周围可见纤维条索等卫星灶，管腔内黏液栓少见",
-      "侵袭性肺曲霉菌病": "侵袭性多见于免疫低下患者，表现为'晕征'、楔形实变，GM试验强阳性，无哮喘背景"
-    }
-  },
-  {
-    name: "侵袭性肺曲霉菌病（Invasive Pulmonary Aspergillosis, IPA）",
-    module: "respiratory",
-    category: "感染",
-    clinical: [
-      "曲霉菌直接侵犯肺组织引起的肺部感染，可进一步分为血管侵袭型和气道侵袭型",
-      "好发于免疫功能低下患者：长期应用激素/免疫抑制剂、血液系统恶性肿瘤、器官移植、AIDS等",
-      "好发于双肺，血管侵袭型好发于肺周边，气道侵袭型沿支气管分布",
-      "临床症状：发热、咳嗽、胸痛、咯血；GM试验（>0.5）和G试验（>100pg/mL）对诊断有帮助"
-    ],
-    signs: ["晕征", "空气新月征", "楔形实变", "反晕征"],
-    features: [
-      "血管侵袭型（最常见）：早期表现为'晕征'（结节/肿块周围磨玻璃环），代表病灶周围出血；随病程进展出现空洞，形成'空气新月征'",
-      "'反晕征（环礁征）'：中心磨玻璃，周围环绕实变影，见于病程早期，代表梗死肺中心出血和周围炎性碎片",
-      "气道侵袭型：气管支气管炎（管壁增厚/管腔不规则）、细支气管炎（小叶中心结节、树芽征）、支气管肺炎（支气管周围实变）",
-      "楔形或节段性实变（梗死/出血性肺炎）；典型空洞内可见'空气新月征'"
-    ],
-    differential: {
-      "肺结核": "结核常有上叶空洞伴卫星灶，无免疫低下背景；PPD/T-SPOT阳性",
-      "细菌性肺炎": "肺炎多呈大叶性或小叶性实变，无晕征；抗生素治疗有效",
-      "变应性支气管肺曲霉菌病（ABPA）": "ABPA有哮喘背景，以中心性支扩和高密度黏液栓为主，无晕征"
-    }
-  },
-  {
-    name: "曲菌球（Aspergilloma）",
-    module: "respiratory",
-    category: "感染",
-    clinical: [
-      "曲霉菌在已有的肺部空洞（如结核空洞、支扩空腔）内定植和繁殖形成的菌球，不侵犯洞壁",
-      "常见于慢性肺疾病患者（肺结核、支扩、肺脓肿等），免疫功能多正常",
-      "好发于肺上叶（结核空洞好发区域）",
-      "可无症状或伴反复咯血（严重者致命）；菌球在空洞内可随体位改变而移动"
-    ],
-    signs: ["空气新月征", "随体位移动", "洞内球形病灶", "无强化"],
-    features: [
-      "薄壁空洞内的孤立性球形病灶，边缘光滑锐利，密度均匀或不均匀，内部可有点状/弧形钙化",
-      "'空气新月征'（特征性表现）：曲菌球体积小于空洞容积，菌球与洞壁之间形成新月形空隙",
-      "增强扫描曲菌球无强化（区别于肿瘤）",
-      "可随体位改变移动（俯卧位/仰卧位对比，区别于肿瘤附着固定）"
-    ],
-    differential: {
-      "肺结核空洞内干酪坏死": "干酪物质密度不均，形态不规则，无体位移动性，增强无强化",
-      "肺癌空洞": "癌性内容物与洞壁相连，增强有强化，体位不移动，边缘分叶毛刺",
-      "侵袭性肺曲霉菌病": "IPA的空洞是病灶坏死形成，常见于免疫低下患者，有晕征或实变背景，非预存空洞"
-    }
-  },
-  {
-    name: "胸膜孤立性纤维瘤（Solitary Fibrous Tumor, SFT）",
-    module: "mediastinum",
-    category: "肿瘤",
-    clinical: [
-      "起源于CD34阳性梭形间叶细胞的肿瘤，好发于胸膜（尤其脏层胸膜），属少见肿瘤，多数为良性，少数为恶性",
-      "可发生于任何年龄，好发于青壮年及老年人，无明显性别差异",
-      "好发于脏层胸膜，也可发生于膈胸膜、纵隔、腹膜后等",
-      "较小时常无症状；较大时胸闷、胸痛、呼吸困难；可有副肿瘤综合征（发作性低血糖、肺性肥大骨关节病-杵状指）"
-    ],
-    signs: ["宽基底附着胸膜", "D形外观", "胸膜尾征", "地图样强化", "匍样血管"],
-    features: [
-      "CT平扫：肺外病变，呈类圆形、蘑伞形；与胸壁成钝角或直角，宽基底附着胸膜，呈'D形外观'；边缘光滑，有完整包膜，无浸润；等或稍高密度（致密胶原组织）；可有囊变、坏死、钙化",
-      "CT增强：体积较小者轻中度或明显强化；体积较大者呈特征性'地图样'强化（渐进性），瘤内可见强化明显的迂曲血管（'匍样血管'）",
-      "定位征象：'胸膜尾征'（胸膜轻微局限掀起）；邻近肺组织呈受压表现而非浸润；无支气管进入或截断",
-      "特殊部位：发生于膈胸膜者呈'蘑伞形'，尖端指向肺门；临近肋隔角者呈塑形改变"
-    ],
-    differential: {
-      "胸膜间皮瘤": "间皮瘤多见于老年男性有石棉接触史，弥漫型表现为单侧弥漫性胸膜增厚，强化低于SFT，无'匍样血管'",
-      "胸膜转移瘤": "多发性胸膜结节，有原发恶性肿瘤病史，常伴胸腔积液，肋骨可破坏",
-      "神经鞘瘤（后纵隔）": "神经鞘瘤来源于肋间神经，沿椎间孔生长，常有'哑铃形'椎管内外沟通，T2WI高信号"
-    }
-  },
-,
-  {
-    name: "肾盂癌（Renal Pelvic Carcinoma, Urothelial Carcinoma）",
-    module: "retroperitoneum",
-    category: "恶性肿瘤",
-    clinical: [
-      "发生在肾盂或肾盏上皮组织的尿路上皮恶性肿瘤，占肾肿瘤总数的10%左右，多为移行上皮癌",
-      "好发于50岁以上，男女比例约2:1；30-50%患者同时患有膀胱移行上皮癌",
-      "好发于肾盂及肾盏，常伴肾盂结石或慢性炎症刺激",
-      "最常见症状为无痛性血尿；晚期可有腰痛、体重下降；鹿角形结石患者并发移行上皮癌风险高"
-    ],
-    signs: ["充盈缺损", "延迟强化", "肾积水", "血尿"],
-    features: [
-      "CT平扫：肾盂壁增厚或肾窦区肿块，密度高于尿液低于肾实质，肿块周围肾窦脂肪受压",
-      "CT增强：肿瘤组织呈轻中度延迟强化；延时扫描肾盏明显强化时，可清楚显示肿瘤造成的充盈缺损",
-      "较大肿瘤可致肾窦脂肪完全消失，侵及肾实质，但肾脏轮廓正常或轻度外突",
-      "肾盂或肾盏梗阻时可出现肾积水表现"
-    ],
-    differential: {
-      "肾透明细胞癌": "RCC源于肾皮质，增强呈'快进快出'，位于肾实质内；肾盂癌位于肾窦/肾盂内，延迟强化",
-      "肾血管平滑肌脂肪瘤": "AML内含脂肪（CT值-20~-110HU），位于肾皮质，与肾盂癌位置不同",
-      "膀胱癌（侵犯输尿管口）": "膀胱癌位于膀胱内，可逆行侵犯输尿管；肾盂癌为顺行，膀胱镜可鉴别"
-    }
-  },
-  {
-    name: "肾上腺皮质腺瘤（Adrenal Cortical Adenoma）",
-    module: "retroperitoneum",
-    category: "良性肿瘤",
-    clinical: [
-      "最常见的肾上腺肿瘤，由肾上腺皮质细胞构成，多为无功能性，功能性者可引起Cushing综合征或原发性醛固酮增多症",
-      "好发于60岁以上，糖尿病、高血压及恶性肿瘤患者发病率较高（可达50%）",
-      "好发于肾上腺（单侧多见，偶可双侧）",
-      "无功能性者多无症状（体检偶然发现）；功能性者可出现高血压、低血钾、向心性肥胖、乏力等"
-    ],
-    signs: ["化学位移（反相位信号减低）", "低密度（CT<10HU）", "轻度强化", "同相位高信号"],
-    features: [
-      "CT平扫：类圆形低密度影，边界清，CT值<10HU提示含丰富脂质（特异性较高）",
-      "CT增强：轻中度强化，强化程度低于正常肾上腺组织",
-      "MRI：T1WI等或稍高信号（含脂质），T2WI等或稍高信号；同反相位：反相位信号明显减低（化学位移，腺瘤特征）",
-      "较大的腺瘤可有出血，但囊变少见；有完整包膜"
-    ],
-    differential: {
-      "肾上腺嗜铬细胞瘤": "嗜铬细胞瘤T2WI明显高信号（'灯泡征'），临床有高血压、儿茶酚胺升高；腺瘤反相位信号减低",
-      "肾上腺转移瘤": "有原发恶性肿瘤病史，多双侧，T2WI信号不均匀，强化明显；腺瘤多为单侧、低密度",
-      "肾上腺髓脂瘤": "含成熟脂肪组织，CT值可达-30~-120HU，信号混杂；腺瘤以脂质细胞为主，脂肪成分少"
-    }
-  },
-  {
-    name: "肾上腺嗜铬细胞瘤（Pheochromocytoma）",
-    module: "retroperitoneum",
-    category: "神经内分泌肿瘤",
-    clinical: [
-      "源于交感神经嗜铬细胞的神经内分泌肿瘤，通常产生儿茶酚胺，导致继发性高血压",
-      "任何年龄均可发病，高峰20-50岁，无明显性别差异",
-      "90%位于肾上腺髓质，10%位于肾上腺外（腹主动脉旁、膀胱等）",
-      "典型表现：阵发性或持续性高血压、头痛、心悸、多汗；10%规则：10%恶性、10%双侧、10%家族性、10%肾上腺外、10%无功能、10%钙化"
-    ],
-    signs: ["T2WI灯泡征", "明显强化", "囊变坏死", "10%规则"],
-    features: [
-      "CT平扫：圆形或卵圆形肿块，密度不均，内有囊变、坏死、出血（高密度），可有钙化",
-      "CT增强：明显不均匀强化（富血供），囊变坏死区无强化",
-      "MRI：T1WI信号混杂（出血时高信号），T2WI明显高信号（'灯泡征'，与肝血管瘤类似）；DWI弥散受限",
-      "功能检查：血/尿儿茶酚胺及其代谢产物（VMA、MN、NMN）显著升高，是诊断金标准"
-    ],
-    differential: {
-      "肾上腺皮质腺瘤": "腺瘤反相位信号减低（含脂质），T2WI信号不高，增强轻度强化；嗜铬细胞瘤T2WI'灯泡征'，明显强化",
-      "肾上腺转移瘤": "有原发恶性肿瘤病史，多双侧，增强明显但不及嗜铬细胞瘤；无高血压及儿茶酚胺升高",
-      "肾上腺囊肿": "CT为水样密度，无强化；MRI T1/T2均为高信号（含蛋白或出血时）；嗜铬细胞瘤有强化"
-    }
-  },
-,
-  {
-    name: "神经鞘瘤（Schwannoma, Antoni A/B型）",
-    module: "mediastinum",
-    category: "良性肿瘤",
-    clinical: [
-      "最常见的纵隔神经源性肿瘤，良性居多，起源于神经鞘的施万细胞",
-      "好发于20-50岁，男女发病率相近",
-      "好发于胸腔上半部分后纵隔脊柱旁沟，少数发生于前、中纵隔",
-      "多无症状，较大者可有胸痛、咳嗽；恶变率5%-15%（恶性神经鞘瘤）"
-    ],
-    signs: ["哑铃状生长", "椎间孔扩大", "均匀强化", "囊变/出血（大肿瘤）"],
-    features: [
-      "CT：边界清楚的圆形或卵圆形肿块；小肿瘤均匀强化，大肿瘤不均匀强化（囊变/出血）；钙化少见（5%）",
-      "MRI：T1WI等或低信号，T2WI不均匀高信号（Antoni A区低信号、Antoni B区高信号）；增强T1WI明显强化",
-      "特征性生长方式：沿神经干走向，经椎间孔向椎管内外生长，呈'哑铃状'或'沙漏状'",
-      "恶性神经鞘瘤：>5cm、形态不规则、密度不均匀、侵蚀纵隔/胸壁结构，可血行转移至肺"
-    ],
-    differential: {
-      "神经纤维瘤": "神经纤维瘤多有神经纤维瘤病史，信号更均匀，强化程度低于神经鞘瘤",
-      "节细胞神经瘤": "GN沿间隙嵌入式生长，延迟轻度强化；神经鞘瘤强化更明显",
-      "椎间盘突出/神经鞘囊肿": "位于椎管内，无椎旁肿块；神经鞘瘤有椎旁和椎管内两部分"
-    }
-  },
-  {
-    name: "神经纤维瘤（Neurofibroma）",
-    module: "mediastinum",
-    category: "良性肿瘤",
-    clinical: [
-      "较神经鞘瘤少见，是周围神经纤维成分局限或弥漫性增生所形成的瘤样肿块，主要细胞成分也是神经鞘细胞",
-      "好发于20-40岁，男性多于女性；多为神经纤维瘤病（NF1）的一部分",
-      "好发于后纵隔，常多发",
-      "单发者多无症状；神经纤维瘤病的神经纤维瘤恶变率高达4%-10%"
-    ],
-    signs: ["低密度（20-25HU）", "均匀强化", "多发（神经纤维瘤病）", "沿神经分布"],
-    features: [
-      "CT：密度均匀、边缘光滑、境界清楚的圆形或椭圆形肿块；平扫CT值20-25HU（富含脂质神经鞘细胞、脂肪细胞、黏液样变性）；钙化罕见",
-      "增强扫描强化程度取决于神经鞘细胞、胶原束和脂肪变比例；胶原束越密集，强化越高",
-      "神经纤维瘤病：多发神经纤维瘤 + 皮肤咖啡牛奶斑 + 虹膜错构瘤（Lisch结节）",
-      "恶变征象：短期内迅速增大、形态不规则、侵犯周围组织"
-    ],
-    differential: {
-      "神经鞘瘤": "神经鞘瘤更常见，强化更明显；神经纤维瘤密度更低且更均匀",
-      "节细胞神经瘤": "GN好发于青少年，钙化更常见（40-60%），延迟强化更明显",
-      "胸膜孤立性纤维瘤": "SFT宽基底附着胸膜，呈D形，'地图样'渐进性强化；神经纤维瘤无胸膜宽基底"
-    }
-  },
-  {
-    name: "支气管囊肿（Bronchogenic Cyst）",
-    module: "mediastinum",
-    category: "先天发育",
-    clinical: [
-      "一种少见的先天畸形，可能与胚胎发育异常有关；胚胎发育期间，呼吸道上皮与气管支气管树分离，从支气管发育部位移行至其他部位",
-      "任何年龄均可发病，无明显性别差异",
-      "好发于中纵隔（隆突下、气管旁），后纵隔支气管囊肿常呈'泪滴状'或梭形改变",
-      "多无症状（体检偶然发现）；较大者可压迫气管/食管引起咳嗽、呼吸困难、吞咽困难"
-    ],
-    signs: ["泪滴状", "CT值近似水", "无强化", "与气管/支气管相通（少数）"],
-    features: [
-      "CT：圆形或椭圆形密度均匀、大小不等及边缘清晰的肿块影；后纵隔支气管囊肿常被纵隔脂肪包绕，呈'泪滴状'改变",
-      "CT值因囊液成分而异：近似水密度（单纯液体）、高蛋白/出血时密度增高；增强无强化（特征性）",
-      "MRI：T1WI信号因蛋白含量而异（低~高信号），T2WI明显高信号；合并感染时囊壁可增厚、强化",
-      "鉴别诊断要点：与神经源性肿瘤鉴别——神经源性肿瘤位于后纵隔脊柱旁，强化明显；支气管囊肿无强化"
-    ],
-    differential: {
-      "神经鞘瘤": "神经鞘瘤位于后纵隔脊柱旁，明显强化；支气管囊肿位于中纵隔为主，无强化",
-      "食管囊肿": "食管囊肿与食管壁相连，多位于后纵隔食管旁；支气管囊肿多位于中纵隔气管旁",
-      "心包囊肿": "心包囊肿位于心膈角区，形态规则，无强化；支气管囊肿多位于隆突下/气管旁"
-    }
-  },
-  {
-    name: "肺隔离症（Pulmonary Sequestration）",
-    module: "respiratory",
-    category: "先天发育",
-    clinical: [
-      "较常见的先天性肺发育畸形，由异常体循环动脉供血的部分肺组织形成囊性肿块，这部分肺组织可与支气管相通或不通",
-      "多见于青少年，年龄在10-40岁，男性多于女性",
-      "好发于下叶后基底段（尤其是左肺下叶），分为叶内型（与正常肺组织同一脏层胸膜）和叶外型（有独立胸膜包裹）",
-      "与支气管相通时：反复发作的局限性感染；不相通时：无任何呼吸道症状"
-    ],
-    signs: ["异常动脉供血", "囊性/实性肿块", "反复感染", "叶内型/叶外型"],
-    features: [
-      "CT：下叶后基底段可见囊性或实性肿块，增强扫描可显示异常体循环动脉（来自降主动脉/腹主动脉分支）供血",
-      "MRI：MRA可直接显示异常供血动脉，对术前评估非常重要",
-      "囊性病变：多发囊状低密度，合并感染时囊壁增厚、强化；实性病变：软组织密度，强化明显",
-      "确诊依据：显示异常体循环动脉供血（CTA/MRA）"
-    ],
-    differential: {
-      "肺脓肿": "肺脓肿有感染症状，病灶内可见液平面；肺隔离症无症状或反复感染，有异常动脉供血",
-      "肺癌（周围型）": "肺癌多见于中老年，有分叶毛刺，无异常动脉供血；肺隔离症多见于青少年",
-      "支气管囊肿": "支气管囊肿无异常动脉供血，位于纵隔旁；肺隔离症位于下叶后基底段，有异常动脉"
-    }
-  }
 
-,
+  // ==================== 骨肌系统（续） ====================
   {
-  name: "颅内动脉瘤（Intracranial Aneurysm）",
-  module: "brain",
-  category: "脑血管",
-  clinical: [
-    "定义：动脉壁的病理性局限性膨出，是蛛网膜下腔出血最常见的原因",
-    "好发人群：40-60岁，先天性多见于脑底动脉环分叉处，后天性与动脉硬化相关",
-    "好发部位：脑底动脉环（Willis环）的动脉分叉处，前循环多于后循环",
-    "临床特征：未破裂者多无症状，破裂后突发剧烈头痛、恶心呕吐、颈项强直，可致昏迷"
-  ],
-  signs: [
-    "流空信号",
-    "瘤壁钙化",
-    "血栓形成",
-    "蛛网膜下腔出血"
-  ],
-  types: [
-    {
-      label: "囊性动脉瘤",
-      desc: "最常见，占80-90%，瘤壁缺少内弹性膜与中膜，多位于动脉分叉处"
-    },
-    {
-      label: "梭形动脉瘤",
-      desc: "血管壁全层局部扩张，后循环多见，与动脉粥样硬化或胶原血管病相关"
-    },
-    {
-      label: "血泡样动脉瘤",
-      desc: "血管壁局部薄弱向外膨出，壁薄易破，占动脉瘤的0.3-1%"
-    },
-    {
-      label: "假性动脉瘤",
-      desc: "外伤后形成，瘤壁无正常血管壁结构，仅为纤维组织包裹的血肿"
+    name: "单纯性骨囊肿（Simple Bone Cyst，SBC）",
+    module: "bone",
+    category: "良性骨病",
+    clinical: [
+      "定义：骨髓腔内充满澄清黄色的浆液性液体的囊性病变，囊壁为一层纤维包膜，无上皮内衬，属于发育性/特发性病变",
+      "好发人群：20岁以下儿童青少年，无明显性别差异",
+      "好发部位：肱骨近端（50%）、股骨近端（25%）干骺端；随生长发育可移向骨干",
+      "临床特征：多无症状，体检偶然发现；常因病理性骨折首次就诊（骨片陷落征）；局部可有轻微疼痛或压痛；病变进展缓慢"
+    ],
+    signs: ["骨片陷落征", "中心性膨胀", "硬化边", "液性密度/信号"],
+    features: [
+      "X线表现：卵圆形溶骨性病变，长径与骨长轴一致，均居于中心；膨胀性生长，皮质可变薄，边缘光整，有硬化边；囊内无明显骨嵴（与动脉瘤样骨囊肿鉴别）；病灶位于干骺端，随生长可移向骨干",
+      "CT表现：病灶内为均匀的液体密度影（-10~20Hu），骨壳完整；病理性骨折时，可见骨皮质断裂，骨碎片落入囊内，称为'骨片陷落征'（fallen fragment sign），为特异性征象",
+      "MRI表现：T1WI低信号（类似肌肉或稍高），T2WI高信号（均匀）；蛋白含量高时T1WI可呈高信号；增强扫描：囊壁和间隔可轻度强化，囊液无强化；无软组织肿块",
+      "典型表现：干骺端中心性卵圆形透亮区 + 硬化边 + 骨片陷落征（骨折时） + T2WI均匀高信号无液-液平面"
+    ],
+    differential: {
+      "动脉瘤样骨囊肿": "20岁以下，膨胀更明显呈分叶状，囊内有骨嵴和液-液平面（T2WI上层高信号下层低信号），增强囊间隔强化，无骨片陷落征",
+      "纤维骨皮质缺损/非骨化性纤维瘤": "8-20岁，位于一侧皮质内（非中心性），有清晰硬化边，长轴与骨长轴一致，无骨片陷落征",
+      "软骨黏液样纤维瘤": "10-30岁青少年，偏心性发病，病灶内可见分隔和钙化，边缘硬化明显，T2WI信号混杂"
     }
-  ],
-  features: [
-    "CT：较大动脉瘤呈边缘清楚的稍高密度团块，可见钙化；部分血栓形成者可见残余瘤腔强化；CTA是怀疑a-SAH病人的常用检查方法",
-    "MRI：T1/T2可见流空信号，信号随血流动力学和出血时期不同而变化；完全血栓化动脉瘤呈混杂信号",
-    "DSA：诊断金标准，可显示动脉瘤颈、大小、形态及与载瘤动脉关系",
-    "并发症：破裂出血是最严重的并发症，可致蛛网膜下腔出血、脑内血肿、脑室出血"
-  ],
-  differential: {
-    "血管袢": "血管走行自然，无局限性膨出，DSA可鉴别",
-    "垂体瘤": "位于鞍内，增强后均匀强化，无流空信号"
-  }
-},
-  {
-  name: "脑动静脉畸形（Cerebral AVM）",
-  module: "brain",
-  category: "脑血管",
-  clinical: [
-    "定义：先天性高流量血管畸形，由供血动脉、畸形血管团和引流静脉组成，是最常见的有症状脑血管畸形",
-    "好发人群：多见于年轻人，以出血为首发症状者无高血压脑血管硬化病史时应考虑AVM",
-    "好发部位：85%位于幕上，大脑中动脉供血区最常见，98%为单发病灶",
-    "临床特征：出血（50%）、癫痫（25%）、头痛（15%），可致神经功能障碍"
-  ],
-  signs: [
-    "流空信号",
-    "迂曲血管",
-    "供血动脉增粗",
-    "引流静脉扩张"
-  ],
-  features: [
-    "CT：点状或迂曲条状高密度影，约1/3可见钙化，增强后可见强化血管影",
-    "MRI：异常血管在T1WI及T2WI均为流空信号影；回流静脉T1WI低信号，T2WI高信号；病灶内可见不同时期出血信号",
-    "周围脑组织可见萎缩，T2WI或FLAIR高信号提示胶质增生；无占位效应但局部信号可异常",
-    "DSA：诊断金标准，典型表现为增粗的供血动脉和引流静脉早期显影（动静脉短路）"
-  ],
-  differential: {
-    "海绵状血管瘤": "无粗大供血动脉和引流静脉，DSA阴性，MRI可见含铁血黄素环",
-    "脑膜瘤": "脑外肿瘤，宽基底贴于硬膜，均匀强化，无流空血管团"
-  }
-},
-  {
-  name: "海绵状血管瘤（Cerebral Cavernous Malformation, CCM）",
-  module: "brain",
-  category: "脑血管",
-  clinical: [
-    "定义：又称海绵状血管畸形，非真性肿瘤，是隐匿性先天性血管畸形，占颅内血管畸形的10-25%",
-    "好发人群：16岁以上成年人年检出率约0.56/10万，部分与基因突变相关，散发病例可能与放疗、外伤有关",
-    "好发部位：脑内型临床常见，可合并脊髓CMs；脑外型罕见，多与硬膜关系密切，鞍旁海绵窦区最常见",
-    "临床特征：癫痫、局灶神经功能障碍、头痛，反复少量出血可致进行性神经功能恶化"
-  ],
-  signs: [
-    "爆米花样",
-    "含铁血黄素环",
-    "无强化",
-    "Zabramski分型"
-  ],
-  types: [
-    {
-      label: "脑内型",
-      desc: "临床常见，MRI分为4型：I型（亚急性出血）、II型（典型爆米花样）、III型（慢性出血）、IV型（微小CMs）"
-    },
-    {
-      label: "脑外型",
-      desc: "罕见，多与硬膜关系密切，鞍旁海绵窦区最常见，T2呈极高信号接近脑脊液"
-    }
-  ],
-  features: [
-    "CT：边界清楚的圆形或类圆形高密度影，增强后轻度强化或不强化，周围水肿不明显",
-    "MRI：T1WI不均匀信号，T2WI典型'爆米花样'高信号伴周围低信号含铁血黄素环（特征性表现）",
-    "DSA：阴性或仅见无血管区，因血流缓慢造影剂不能显示畸形血管团",
-    "Zabramski分型：I型（T1高T2高，亚急性出血）、II型（典型爆米花样）、III型（T1低T2低，慢性出血）、IV型（微小病灶，GRE/SWI敏感）"
-  ],
-  differential: {
-    "动静脉畸形": "AVM有粗大供血动脉和引流静脉，DSA早期显影；海绵状血管瘤DSA阴性",
-    "出血性转移瘤": "转移瘤有原发肿瘤病史，增强后环形强化，周围水肿明显"
-  }
-}];
+  },
+
+  
+  // ==================== 心血管系统 ====================
+  
+  // ==================== 乳腺系统 ====================
+];
 
 // =============================================
-// 功能函数
+// 分类配置 - 按系统
 // =============================================
+const MODULES = [
+  { key: "all", label: "全部", icon: "📋", color: "" },
+  { key: "brain", label: "🧠 中枢神经", icon: "🧠", color: "#6c5ce7" },
+  { key: "head", label: "👁 头颈五官", icon: "👁", color: "#00b894" },
+  { key: "lung", label: "🫁 呼吸系统", icon: "🫁", color: "#e17055" },
+  { key: "abdomen", label: "🍽 消化系统", icon: "🍽", color: "#fdcb6e" },
+  { key: "bone", label: "🦴 骨肌系统", icon: "🦴", color: "#74b9ff" },
+  { key: "cardio", label: "❤️ 心血管", icon: "❤️", color: "#e84393" },
+  { key: "breast", label: "🤝 乳腺", icon: "🤝", color: "#00cec9" }
+];
+
+// 按模块获取所有分类
+function getCategories(module) {
+  const categories = new Set();
+  DATA.filter(d => module === "all" || d.module === module).forEach(d => {
+    if (d.category) categories.add(d.category);
+  });
+  return [
+    { key: "all", label: "全部" },
+    ...[...categories].sort().map(c => ({ key: c, label: c }))
+  ];
+}
+
 let activeModule = "all";
+let activeTag = "all";
+
+function init() {
+  renderModuleNav();
+  renderTags();
+  renderList(DATA);
+  updateStats();
+  window.addEventListener("scroll", () => {
+    document.getElementById("backTop").style.display = window.scrollY > 300 ? "block" : "none";
+  });
+}
+
+function renderModuleNav() {
+  const nav = document.getElementById("moduleNav");
+  nav.innerHTML = MODULES.map(m => `
+    <button class="module-btn ${m.key === activeModule ? 'active' : ''}" 
+            data-module="${m.key}" 
+            onclick="setModule('${m.key}')">${m.label}</button>
+  `).join("");
+}
 
 function setModule(module) {
   activeModule = module;
-  document.querySelectorAll('.module-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.module === module);
-  });
+  activeTag = "all";
+  renderModuleNav();
+  renderTags();
+  filterCards();
+}
+
+function renderTags() {
+  const c = document.getElementById("tags");
+  const cats = getCategories(activeModule);
+  c.innerHTML = cats.map(t => `
+    <button class="tag ${t.key === activeTag ? 'active' : ''}" onclick="setTag('${t.key}')">${t.label}</button>
+  `).join("");
+}
+
+function setTag(key) {
+  activeTag = key;
+  renderTags();
   filterCards();
 }
 
 function filterCards() {
   const q = document.getElementById("search").value.trim().toLowerCase();
-  const showList = q !== '' || activeModule !== 'all';
-  document.getElementById('welcome').style.display = showList ? 'none' : '';
-  document.getElementById('list').classList.toggle('show', showList);
-  if (!showList) return;
   let filtered = DATA;
+  
+  // 模块过滤
   if (activeModule !== "all") {
     filtered = filtered.filter(d => d.module === activeModule);
   }
+  
+  // 分类过滤
+  if (activeTag !== "all") {
+    filtered = filtered.filter(d => d.category === activeTag);
+  }
+  
+  // 搜索过滤
   if (q) {
     filtered = filtered.filter(d => {
-      const txt = [d.name, d.category, ...(d.signs||[]), ...(d.clinical||[]), ...(d.features||[])].join(' ').toLowerCase();
-      return txt.includes(q);
+      const searchable = [d.name, d.subtitle, d.category, ...(d.keywords || []), ...(d.signs || []), ...(d.features || [])].join(" ").toLowerCase();
+      return searchable.includes(q) || d.name.toLowerCase().includes(q);
     });
   }
-  const list = document.getElementById('list');
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty">未找到匹配疾病，请更换关键词或模块</div>';
-    return;
-  }
-  list.innerHTML = filtered.map(d => `
-    <div class="disease-card">
-      <div class="card-header" onclick="this.parentElement.querySelector('.card-body').classList.toggle('open');this.querySelector('.arrow').classList.toggle('open')">
-        <h3>${d.name}</h3>
-        <span class="arrow">&#9654;</span>
-      </div>
-      <div class="card-body">
-        ${d.clinical ? `<div class="info-row"><div class="info-label">临床概述</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.clinical.map(c => `<li style="color:var(--muted)">${c}</li>`).join('')}</ul></div></div>` : ''}
-        ${d.signs && d.signs.length ? `<div class="info-row"><div class="info-label">影像征象</div><div>${d.signs.map(s => `<span class="sign-tag">${s}</span>`).join('')}</div></div>` : ''}
-        ${d.features && d.features.length ? `<div class="info-row"><div class="info-label">影像特征（含典型表现）</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.features.map(f => `<li>${f}</li>`).join('')}</ul></div></div>` : ''}
-        ${d.differential ? `<div class="info-row"><div class="info-label" style="color:#ff6b8a">鉴别诊断</div><div class="info-text"><ul style="padding-left:16px;margin:0">${Object.entries(d.differential).map(([name, point]) => `<li><strong style="color:var(--cyan)">${name}</strong>：${point}</li>`).join('')}</ul></div></div>` : ''}
-      </div>
-    </div>
-  `).join('');
+  
+  renderList(filtered);
+  updateStats(filtered.length);
 }
 
-window.addEventListener('scroll', () => {
-  document.getElementById('backTop').style.display = scrollY > 400 ? 'block' : 'none';
-});
+function updateStats(n) {
+  const total = n !== undefined ? n : DATA.length;
+  const moduleName = activeModule === "all" ? "" : MODULES.find(m => m.key === activeModule)?.label.replace(/^[🧠👁🫁🍽🦴❤️🤝]\s*/, "") + " ";
+  document.getElementById("stats").textContent = `${moduleName}共 ${total} 种疾病`;
+}
 
-// 初始化
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('totalCount').textContent = DATA.length;
-});
+function renderList(data) {
+  const c = document.getElementById("list");
+  
+  if (!data.length) {
+    c.innerHTML = `
+      <div class="module-empty">
+        <div class="module-icon">🔍</div>
+        <div class="module-title">没有找到匹配的疾病</div>
+        <div class="module-desc">试试其他关键词或切换分类</div>
+      </div>
+    `;
+    return;
+  }
+  
+  c.innerHTML = data.map((d, i) => `
+    <div class="disease-card" data-index="${i}">
+      <div class="card-header" onclick="toggle(${i})">
+        <h3>${d.name}</h3>
+        <span class="arrow" id="arrow${i}">▶</span>
+      </div>
+      <div class="card-body" id="body${i}">
+        ${d.subtitle ? `<div class="info-row"><div class="info-label">别名</div><div class="info-text" style="color:#888">${d.subtitle}</div></div>` : ""}
+        ${d.age ? `<div class="info-row"><div class="info-label">好发年龄</div><div class="info-text">${d.age}</div></div>` : ""}
+        ${d.types ? d.types.map(t => `<div class="info-row"><div class="info-label">分型</div><div class="info-text"><strong>${t.label}</strong>：${t.desc}</div></div>`).join("") : ""}
+        ${d.signs && d.signs.length ? `<div class="info-row"><div class="info-label">影像征象</div><div class="info-text">${d.signs.map(s => `<span class="sign-tag">${s}</span>`).join("")}</div></div>` : ""}
+        ${d.features && d.features.length ? `<div class="info-row"><div class="info-label">影像特征</div><div class="info-text"><ul style="padding-left:16px;margin:0">${d.features.map(f => `<li>${f}</li>`).join("")}</ul></div></div>` : ""}
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggle(i) {
+  const body = document.getElementById("body" + i);
+  const arrow = document.getElementById("arrow" + i);
+  const isOpen = body.classList.contains("open");
+  body.classList.toggle("open");
+  arrow.classList.toggle("open");
+  if (!isOpen) body.parentElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+init();
 </script>
 </body>
 </html>
