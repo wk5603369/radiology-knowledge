@@ -2,202 +2,1636 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
 <title>影像诊断知识库</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="影像诊断">
+<meta name="theme-color" content="#061827">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23061827'/><text x='50' y='67' font-size='48' text-anchor='middle' fill='white'>🫁</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.6;padding-bottom:60px}
-.header{background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;padding:16px 20px;position:sticky;top:0;z-index:100}
-.header h1{font-size:18px;font-weight:600}
-.module-nav{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;background:#fff;position:sticky;top:50px;z-index:99}
-.module-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#666;transition:all .2s;white-space:nowrap}
-.module-btn.active{color:#fff;background:#2980b9;border-color:#2980b9}
-.search-box{padding:12px 16px;background:#f5f7fa;position:sticky;top:90px;z-index:98}
-.search-box input{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:20px;font-size:14px;background:#fff;outline:none}
-.stats{padding:8px 16px;font-size:12px;color:#888;background:#f5f7fa}
-.disease-list{padding:0 16px 100px}
-.disease-card{background:#fff;border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
-.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.card-header h3{font-size:15px;font-weight:600;color:#1a5276;flex:1}
-.card-header .arrow{font-size:12px;color:#aaa;transition:transform .3s}
-.card-header .arrow.open{transform:rotate(90deg)}
-.card-body{display:none;padding:12px 16px 14px;border-top:1px solid #ecf0f1;background:#fafbfc}
+:root{
+  --bg:#04111f;
+  --bg2:#071a2f;
+  --card:rgba(12,35,58,.72);
+  --card2:rgba(255,255,255,.07);
+  --line:rgba(93,220,255,.22);
+  --cyan:#46e7ff;
+  --blue:#2f8cff;
+  --violet:#8c6cff;
+  --text:#eaf7ff;
+  --muted:#8eacc1;
+  --danger:#ff6b8a;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --brain:#8c6cff;
+  --head:#21e6c1;
+  --lung:#ff8a65;
+  --abdomen:#ffd166;
+  --bone:#65c7ff;
+  --cardio:#ff5fa2;
+  --breast:#3ff4e8;
+  --mediastinum:#7dd3fc;
+  --retroperitoneum:#f59e0b;
+  --spinalcanal:#a78bfa;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  min-height:100vh;color:var(--text);line-height:1.6;
+  padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 36px);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(70,231,255,.22), transparent 32%),
+    radial-gradient(circle at 90% 10%, rgba(140,108,255,.20), transparent 30%),
+    linear-gradient(180deg,#04111f 0%,#061827 45%,#020812 100%);
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;
+  background-image:
+    linear-gradient(rgba(70,231,255,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(70,231,255,.055) 1px, transparent 1px);
+  background-size:28px 28px;
+  mask-image:linear-gradient(to bottom, #000 0%, transparent 85%);
+}
+body::after{
+  content:"";position:fixed;left:0;right:0;top:-30%;height:40%;
+  background:linear-gradient(180deg,transparent,rgba(70,231,255,.10),transparent);
+  animation:scan 7s linear infinite;pointer-events:none;
+}
+@keyframes scan{to{top:110%}}
+.app{position:relative;z-index:1;max-width:860px;margin:0 auto}
+.hero{padding:22px 18px 12px;position:relative}
+.title-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand h1{font-size:23px;letter-spacing:.5px;font-weight:800}
+.brand p{font-size:12px;color:var(--muted);margin-top:3px;letter-spacing:.8px}
+.status-pill{font-size:11px;color:#00131c;background:linear-gradient(135deg,var(--cyan),#b8f7ff);padding:7px 10px;border-radius:999px;font-weight:700;box-shadow:0 0 22px rgba(70,231,255,.32)}
+.hero-panel{margin-top:18px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(12,35,58,.74),rgba(7,26,47,.50));border-radius:24px;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.28), inset 0 0 40px rgba(70,231,255,.04);backdrop-filter:blur(14px)}
+.search-box{position:relative}
+.search-box input{width:100%;padding:14px 46px 14px 16px;border:1px solid rgba(70,231,255,.25);border-radius:18px;font-size:15px;background:rgba(1,12,22,.62);color:var(--text);outline:none;box-shadow:inset 0 0 18px rgba(70,231,255,.05)}
+.search-box input::placeholder{color:#6f91a8}
+.search-box input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(70,231,255,.11), inset 0 0 18px rgba(70,231,255,.08)}
+.search-icon{position:absolute;right:15px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--cyan)}
+
+.module-nav{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:14px 2px 2px;margin-top:4px;cursor:grab;user-select:none;scrollbar-width:none}
+.module-nav::-webkit-scrollbar,.tags::-webkit-scrollbar{display:none}
+.module-nav.dragging{cursor:grabbing}
+
+.sub-nav{
+  display:none;
+  gap:9px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:0 18px 10px;
+}
+.sub-nav::-webkit-scrollbar{display:none}
+.show-list .sub-nav.show{display:flex}
+.sub-btn{
+  flex:0 0 auto;
+  border:1px solid rgba(70,231,255,.18);
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  color:#b9f4ff;
+  padding:7px 14px;
+  font-size:12px;
+  cursor:pointer;
+}
+.sub-btn.active{
+  background:linear-gradient(135deg,var(--cyan),#b8f7ff);
+  color:#00131c;
+  border-color:transparent;
+  font-weight:800;
+}
+
+.module-btn{
+  flex:0 0 auto;
+  min-width:132px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+  color:var(--text);
+  padding:11px 12px;
+  text-align:left;
+  cursor:pointer;
+  transition:.22s;
+  box-shadow:inset 0 0 24px rgba(255,255,255,.02);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.module-btn .m-icon{
+  flex:0 0 32px;
+  width:32px;
+  height:32px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  margin-bottom:0;
+  color:var(--cyan);
+  background:rgba(70,231,255,.10);
+  border:1px solid rgba(70,231,255,.22);
+  box-shadow:inset 0 0 14px rgba(70,231,255,.08);
+}
+.module-btn .m-icon svg{width:18px;height:18px;display:block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.module-btn .m-text{display:flex;flex-direction:column;min-width:0}
+.module-btn .m-label{display:block;font-size:13px;line-height:1.25;white-space:nowrap;font-weight:700}
+.module-btn .m-count{display:block;font-size:10px;color:var(--muted);margin-top:2px;line-height:1.2}
+.module-btn.active{border-color:rgba(70,231,255,.65);background:linear-gradient(135deg,rgba(70,231,255,.20),rgba(47,140,255,.14));box-shadow:0 0 22px rgba(70,231,255,.16),inset 0 0 28px rgba(70,231,255,.06)}
+.module-btn.active .m-icon{color:#00131c;background:linear-gradient(135deg,var(--cyan),#b8f7ff);box-shadow:0 0 18px rgba(70,231,255,.25)}
+
+.home{padding:8px 18px 96px}
+.ct-card{position:relative;border:1px solid var(--line);border-radius:28px;min-height:280px;overflow:hidden;background:radial-gradient(circle at center,rgba(70,231,255,.10),rgba(8,28,48,.55) 52%,rgba(255,255,255,.04));box-shadow:0 18px 55px rgba(0,0,0,.32), inset 0 0 50px rgba(70,231,255,.06)}
+.ct-core{position:absolute;left:50%;top:44%;width:170px;height:170px;transform:translate(-50%,-50%);border:1px solid rgba(70,231,255,.30);border-radius:50%;box-shadow:0 0 42px rgba(70,231,255,.12), inset 0 0 26px rgba(70,231,255,.08)}
+.ct-core::before,.ct-core::after{content:"";position:absolute;inset:18px;border:1px dashed rgba(70,231,255,.45);border-radius:50%;animation:spin 16s linear infinite}
+.ct-core::after{inset:42px;border-style:solid;border-color:rgba(140,108,255,.35);animation-duration:9s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-arm{position:absolute;left:50%;top:44%;width:2px;height:92px;background:linear-gradient(var(--cyan),transparent);transform-origin:bottom;animation:spin 4.5s linear infinite;filter:drop-shadow(0 0 8px var(--cyan))}
+.ct-label{position:absolute;left:0;right:0;bottom:24px;text-align:center}
+.ct-label strong{font-size:20px;letter-spacing:1px}
+.ct-label span{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.corner{position:absolute;width:58px;height:58px;border-color:rgba(70,231,255,.48);opacity:.8}
+.c1{left:16px;top:16px;border-left:2px solid;border-top:2px solid;border-radius:18px 0 0 0}
+.c2{right:16px;top:16px;border-right:2px solid;border-top:2px solid;border-radius:0 18px 0 0}
+.c3{left:16px;bottom:16px;border-left:2px solid;border-bottom:2px solid;border-radius:0 0 0 18px}
+.c4{right:16px;bottom:16px;border-right:2px solid;border-bottom:2px solid;border-radius:0 0 18px 0}
+
+.dashboard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.dash-card{border:1px solid rgba(255,255,255,.09);border-radius:20px;background:rgba(255,255,255,.055);padding:14px;min-height:94px;backdrop-filter:blur(12px)}
+.dash-card b{font-size:22px;color:var(--cyan)}
+.dash-card span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.wave{height:34px;margin-top:10px;background:repeating-linear-gradient(90deg,rgba(70,231,255,.2) 0 2px,transparent 2px 8px);mask-image:linear-gradient(90deg,transparent,#000,transparent)}
+
+.tags{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 18px 12px;display:none}
+.tag{flex-shrink:0;padding:6px 13px;border-radius:999px;font-size:12px;background:rgba(70,231,255,.10);color:#b9f4ff;border:1px solid rgba(70,231,255,.18)}
+.tag.active{background:var(--cyan);color:#00202d;font-weight:700}
+.stats{padding:0 18px 8px;font-size:12px;color:var(--muted);display:none}
+.disease-list{padding:0 18px 90px;display:none}
+.disease-card{
+  position:relative;
+  background:
+    linear-gradient(135deg,rgba(70,231,255,.10),rgba(255,255,255,.045) 42%,rgba(140,108,255,.07)),
+    rgba(5,19,34,.74);
+  border:1px solid rgba(70,231,255,.16);
+  border-radius:22px;
+  margin-bottom:14px;
+  overflow:hidden;
+  backdrop-filter:blur(14px);
+  box-shadow:0 14px 34px rgba(0,0,0,.24), inset 0 0 28px rgba(70,231,255,.035);
+}
+.disease-card::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,var(--cyan),rgba(140,108,255,.9),transparent);
+  box-shadow:0 0 18px rgba(70,231,255,.6);
+}
+.disease-card::after{
+  content:"";
+  position:absolute;
+  right:-36px;
+  top:-36px;
+  width:98px;
+  height:98px;
+  border:1px solid rgba(70,231,255,.14);
+  border-radius:50%;
+  pointer-events:none;
+}
+.card-header{
+  position:relative;
+  padding:15px 15px 14px 17px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+}
+.card-title-wrap{flex:1;min-width:0}
+.card-kicker{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:6px;
+  color:#8cf1ff;
+  font-size:10px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+.card-kicker .dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);
+}
+.card-header h3{
+  font-size:15px;
+  font-weight:800;
+  color:#f2fbff;
+  line-height:1.42;
+  letter-spacing:.1px;
+}
+.card-meta{
+  margin-top:8px;
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.meta-chip{
+  display:inline-flex;
+  align-items:center;
+  max-width:100%;
+  padding:3px 8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.08);
+  color:#a9c7d8;
+  font-size:11px;
+  line-height:1.3;
+}
+.arrow{
+  position:relative;
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  color:#00131c;
+  background:linear-gradient(135deg,var(--cyan),#8cf1ff);
+  transition:.25s;
+  margin-left:0;
+  box-shadow:0 0 18px rgba(70,231,255,.26);
+}
+.arrow.open{transform:rotate(90deg)}
+.card-body{
+  display:none;
+  padding:14px 15px 16px 17px;
+  border-top:1px solid rgba(70,231,255,.12);
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.14),rgba(0,0,0,.22)),
+    repeating-linear-gradient(90deg,rgba(70,231,255,.025) 0 1px,transparent 1px 14px);
+}
 .card-body.open{display:block}
-.info-section{margin-bottom:12px}
-.info-label{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;margin-bottom:6px;background:#e8f6f3;color:#1e8449}
-.info-text{font-size:13px;color:#444;line-height:1.6}
+.info-section{
+  position:relative;
+  margin-bottom:13px;
+  padding:12px 12px 11px;
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.065);
+}
+.info-section:last-child{margin-bottom:0}
+.info-label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:8px;
+  letter-spacing:.5px;
+}
+.info-label::before{
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 8px currentColor;
+}
+.info-text{font-size:13px;color:#d3e4ef;line-height:1.75}
+.info-text ul{padding-left:18px}
+.info-text li{margin-bottom:5px}
+.info-section.clinical .info-label{background:rgba(33,230,193,.14);color:#65ffe1}
+.info-section.signs .info-label{background:rgba(255,209,102,.14);color:#ffe29a}
+.info-section.features .info-label{background:rgba(70,231,255,.14);color:#8cf1ff}
+.info-section.pathology .info-label{background:rgba(140,108,255,.16);color:#c7b8ff}
+.info-section.differential .info-label{background:rgba(255,107,138,.16);color:#ff9bb1}
+.sign-tag,.pathology-tag{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  margin:4px 5px 4px 0;
+  background:rgba(255,209,102,.12);
+  color:#ffe29a;
+  border:1px solid rgba(255,209,102,.20);
+  box-shadow:inset 0 0 14px rgba(255,209,102,.04);
+}
+.differential-item{
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,107,138,.12);
+  border-left:3px solid var(--danger);
+  padding:10px 11px;
+  margin-bottom:9px;
+  border-radius:0 14px 14px 0;
+}
+.differential-item strong{color:#ff9bb1;font-size:13px}
+.diff-text{font-size:12px;color:#cbd9e2;margin-top:4px;line-height:1.65}
+
+.module-empty{grid-column:1/-1;text-align:center;padding:44px 20px;color:var(--muted)}
+.back-top{position:fixed;right:16px;bottom:calc(22px + var(--safe-bottom));width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#00131c;border:none;font-size:18px;font-weight:900;box-shadow:0 0 24px rgba(70,231,255,.26);display:none;z-index:20}
+.show-list .home{display:none}
+.show-list .tags,.show-list .stats,.show-list .disease-list{display:flex}
+.show-list .disease-list{display:block}
+/* ========== 响应式布局 ========== */
+/* 平板：≥768px */
+@media (min-width: 768px) {
+  .app { max-width: 1100px; }
+  .hero { padding: 28px 32px 18px; }
+  .brand h1 { font-size: 28px; }
+  .brand p { font-size: 13px; }
+  .hero-panel { padding: 20px; }
+  .search-box input { font-size: 16px; padding: 15px 50px 15px 18px; }
+  .module-nav { gap: 12px; padding: 16px 4px 4px; }
+  .module-btn { min-width: 150px; padding: 13px 16px; }
+  .module-btn .m-icon { flex:0 0 36px; width:36px; height:36px; }
+  .module-btn .m-icon svg { width:20px; height:20px; }
+  .module-btn .m-label { font-size: 14px; }
+  .disease-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 0 24px 90px;
+  }
+  .show-list .disease-list { display: grid; }
+  .home { padding: 14px 24px 96px; }
+  .ct-card { min-height: 320px; }
+  .ct-label strong { font-size: 24px; }
+  .dashboard { gap: 14px; }
+  .dash-card { padding: 18px; min-height: 100px; }
+  .dash-card b { font-size: 26px; }
+  .tags { padding: 0 24px 12px; }
+  .stats { padding: 0 24px 8px; }
+}
+
+/* 电脑：≥1024px */
+@media (min-width: 1024px) {
+  .app { max-width: 1400px; }
+  .hero { padding: 32px 48px 20px; }
+  .brand h1 { font-size: 32px; }
+  .brand p { font-size: 14px; letter-spacing: 1.2px; }
+  .status-pill { font-size: 12px; padding: 8px 14px; }
+  .hero-panel { padding: 24px; border-radius: 28px; }
+  .search-box input { font-size: 17px; padding: 16px 52px 16px 20px; border-radius: 22px; }
+  .search-icon { font-size: 20px; right: 18px; }
+  /* 系统导航：电脑上可换行，不只能横滑 */
+  .module-nav {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 14px;
+    padding: 16px 4px 6px;
+    cursor: default;
+  }
+  .module-nav.dragging { cursor: default; }
+  .module-btn { min-width: 170px; padding: 14px 18px; border-radius: 20px; }
+  .module-btn .m-icon { flex:0 0 40px; width:40px; height:40px; border-radius: 13px; }
+  .module-btn .m-icon svg { width:22px; height:22px; }
+  .module-btn .m-label { font-size: 15px; }
+  .module-btn .m-count { font-size: 11px; }
+  .disease-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    padding: 0 32px 90px;
+  }
+  .home { padding: 18px 32px 96px; }
+  .ct-card { min-height: 360px; border-radius: 32px; }
+  .ct-core { width: 220px; height: 220px; }
+  .scan-arm { height: 118px; }
+  .ct-label strong { font-size: 28px; }
+  .ct-label span { font-size: 13px; }
+  .corner { width: 66px; height: 66px; }
+  .c1 { left:20px; top:20px; border-radius: 22px 0 0 0; }
+  .c2 { right:20px; top:20px; border-radius: 0 22px 0 0; }
+  .c3 { left:20px; bottom:20px; border-radius: 0 0 0 22px; }
+  .c4 { right:20px; bottom:20px; border-radius: 0 0 22px 0; }
+  .dashboard { gap: 16px; }
+  .dash-card { padding: 20px; min-height: 110px; border-radius: 24px; }
+  .dash-card b { font-size: 30px; }
+  .dash-card span { font-size: 13px; }
+  .wave { height: 38px; }
+  .sub-nav { padding: 0 32px 10px; }
+  .tags { padding: 0 32px 12px; gap: 10px; }
+  .stats { padding: 0 32px 8px; }
+}
+
+/* 大屏：≥1400px */
+@media (min-width: 1400px) {
+  .disease-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 手机横屏适配 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .hero { padding: 12px 18px 8px; }
+  .hero-panel { margin-top: 10px; padding: 12px; }
+  .ct-card { min-height: 180px; }
+  .ct-core { width: 100px; height: 100px; top: 40%; }
+  .scan-arm { height: 50px; top: 40%; }
+  .ct-label { bottom: 12px; }
+  .ct-label strong { font-size: 16px; }
+  .dashboard { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .dash-card { min-height: 70px; padding: 10px; }
+  .dash-card b { font-size: 18px; }
+  .dash-card span { font-size: 11px; }
+  .wave { height: 20px; margin-top: 6px; }
+}
+
+/* ========== .show-list 浅色模式 响应式 ========== */
+@media (min-width: 768px) {
+  body.show-list .hero { padding: 20px 32px 16px; }
+  body.show-list .hero-panel { padding: 20px; border-radius: 28px; }
+  body.show-list .brand h1 { font-size: 28px; }
+  body.show-list .brand p { font-size: 13px; }
+  body.show-list .search-box input { font-size: 16px; padding: 15px 50px 15px 18px; border-radius: 22px; }
+  body.show-list .module-btn { padding: 13px 16px; min-width: 150px; }
+  body.show-list .module-btn .m-icon { width: 36px; height: 36px; }
+  body.show-list .sub-btn,
+  body.show-list .tag { padding: 8px 16px; font-size: 13px; }
+}
+
+@media (min-width: 1024px) {
+  body.show-list .hero { padding: 24px 48px 18px; }
+  body.show-list .hero-panel { padding: 24px; border-radius: 32px; }
+  body.show-list .brand h1 { font-size: 32px; }
+  body.show-list .brand p { font-size: 14px; }
+  body.show-list .search-box input { font-size: 17px; padding: 16px 52px 16px 20px; border-radius: 24px; }
+  body.show-list .module-nav { flex-wrap: wrap; overflow-x: visible; }
+  body.show-list .module-btn { padding: 14px 18px; min-width: 170px; border-radius: 20px; }
+  body.show-list .module-btn .m-icon { width: 40px; height: 40px; border-radius: 13px; }
+  body.show-list .module-btn .m-label { font-size: 15px; }
+  body.show-list .sub-btn,
+  body.show-list .tag { padding: 9px 18px; font-size: 13px; border-radius: 999px; }
+  body.show-list .card-header h3 { font-size: 16px; }
+  body.show-list .card-kicker { font-size: 11px; }
+  body.show-list .meta-chip { font-size: 12px; padding: 4px 10px; }
+  body.show-list .info-label { font-size: 12px; padding: 5px 12px; }
+  body.show-list .info-text { font-size: 14px; }
+  body.show-list .sign-tag,
+  body.show-list .pathology-tag { font-size: 13px; padding: 6px 12px; }
+  body.show-list .differential-item strong { font-size: 14px; }
+  body.show-list .diff-text { font-size: 13px; }
+}
+
+/* Inner pages: light reading mode. Home remains dark. */
+body.show-list{
+  background:#eef4f8;
+  color:#263746;
+}
+body.show-list::before,
+body.show-list::after{
+  display:none;
+}
+body.show-list .hero{
+  background:linear-gradient(180deg,#ffffff 0%,#eef6fb 100%);
+  border-bottom:1px solid #d9e6ee;
+  box-shadow:0 8px 24px rgba(19,58,88,.08);
+  padding-bottom:14px;
+}
+body.show-list .brand h1{color:#123047}
+body.show-list .brand p{color:#6d8393}
+body.show-list .status-pill{
+  background:#dff8ff;
+  color:#087083;
+  box-shadow:none;
+}
+body.show-list .hero-panel{
+  background:#fff;
+  border:1px solid #dce9f1;
+  box-shadow:0 10px 24px rgba(24,68,98,.08);
+}
+body.show-list .search-box input{
+  background:#f8fbfd;
+  color:#1d3344;
+  border-color:#d6e5ee;
+  box-shadow:none;
+}
+body.show-list .search-box input::placeholder{color:#8aa0af}
+body.show-list .search-icon{color:#2980b9}
+
+body.show-list .module-btn{
+  background:#f8fbfd;
+  color:#263746;
+  border-color:#dbe8f0;
+  box-shadow:none;
+}
+body.show-list .module-btn .m-icon{
+  color:#2980b9;
+  background:#eaf6fb;
+  border-color:#cfe8f5;
+  box-shadow:none;
+}
+body.show-list .module-btn.active{
+  background:#e7f4fb;
+  border-color:#8bc9e8;
+  box-shadow:none;
+}
+body.show-list .module-btn.active .m-icon{
+  color:#fff;
+  background:linear-gradient(135deg,#1a5276,#2980b9);
+  box-shadow:none;
+}
+body.show-list .module-btn .m-count,
+body.show-list .stats{color:#6f8494}
+
+body.show-list .sub-nav,
+body.show-list .tags{
+  background:#eef4f8;
+}
+body.show-list .sub-btn,
+body.show-list .tag{
+  background:#fff;
+  color:#2d6f96;
+  border:1px solid #d6e5ee;
+}
+body.show-list .sub-btn.active,
+body.show-list .tag.active{
+  background:#1a5276;
+  color:#fff;
+  border-color:#1a5276;
+}
+
+body.show-list .disease-card{
+  background:#fff;
+  border:1px solid #dbe6ee;
+  box-shadow:0 10px 22px rgba(34,68,92,.08);
+}
+body.show-list .disease-card::before{
+  background:linear-gradient(180deg,#2980b9,#46bde7,#dbeefa);
+  box-shadow:none;
+}
+body.show-list .disease-card::after{border-color:#e3edf3}
+body.show-list .card-kicker{color:#2d86b7}
+body.show-list .card-kicker .dot{
+  background:#2980b9;
+  box-shadow:none;
+}
+body.show-list .card-header h3{color:#1d3344}
+body.show-list .meta-chip{
+  background:#f2f7fa;
+  border-color:#e0ebf2;
+  color:#607889;
+}
+body.show-list .arrow{
+  color:#fff;
+  background:linear-gradient(135deg,#1a5276,#2980b9);
+  box-shadow:none;
+}
+body.show-list .card-body{
+  background:#fbfdfe;
+  border-top:1px solid #e5eef4;
+}
+body.show-list .info-section{
+  background:#fff;
+  border-color:#e6eef4;
+}
+body.show-list .info-text{color:#364b5a}
+body.show-list .info-section.clinical .info-label{background:#e8f6f3;color:#1e8449}
+body.show-list .info-section.signs .info-label{background:#fef9e7;color:#b58200}
+body.show-list .info-section.features .info-label{background:#eaf2f8;color:#2874a6}
+body.show-list .info-section.pathology .info-label{background:#f5eef8;color:#8e44ad}
+body.show-list .info-section.differential .info-label{background:#fdedec;color:#c0392b}
+body.show-list .sign-tag,
+body.show-list .pathology-tag{
+  background:#fff9df;
+  color:#9d7100;
+  border-color:#f3e4a3;
+  box-shadow:none;
+}
+body.show-list .differential-item{
+  background:#fff;
+  border-color:#f1d0d0;
+  border-left-color:#c0392b;
+}
+body.show-list .differential-item strong{color:#c0392b}
+body.show-list .diff-text{color:#4d5f6c}
+body.show-list .module-empty{color:#6f8494}
+
 </style>
 </head>
 <body>
+<div class="app" id="app">
+  <section class="hero">
+    <div class="title-row">
+      <div class="brand">
+        <h1>🫁 影像诊断知识库</h1>
+        <p>RADIOLOGY INTELLIGENCE ATLAS</p>
+      </div>
+      <div class="status-pill">ONLINE</div>
+    </div>
 
-<div class="header">
-<h1>影像诊断知识库</h1>
+    <div class="hero-panel">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="搜索疾病、征象、影像特征、鉴别诊断..." oninput="filterCards()">
+        <span class="search-icon">⌕</span>
+      </div>
+      <div class="module-nav" id="moduleNav"></div>
+    </div>
+  </section>
+
+  <section class="home" id="home">
+    <div class="ct-card">
+      <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+      <div class="ct-core"></div>
+      <div class="scan-arm"></div>
+      <div class="ct-label">
+        <strong>AI IMAGING CORE</strong>
+        <span>CT / MRI / DR / US Diagnostic Knowledge Engine</span>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <div class="dash-card"><b id="totalCount">0</b><span>知识条目</span><div class="wave"></div></div>
+      <div class="dash-card"><b>10</b><span>影像系统</span><div class="wave"></div></div>
+      <div class="dash-card"><b>Signs</b><span>影像征象索引</span><div class="wave"></div></div>
+      <div class="dash-card"><b>Dx</b><span>鉴别诊断模块</span><div class="wave"></div></div>
+    </div>
+  </section>
+
+  <div class="sub-nav" id="boneLevel2"></div>
+  <div class="sub-nav" id="boneLevel3"></div>
+  <div class="tags" id="tags"></div>
+  <div class="stats" id="stats"></div>
+  <div class="disease-list" id="list"></div>
 </div>
 
-<div class="module-nav" id="moduleNav">
-<button class="module-btn active" onclick="setModule('all')">全部</button>
-<button class="module-btn" onclick="setModule('bone')">骨肌系统</button>
-</div>
-
-<div class="search-box">
-<input type="text" id="search" placeholder="搜索疾病名称..." oninput="filterCards()">
-</div>
-
-<div class="stats" id="stats"></div>
-
-<div class="disease-list" id="list"></div>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-let currentModule = 'all';
-
 const DATA = [
+  // ==================== 中枢神经系统 ====================
   {
-    name: "骨性关节炎",
-    nameEn: "Osteoarthritis",
-    module: "bone",
-    subsystem: "关节",
-    clinical: "定义：一种以关节软骨退行性变和继发性骨质增生为特征的慢性关节疾病。好发人群：中老年人，女性多于男性，肥胖者多见。好发部位：膝关节、髋关节、手关节。临床特征：关节疼痛（活动后加重，休息后缓解）、关节僵硬（晨僵时间短，通常<30分钟）。",
-    signs: "1. 关节间隙狭窄（非对称性、不均匀）；2. 骨赘形成（关节边缘尖锐增生）；3. 软骨下硬化（骨密度增高）。",
-    features: "X线表现：早期关节间隙轻度狭窄、骨赘形成；中期关节间隙明显狭窄、软骨下硬化、囊肿形成；晚期关节间隙消失、严重骨赘、关节畸形。MRI表现：早期显示软骨退变（T2WI信号增高、软骨变薄）、骨髓水肿。"
+    name: "胶质母细胞瘤（Glioblastoma Multiforme，GBM）",
+    module: "brain",
+    category: "神经上皮性肿瘤",
+    clinical: [
+      "定义：最常见、恶性程度最高的原发性颅内肿瘤（WHO IV级），起源于星形胶质细胞。",
+      "好发人群：中老年人多见，高峰年龄45-70岁，男性略多于女性。",
+      "好发部位：幕上多见，好发于额叶、颞叶。",
+      "临床特征：头痛、呕吐、癫痫、神经功能障碍；病情进展快，预后差。"
+    ],
+    signs: [
+      "混杂密度/信号",
+      "花环状强化",
+      "坏死囊变",
+      "瘤周水肿",
+      "胼胝体侵犯"
+    ],
+    features: [
+      "CT表现：不规则低密度影，中心坏死囊变，出血常见；瘤周明显水肿；增强后呈不规则环形或花环状强化。",
+      "MRI表现：T1WI呈低或混杂信号，T2WI/FLAIR呈高或混杂信号；增强后明显花环状强化（特征性）；DWI可见弥散受限；MRS显示Cho升高、NAA降低、Lip-Lac峰。",
+      "典型表现：幕上不规则环形强化肿块 + 明显瘤周水肿 + 坏死囊变 + 胼胝体侵犯（蝴蝶状生长）。"
+    ],
+    differential: {
+      "脑脓肿": "感染症状明显，环状强化薄而均匀，DWI明显高信号（弥散受限），MRS可见琥珀酸/醋酸盐峰。",
+      "转移瘤": "多发病灶，好发于皮髓质交界区，瘤周水肿明显，强化明显，有原发肿瘤病史。",
+      "脑膜瘤": "位于脑外，宽基底与硬脑膜相连，均匀明显强化，可见脑膜尾征。"
+    }
   },
   {
-    name: "类风湿关节炎",
-    nameEn: "Rheumatoid Arthritis",
-    module: "bone",
-    subsystem: "关节",
-    clinical: "定义：一种以侵蚀性、对称性多关节炎为主要临床表现的慢性、全身性自身免疫性疾病。好发人群：30-50岁女性多见。好发部位：手足小关节（掌指关节、近端指间关节、腕关节）。临床特征：对称性、持续性关节疼痛、肿胀、晨僵（>1小时）。",
-    signs: "1. 关节间隙均匀性狭窄；2. 边缘性骨侵蚀；3. 骨质疏松（全身性）。",
-    features: "X线表现：早期软组织肿胀、骨质疏松；中期关节间隙均匀狭窄、边缘性骨侵蚀；晚期关节半脱位/脱位、关节强直。MRI表现：早期显示滑膜炎、血管翳、骨髓水肿。"
+    name: "脑膜瘤（Meningioma）",
+    module: "brain",
+    category: "脑膜肿瘤",
+    clinical: [
+      "定义：起源于蛛网膜帽状细胞的良性肿瘤（WHO I级多见），生长缓慢。",
+      "好发人群：中年女性多见，男女比例约1:2。",
+      "好发部位：矢状窦旁、大脑凸面、蝶骨嵴、嗅沟、桥小脑角区。",
+      "临床特征：癫痫、头痛、局灶性神经功能障碍；位于功能区者症状出现早。"
+    ],
+    signs: [
+      "脑外肿块",
+      "均匀明显强化",
+      "脑膜尾征",
+      "广基底",
+      "钙化"
+    ],
+    features: [
+      "CT表现：等或高密度脑外肿块，可见钙化（20-25%）；广基底与硬脑膜相连；增强后明显均匀强化；可见脑膜尾征（肿瘤附着处硬脑膜增厚强化）。",
+      "MRI表现：T1WI呈等或低信号，T2WI呈等或高信号；增强后明显均匀强化；脑膜尾征（特征性）；DWI呈高信号（上皮细胞密集）。",
+      "典型表现：脑外均匀明显强化肿块 + 广基底与硬脑膜相连 + 脑膜尾征。"
+    ],
+    differential: {
+      "胶质瘤": "位于脑内，不规则环状强化，无脑膜尾征，水肿明显。",
+      "转移瘤": "多发病灶，位于脑内，瘤周水肿明显，有原发肿瘤病史。",
+      "神经鞘瘤": "位于桥小脑角区，内听道扩大，不均匀强化，无脑膜尾征。"
+    }
   },
   {
-    name: "痛风性关节炎",
-    nameEn: "Gouty Arthritis",
-    module: "bone",
-    subsystem: "关节",
-    clinical: "定义：由于尿酸盐结晶沉积在关节及周围组织引起的炎症反应。好发人群：中老年男性。好发部位：第一跖趾关节（50-70%）、踝关节、膝关节。临床特征：急性发作、剧烈疼痛、红肿热痛、夜间发作。",
-    signs: "1. 穿凿样骨侵蚀（圆形/椭圆形骨质缺损、边缘硬化）；2. 痛风石（软组织结节）。",
-    features: "X线表现：早期正常或仅有软组织肿胀；典型期穿凿样骨侵蚀、关节间隙保持；慢性期痛风石、关节畸形。双能CT：绿色编码尿酸盐结晶（特异性诊断）。"
+    name: "垂体腺瘤（Pituitary Adenoma）",
+    module: "brain",
+    category: "鞍区肿瘤",
+    clinical: [
+      "定义：起源于垂体前叶上皮细胞的良性肿瘤，是鞍区最常见肿瘤。",
+      "好发人群：30-50岁成人，无明显性别差异（功能性腺瘤女性多见）。",
+      "好发部位：垂体前叶。",
+      "临床特征：功能性腺瘤（泌乳素瘤、生长激素瘤、ACTH瘤）有相应内分泌症状；无功能性腺瘤以视力视野障碍、头痛为主。"
+    ],
+    signs: [
+      "鞍内肿块",
+      "鞍底下陷",
+      "视交叉受压",
+      "均匀或环形强化",
+      "海绵窦侵犯"
+    ],
+    features: [
+      "CT表现：鞍内等密度肿块，可向鞍上、鞍旁生长；鞍底下陷、骨质吸收；增强后呈均匀或环形强化（取决于是否囊变）。",
+      "MRI表现：T1WI呈低或等信号，T2WI呈等或高信号；动态增强早期肿瘤强化低于正常垂体，延迟后明显强化；MRI是首选检查方法，可显示肿瘤与视交叉、海绵窦的关系。",
+      "典型表现：鞍内肿块向鞍上生长（'雪人征'） + 鞍底下陷 + 视交叉受压上抬。"
+    ],
+    differential: {
+      "颅咽管瘤": "好发于儿童，位于鞍上，囊实性，可见钙化（CT），无正常垂体可见。",
+      "Rathke裂囊肿": "位于垂体前后叶之间，T1WI信号多变（蛋白含量高时高信号），无强化或仅囊壁轻度强化。",
+      "脑膜瘤": "位于鞍结节、鞍隔，广基底与硬脑膜相连，明显均匀强化，垂体受压下移但结构可辨。"
+    }
+  },
+
+  // ==================== 头颈五官系统 ====================
+  {
+    name: "鼻咽癌（Nasopharyngeal Carcinoma，NPC）",
+    module: "head",
+    category: "头颈部恶性肿瘤",
+    clinical: [
+      "定义：起源于鼻咽腔顶部和侧壁的恶性肿瘤，与EB病毒感染密切相关。",
+      "好发人群：中国南方、东南亚人群高发，40-50岁为高峰，男性多于女性。",
+      "好发部位：鼻咽部，尤其是咽隐窝、顶后壁。",
+      "临床特征：鼻塞、涕中带血、耳鸣耳闷、颈部淋巴结肿大（常见首发症状）、颅神经侵犯症状。"
+    ],
+    signs: [
+      "咽隐窝变浅",
+      "软组织肿块",
+      "颈部淋巴结肿大",
+      "颅底骨质破坏",
+      "强化明显"
+    ],
+    features: [
+      "CT表现：鼻咽部软组织肿块，咽隐窝变浅或消失；增强后明显强化；可显示颅底骨质破坏、颈部淋巴结肿大。",
+      "MRI表现：T1WI呈低或等信号，T2WI呈中高信号；增强后明显强化；MRI对软组织分辨力高，可清楚显示肿瘤向周围侵犯（颅底、海绵窦、眼眶等）。",
+      "典型表现：鼻咽部软组织肿块 + 咽隐窝消失 + 颈部淋巴结肿大 + 明显强化。"
+    ],
+    differential: {
+      "鼻咽淋巴瘤": "可表现为鼻咽部肿物，但常伴全身淋巴结肿大，EBV-DNA负荷可能不高，确诊需病理。",
+      "鼻咽部腺样体肥大": "青少年多见，对称性增生，表面光滑，无侵袭性生长，强化较均匀。",
+      "纤维血管瘤": "好发于青少年男性，位于后鼻孔区，明显强化，无颈部淋巴结转移。"
+    }
   },
   {
-    name: "夏科氏关节病",
-    nameEn: "Charcot Joint",
-    module: "bone",
-    subsystem: "关节",
-    clinical: "定义：由于神经感觉丧失导致关节反复损伤、退化、破坏的一种神经关节病。好发人群：糖尿病患者（60-75%）、脊髓痨（梅毒）。好发部位：足部（50%）、膝关节（25%）。临床特征：关节肿胀、积液；疼痛轻微或无痛（特征性）；神经病变表现。",
-    signs: "经典5D征象：1. Density（密度增高）；2. Debris（碎屑）；3. Dislocation（脱位）；4. Distension（肿胀）；5. Destruction（破坏）。",
-    features: "X线表现：早期关节积液、软组织肿胀；进展期关节间隙狭窄、骨侵蚀、碎骨片、半脱位；晚期严重骨破坏、关节脱位、骨硬化、关节融合。"
+    name: "甲状腺乳头状癌（Papillary Thyroid Carcinoma，PTC）",
+    module: "head",
+    category: "甲状腺恶性肿瘤",
+    clinical: [
+      "定义：最常见的甲状腺癌（约占80%），起源于甲状腺滤泡上皮细胞，生长缓慢，预后较好。",
+      "好发人群：30-50岁女性多见，儿童期头颈部放射史者风险增加。",
+      "好发部位：甲状腺任一叶，单发或多发。",
+      "临床特征：常偶然发现甲状腺结节；可出现声音嘶哑（侵犯喉返神经）、吞咽困难；颈部淋巴结转移常见（尤其是中央区淋巴结）。"
+    ],
+    signs: [
+      "甲状腺结节",
+      "微钙化",
+      "边界不清",
+      "纵横比>1",
+      "淋巴结转移"
+    ],
+    features: [
+      "超声表现（首选）：低回声实性结节，边界不清，形态不规则；微钙化（砂砾体）；纵横比>1（结节前后径大于左右径）；侵犯被膜；颈部淋巴结异常（皮质增厚、微钙化）。",
+      "CT表现：低密度结节，边界不清，可有钙化；增强后轻度强化；可显示气管、食管侵犯。",
+      "MRI表现：T1WI呈低或等信号，T2WI呈高信号；增强后不均匀强化；对评估气管、食管侵犯有帮助。",
+      "典型表现：超声显示低回声结节 + 微钙化 + 纵横比>1 + 颈部淋巴结转移。"
+    ],
+    differential: {
+      "结节性甲状腺肿": "多发结节，边界清楚，无微钙化，纵横比<1，无淋巴结转移。",
+      "甲状腺腺瘤": "单发结节，边界清楚，有完整包膜，无微钙化和侵犯表现。",
+      "亚急性甲状腺炎": "疼痛性甲状腺肿大，T2WI信号增高，无微钙化和淋巴结转移，ESR增快。"
+    }
   },
-  {
-    name: "骨纤维结构不良",
-    nameEn: "Fibrous Dysplasia",
+
+  // ==================== 呼吸系统 ====================
+  
+  // ==================== 消化系统 ====================
+  
+  // ==================== 骨肌系统 ====================
+      {
+      name: "内生软骨瘤（Enchondroma）",
+      module: "musculoskeletal",
+      category: "良性成软骨性肿瘤",
+      clinical: [
+        "定义：是生长缓慢的良性肿瘤，由软骨细胞和软骨基质构成，极少数恶变。",
+        "好发人群：多见于青少年，11-20岁占80%以上，男性略多于女性。",
+        "好发部位：好发于手、足短管状骨，其次为长骨（股骨、肱骨）。",
+        "临床特征：通常无症状，常因外伤或病理骨折偶然发现；位于长骨者可出现疼痛。"
+      ],
+      signs: [
+        "囊状透亮区",
+        "斑点状钙化",
+        "皮质变薄",
+        "病理骨折"
+      ],
+      features: [
+        "X线表现：髓腔内类圆形或分叶状透亮区，边缘清晰，可见硬化边；囊状透亮区内的钙化影（斑点状、环状）是诊断主要依据；骨皮质常变薄、膨胀。",
+        "CT表现：髓腔内软组织密度影，内可见斑点状、环状钙化，骨皮质变薄但完整。",
+        "MRI表现：T1WI呈低-等信号，T2WI呈高信号（软骨基质），钙化区呈低信号；增强扫描病变强化不明显或轻度强化。",
+        "典型表现：短管状骨内囊状透亮区伴斑点状钙化，骨皮质变薄。"
+      ],
+      differential: {
+        "骨软骨瘤": "位于骨表面，有蒂或广基底与母骨相连，皮质和髓腔与母骨相延续。",
+        "软骨肉瘤": "发病年龄较大（40-50岁），疼痛明显，钙化更密集且形态不规则，骨皮质破坏，软组织肿块。",
+        "低级别软骨肉瘤": "鉴别困难，需结合临床；明显疼痛的内生性软骨瘤需警惕恶变。"
+      }
+    },
+    {
+      name: "骨软骨瘤（Osteochondroma）",
+      module: "musculoskeletal",
+      category: "良性成软骨性肿瘤",
+      clinical: [
+        "定义：又称外生骨疣，是最常见的良性骨肿瘤，由骨性基底和软骨帽构成。",
+        "好发人群：青少年多发，80%年龄在20岁以下，男性多于女性。",
+        "好发部位：好发于长骨干骺端，尤以股骨下端、胫骨上端、肱骨上端多见。",
+        "临床特征：多为无痛性肿块，生长缓慢；可因压迫神经血管或邻近组织出现症状。"
+      ],
+      signs: [
+        "骨性突起",
+        "软骨帽",
+        "背向关节生长",
+        "皮质髓腔延续"
+      ],
+      features: [
+        "X线表现：长骨干骺端骨性突起，背向关节生长；骨皮质和髓腔与母骨相延续；顶部可见软骨帽钙化。",
+        "CT表现：清晰显示骨性基底的皮质和髓腔与母骨相延续，软骨帽厚度（成人<1cm，儿童可较厚）。",
+        "MRI表现：骨性基底呈低信号，软骨帽T1WI呈低信号、T2WI呈高信号；增强扫描软骨帽可强化。",
+        "典型表现：带蒂或广基底的骨性突起，皮质和髓腔与母骨相延续，背向关节生长。"
+      ],
+      differential: {
+        "内生软骨瘤": "位于髓腔内，骨皮质膨胀变薄，无骨性突起。",
+        "软骨肉瘤": "发病年龄大，疼痛明显，软骨帽增厚（>1cm），钙化形态不规则，骨皮质破坏。",
+        "骨旁骨肉瘤": "位于骨表面，与骨皮质间有透亮间隙，无软骨帽，可见瘤骨形成。"
+      }
+    },
+    {
+      name: "软骨母细胞瘤（Chondroblastoma）",
+      module: "musculoskeletal",
+      category: "良性成软骨性肿瘤",
+      clinical: [
+        "定义：是一种由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%。",
+        "好发人群：大多数发病年龄为10-25岁，平均年龄约20岁，男性为主，男女比为2:1。",
+        "好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨，紧邻关节软骨的长管状骨骺端。",
+        "临床特征：绝大多数患者表现为局部疼痛，可持续多年；可伴有关节积液和活动受限。"
+      ],
+      signs: [
+        "骨骺溶骨性病变",
+        "薄层硬化边",
+        "斑点状钙化",
+        "关节积液"
+      ],
+      features: [
+        "X线表现：界限清楚、偏心性、溶骨性病变，位于骨骺或骨突；周围有薄层硬化骨形成的边缘；病变一般较小(3-6cm)；中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄。",
+        "CT表现：有助于定性诊断和确定病变范围，清晰显示钙化。",
+        "MRI表现：T1WI低信号；T2WI混杂信号(低-钙化、中-透明软骨基质、高-液化和出血)；周围可见广泛骨髓水肿和软组织水肿；增强扫描病灶边缘及分隔强化。",
+        "典型表现：骨骺或骨突内溶骨性病变，薄层硬化边，伴广泛骨髓水肿。"
+      ],
+      differential: {
+        "骨巨细胞瘤": "好发年龄20-40岁，位于骨端，横向偏心生长，无硬化边，无钙化。",
+        "内生软骨瘤": "位于干骺端或骨干，髓腔内，无骨髓水肿。",
+        "软骨肉瘤": "发病年龄较大，疼痛明显，病变较大，骨皮质破坏，软组织肿块。"
+      }
+    },
+    {
+      name: "软骨肉瘤（Chondrosarcoma）",
+      module: "musculoskeletal",
+      category: "恶性成软骨性肿瘤",
+      clinical: [
+        "定义：是起源于软骨或成软骨结缔组织的一种较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%。",
+        "好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上。",
+        "好发部位：发病部位以股骨及胫骨最为多见，其次为骨盆骨、肋骨、肩胛骨。",
+        "临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；生长较慢，倾向于局部浸润，全身转移晚。"
+      ],
+      signs: [
+        "溶骨性破坏",
+        "环形钙化",
+        "软组织肿块",
+        "骨皮质破坏"
+      ],
+      features: [
+        "X线表现：中心型在骨内呈溶骨性破坏，边界多不清楚；邻近骨皮质膨胀、变薄或破坏；骨破坏区和软组织肿块内可见环形、半环形或沙砾样钙化（具有定性价值）。",
+        "CT表现：显示骨破坏区、软组织肿块和钙化；典型钙化是点状、环形或半环形；非钙化部分密度可不均匀，可见坏死、囊变。",
+        "MRI表现：T1WI呈等或低信号；T2WI恶性度低的呈均匀高信号，恶性度高的信号不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化。",
+        "典型表现：溶骨性破坏伴环形、半环形钙化，软组织肿块，多见于中老年。"
+      ],
+      differential: {
+        "内生软骨瘤": "病变较小，疼痛不明显，钙化较稀疏，无骨皮质破坏和软组织肿块。",
+        "骨肉瘤": "瘤骨形成（象牙质样、云絮状），骨膜反应明显（Codman三角），无软骨样环形钙化。",
+        "骨巨细胞瘤": "位于骨端，皂泡状改变，无钙化，发病年龄较轻（20-40岁）。"
+      }
+    },
+    {
+      name: "骨肉瘤（Osteosarcoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是一种瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨。",
+        "好发人群：好发于青少年及儿童（10-20岁），男女比约1.7:1。",
+        "好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端。",
+        "临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高。"
+      ],
+      signs: [
+        "骨质破坏",
+        "瘤骨形成",
+        "骨膜反应",
+        "软组织肿块",
+        "Codman三角"
+      ],
+      features: [
+        "X线表现：骨质破坏（斑状、大片状、虫蚀状、筛孔状）；瘤骨（象牙质样、云絮状、针状）；骨膜增生（平行型、葱皮型、Codman三角、放射状）；软组织肿块。",
+        "CT表现：不规则溶骨性破坏，骨皮质变薄或中断；软组织肿块形成；瘤骨分布于骨质破坏区或软组织内；增强后实质部分强化，中心可见坏死液化区。",
+        "MRI表现：不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤；瘤骨、瘤软骨钙化呈低信号。",
+        "典型表现：骨质破坏+瘤骨形成+骨膜反应+软组织肿块，青少年长骨干骺端。"
+      ],
+      differential: {
+        "软骨肉瘤": "环形钙化为主，无瘤骨形成，发病年龄较大（50岁以上）。",
+        "骨巨细胞瘤": "位于骨端，皂泡状改变，无瘤骨，无骨膜反应，发病年龄20-40岁。",
+        "尤文肉瘤": "骨干多见，葱皮样骨膜反应，无瘤骨形成，发病年龄5-15岁。",
+        "骨髓炎": "病史长，有感染症状，骨质破坏与增生并存，无软组织肿块。"
+      }
+    },
+    {
+      name: "造釉细胞瘤（Ameloblastoma）",
+      module: "musculoskeletal",
+      category: "牙源性肿瘤",
+      clinical: [
+        "定义：是颌骨最常见的牙源性肿瘤，具有局部侵袭性，多呈缓慢持续生长。",
+        "好发人群：中年人好发，发病高峰年龄是30-40岁，男女发病率相近。",
+        "好发部位：好发于下颌磨牙区和下颌升支，上颌骨少见。",
+        "临床特征：常以颌面部肿块就诊，颌面局部变形；较大肿块影响下颌骨运动，甚至发生吞咽、咀嚼和呼吸障碍；肿瘤区牙齿松动或脱落；触之有乒乓球感。"
+      ],
+      signs: [
+        "多囊状改变",
+        "蜂窝状",
+        "牙根吸收",
+        "骨皮质膨胀",
+        "壁结节强化"
+      ],
+      features: [
+        "X线表现：多囊型（多见）呈蜂窝状或肥皂泡状低密度影，边界清晰，边缘围绕高密度骨反应线；单囊型呈单囊状低密度，边缘可有切迹；牙根呈锯齿状吸收。",
+        "CT表现：囊内含有实质性成分，增强后有强化（区别于囊肿的特征性表现）；病变可突破膨隆的骨皮质侵犯邻近软组织；多房型可见分房大小不等，间隔厚薄不均。",
+        "MRI表现：T1WI混杂信号（囊性呈低信号，实性可呈高信号）；T2WI混杂信号；增强可见壁结节强化（代表'肿瘤生长中心'），分隔强化，实性区域快速强化（约60秒达峰值）。",
+        "典型表现：多囊状或蜂窝状改变，牙根锯齿状吸收，壁结节强化。"
+      ],
+      differential: {
+        "牙源性角化囊肿": "单囊多见，沿颌骨长轴生长，牙根吸收较轻，无壁结节强化，易复发。",
+        "根尖囊肿": "与龋齿相关，位于牙根方，边缘光滑，无分隔，无强化。",
+        "颌骨中心性鳞癌": "边界不清，溶骨性破坏，无多囊改变，发病年龄较大（40-60岁）。",
+        "骨巨细胞瘤": "位于骨端，皂泡状，无牙根吸收，发病部位不同。"
+      }
+    },
+    {
+      name: "脊索瘤（Chordoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是起源于脊索残余组织的低度恶性肿瘤，局部侵袭性强，生长缓慢。",
+        "好发人群：发病年龄以20-40岁成人多见，男性略多于女性。",
+        "好发部位：好发于骶尾部（50%）、颅底（35%）、颈椎（15%）。",
+        "临床特征：骶尾部：疼痛、便秘、下肢麻木；颅底：头痛、颅神经麻痹、视力障碍。"
+      ],
+      signs: [
+        "溶骨性破坏",
+        "软组织肿块",
+        "残留骨片",
+        "钙化",
+        "T2高信号"
+      ],
+      features: [
+        "X线表现：骶尾部或颅底溶骨性破坏，边界不清，可见残留骨片；软组织肿块较大，可向前突入盆腔或向后突入臀肌。",
+        "CT表现：骨质破坏区呈低密度，内可见残留骨片或钙化；软组织肿块密度不均，增强后不均匀强化。",
+        "MRI表现：T1WI呈等或低信号；T2WI呈显著高信号（特征性，因含大量黏液）；增强扫描不均匀强化，呈蜂窝状或分隔状。",
+        "典型表现：中线部位（骶尾/颅底）溶骨性破坏伴巨大软组织肿块，T2显著高信号。"
+      ],
+      differential: {
+        "骨巨细胞瘤": "位于骶骨上部，偏心性，无T2显著高信号，发病年龄较轻。",
+        "软骨肉瘤": "可见环形钙化，T2高信号但不如脊索瘤显著，发病部位不限于中线。",
+        "转移瘤": "发病年龄较大，有原发肿瘤病史，多发，无T2显著高信号。",
+        "浆细胞瘤": "边界较清楚，无T2显著高信号，尿本周蛋白阳性。"
+      }
+    },
+    {
+      name: "浆细胞瘤（Plasmacytoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：孤立性浆细胞瘤是多发性骨髓瘤的临床变异或早期阶段，由单克隆浆细胞异常增殖形成。",
+        "好发人群：发病年龄比多发骨髓瘤年轻，40-50岁多见，男性多于女性。",
+        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨、颅骨），长骨少见。",
+        "临床特征：局部疼痛，病理性骨折；可进展为多发性骨髓瘤（孤立性者50%以上会转化）。"
+      ],
+      signs: [
+        "穿凿样骨质破坏",
+        "软组织肿块",
+        "病理性骨折",
+        "骨质疏松"
+      ],
+      features: [
+        "X线表现：穿凿样溶骨性骨质破坏，边界清楚，无硬化边，无骨膜反应；可呈膨胀性改变；病理性骨折常见。",
+        "CT表现：骨质破坏区呈软组织密度，边界清楚；可伴软组织肿块；增强扫描轻到中度强化。",
+        "MRI表现：T1WI呈低信号；T2WI呈高信号；增强扫描明显强化；可显示骨髓浸润范围。",
+        "典型表现：中轴骨穿凿样溶骨性破坏，边界清楚，可伴软组织肿块。"
+      ],
+      differential: {
+        "转移瘤": "发病年龄较大，有原发肿瘤病史，多发常见，骨质破坏边界不如浆细胞瘤清楚。",
+        "淋巴瘤": "骨质破坏伴硬化边，软组织肿块相对较小，全身症状明显。",
+        "骨巨细胞瘤": "位于骨端，皂泡状，发病部位不同（长骨多见）。"
+      }
+    },
+    {
+      name: "骨转移瘤（Bone Metastasis）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是原发于其他器官的恶性肿瘤通过血行、淋巴或直接侵犯转移至骨骼。",
+        "好发人群：发病年龄较大，常有原发肿瘤病史，中老年多见。",
+        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨）和四肢骨近端（股骨、肱骨）。",
+        "临床特征：局部疼痛，病理性骨折，脊髓压迫症状；部分患者以骨转移为首发症状。"
+      ],
+      signs: [
+        "多发骨质破坏",
+        "成骨性转移",
+        "混合性转移",
+        "软组织肿块",
+        "病理性骨折"
+      ],
+      features: [
+        "X线表现：溶骨性转移（肺癌、甲状腺癌、肾癌）：边界不清的溶骨性破坏；成骨性转移（前列腺癌）：斑片状或结节状高密度影；混合性转移（乳腺癌）：溶骨与成骨并存。",
+        "CT表现：清晰显示骨质破坏范围和软组织肿块；溶骨性转移呈低密度，成骨性转移呈高密度。",
+        "MRI表现：T1WI呈低信号，T2WI呈高信号（溶骨性）或低信号（成骨性）；增强扫描强化；可早期发现骨髓转移。",
+        "典型表现：多发骨质破坏，中老年，有原发肿瘤病史或同时发现原发灶。"
+      ],
+      differential: {
+        "多发性骨髓瘤": "穿凿样破坏，边界清楚，尿本周蛋白阳性，无原发肿瘤病史。",
+        "骨淋巴瘤": "骨质破坏伴硬化边，软组织肿块相对较小。",
+        "甲状旁腺功能亢进": "全身骨质疏松，指骨骨膜下吸收，血钙升高。"
+      }
+    },
+    {
+      name: "骨淋巴瘤（Lymphoma）",
+      module: "musculoskeletal",
+      category: "恶性骨肿瘤",
+      clinical: [
+        "定义：是起源于淋巴造血系统的恶性肿瘤侵犯骨骼，可为原发性或继发性。",
+        "好发人群：各年龄均可发病，以中老年人多见，男性多于女性。",
+        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨、颅骨），长骨也可受累。",
+        "临床特征：局部疼痛，软组织肿块，病理性骨折；可伴有全身症状（发热、盗汗、体重减轻）。"
+      ],
+      signs: [
+        "溶骨性破坏",
+        "骨质硬化",
+        "软组织肿块",
+        "骨膜反应"
+      ],
+      features: [
+        "X线表现：溶骨性骨质破坏，边界不清或呈虫蚀状；可伴有骨质硬化；骨膜反应可见；软组织肿块较大而与骨质破坏程度不成比例。",
+        "CT表现：骨质破坏区呈软组织密度，边界不清；软组织肿块明显；增强扫描均匀强化。",
+        "MRI表现：T1WI呈低信号；T2WI呈等或稍高信号；增强扫描明显均匀强化；可显示骨髓浸润和软组织肿块范围。",
+        "典型表现：骨质破坏伴明显软组织肿块，肿块与骨破坏程度不成比例，脊柱相对特征。"
+      ],
+      differential: {
+        "转移瘤": "多发常见，有原发肿瘤病史，软组织肿块相对较小。",
+        "骨髓瘤": "穿凿样破坏，边界清楚，尿本周蛋白阳性。",
+        "尤文肉瘤": "发病年龄小（5-15岁），葱皮样骨膜反应，骨干多见。"
+      }
+    },
+{
+    name: "骨纤维结构不良（Fibrous Dysplasia，FD）",
     module: "bone",
-    subsystem: "肿瘤",
-    clinical: "定义：骨的生长发育性疾病，发生于形成骨的间充质的发育畸形。好发人群：任何年龄，幼年时发病。好发部位：全身骨骼均可发病；单骨型多见于股骨颈、胫骨；多骨型多见于长骨、颅骨。",
-    signs: "1. 磨玻璃样改变；2. 囊状膨胀性改变；3. 丝瓜络样改变；4. 虫蚀样改变。",
-    features: "X线和CT表现：磨玻璃样改变（特征）、囊状膨胀性改变、丝瓜络样改变、虫蚀样改变。MRI表现：T1WI边界清晰，呈中等至低信号；T2WI呈中等至高信号。"
+    category: "良性骨病",
+    clinical: [
+      "定义：骨的生长发育性疾病，发生于形成骨的间充质的发育畸形，骨内纤维组织增殖，在未成熟的编织阶段骨的发育停止，故不能形成正常的骨小梁",
+      "好发人群：任何年龄，幼年时发病，儿童或青少年时出现症状，成年后进展缓慢；无显著性别差异",
+      "好发部位：全身骨骼均可发病；单骨型多见于股骨颈、胫骨、肋骨；多骨型多见于长骨、颅骨、肋骨、骨盆，并有一侧性发病倾向",
+      "临床特征：轻微疼痛不适、肿胀及局部压痛；由于病变沿髓腔纵深发展和骨软化，导致肢体过长和弯曲畸形；病理性骨折是常见的并发症；成人期病灶多停止发展"
+    ],
+    signs: ["磨玻璃样改变", "囊状膨胀性改变", "丝瓜络样改变", "虫蚀样改变", "骨弯曲畸形"],
+    features: [
+      "X线和CT表现：①囊状膨胀性改变：骨干或骨骺端膨胀性低密度病变，边缘较清晰，可有线样硬化，骨皮质变薄，病变内呈大小不等之圆形、椭圆形低密度区，间或有条索状改变，可见短骨嵴；②磨玻璃样改变：病灶正常骨纹理消失，密度均匀，呈磨玻璃状，较正常骨皮质密度稍低；③丝瓜络样改变：骨小梁粗大扭曲，与骨干平行，表现为沿骨干纵轴方向走行的骨纹；④虫蚀样（地图样）改变：单发或多发大小不等的局限性溶骨性破坏，边缘锐利清晰",
+      "MRI表现：T1和T2加权像的信号强度和增强程度取决于骨小梁、细胞、胶原蛋白、囊变和出血的数量和程度；典型FD病变在T1WI上边界清晰，呈中等至低信号，在T2WI上呈中等至高信号；骨小梁数量越多，T2信号越低，反之骨小梁越少，T2信号越高；不同程度的强化：活动性病变强化明显，非活动性病变呈轻度强化",
+      "典型表现：磨玻璃样密度/信号 + 囊状膨胀性改变 + 骨弯曲畸形；单骨型多见，多骨型常一侧发病"
+    ],
+    differential: {
+      "骨化性纤维瘤": "20-40岁女性多见，好发于颌骨（尤其下颌骨），病灶内有骨化程度不一的不均匀高密度影，CT显示病灶内致密骨性间隔，无磨玻璃样改变",
+      "非骨化性纤维瘤": "8-20岁青少年，好发于股骨、胫骨远端干骺端，病灶多位于一侧皮质内或皮质下，呈单房或多房透光区，长轴与骨长轴一致，边缘硬化以髓腔侧明显",
+      "单纯性骨囊肿": "20岁以下儿童青少年，好发于肱骨、股骨近端干骺端，卵圆形中心性膨胀生长，囊内无明显骨嵴，无磨玻璃样改变，CT示均匀液体密度，病理性骨折可见骨片陷落征"
+    }
   },
+
   {
-    name: "动脉瘤样骨囊肿",
-    nameEn: "Aneurysmal Bone Cyst",
+    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst，ABC）",
     module: "bone",
-    subsystem: "肿瘤",
-    clinical: "定义：扩张性的溶骨性病变，内含充满血液的腔隙。好发人群：原发性ABC好发于20岁以下儿童青少年。好发部位：多累及长管状骨的干骺端，其次为脊柱。",
-    signs: "1. 液-液平面（特征性）；2. 膨胀性分叶状改变；3. 低信号环。",
-    features: "CT表现：病变内液-液平面（较特异性征象）；增强扫描囊间隔强化。MRI表现：病变呈边缘清楚的膨胀性分叶状改变；T2WI上层为高信号（浆液），下层为较低信号（血液/含铁血黄素）。"
+    category: "良性骨病",
+    clinical: [
+      "定义：扩张性的溶骨性病变，内含充满血液的腔隙，分为原发性和继发性（在原有骨病变基础上发生），囊内血窦由纤维性间隔分隔",
+      "好发人群：原发性ABC好发于20岁以下儿童青少年，无显著性别差异；继发性可发生于任何年龄",
+      "好发部位：多累及长管状骨的干骺端，其次为脊柱（椎体和后方附件）、骨盆、肩胛骨",
+      "临床特征：局部肿胀疼痛，靠近关节时可出现运动障碍；有时可触及肿块，听诊可闻及杂音；病变进展较快，可引起病理性骨折"
+    ],
+    signs: ["液-液平面", "膨胀性分叶状改变", "低信号环", "囊间隔强化"],
+    features: [
+      "X线表现：早期多为单纯溶骨性改变，边界不清；进展期呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点；病灶呈吹气球样膨胀，骨皮质变薄",
+      "CT表现：可显示病变的范围、大小及数量不一的囊性区；特征性表现为病变内液-液平面（较特异性征象）；增强扫描囊间隔强化，病变显示更清楚；骨壳完整或局部缺损",
+      "MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（含铁血黄素沉积或骨壳）；病灶内亦可见同样低信号的间隔；内可见液-液平面：T1WI上液-液平面上、下方液体均呈高信号（蛋白含量高），T2WI上层为较高信号（浆液），下层为较低信号（血液/含铁血黄素）；增强后囊间隔明显强化",
+      "典型表现：长骨干骺端膨胀性分叶状病变 + 液-液平面（T2WI上层高信号下层低信号） + 边缘低信号环"
+    ],
+    differential: {
+      "单纯性骨囊肿": "20岁以下，好发于肱骨、股骨近端干骺端，中心性卵圆形膨胀，囊内无骨嵴或液-液平面，T2WI均匀高信号，无强化，病理性骨折可见骨片陷落征",
+      "骨巨细胞瘤": "20-40岁成人，好发于股骨下端、胫骨上端骨端（关节面下），偏心性地图样溶骨破坏，无硬化边，无液-液平面，T2WI常为低等高的混杂信号（含铁血黄素）",
+      "骨纤维结构不良": "任何年龄，磨玻璃样改变为特征，无液-液平面，骨小梁粗大扭曲呈丝瓜络样，无囊间隔强化"
+    }
   },
+
   {
-    name: "骨巨细胞瘤",
-    nameEn: "Giant Cell Tumor",
+    name: "纤维骨皮质缺损/非骨化性纤维瘤（FCD/NOF）",
     module: "bone",
-    subsystem: "肿瘤",
-    clinical: "定义：起源于骨间质组织的肿瘤，由梭形基质细胞和大量破骨细胞样多核巨细胞组成。好发人群：20-40岁青壮年，女性略多。好发部位：股骨下端、胫骨上端、桡骨下端（膝关节周围占50%以上）。",
-    signs: "1. 皂泡状改变；2. 地图样溶骨；3. 偏心性生长；4. 无硬化边。",
-    features: "X线及CT表现：地图样溶骨性破坏，边缘清晰但无硬化边；病灶位于骨端（关节面下），常横向偏心生长。MRI表现：T2WI常为低、等、高混杂信号；约63%可出现含铁血黄素沉着（T2WI低信号）。"
+    category: "良性骨肿瘤",
+    clinical: [
+      "定义：由骨髓结缔组织源性的良性病变，无成骨活动；本质上FCD和NOF是同一种病变，只是发病部位和病灶大小不同",
+      "好发人群：FCD好发6-15岁儿童，无症状或仅轻症；NOF好发8-20岁青少年；均无显著性别差异",
+      "好发部位：好发于股骨、胫骨的干骺端（邻近骺板），多位于一侧骨皮质内",
+      "临床特征：FCD病灶小（<2-3cm），仅限于骨皮质，多无症状，体检意外发现；NOF病灶大，有症状，病变膨胀并有骨髓腔侵犯；均无骨膜反应，无软组织肿块"
+    ],
+    signs: ["皮质缺损", "硬化边", "无骨膜反应", "长轴与骨长轴一致"],
+    features: [
+      "FCD影像学表现：透明皮质内骨质缺陷；由硬化的边缘勾勒出轮廓；没有累及下面的髓腔；没有骨膜反应；增强扫描无强化；MRI：T1WI呈低信号，T2WI信号表现多样（取决于愈合阶段）",
+      "NOF影像学表现：多位于一侧皮质内或皮质下，呈单房或多房的透光区，长轴与骨的长轴一致；边缘有硬化，以髓腔侧明显；无骨膜反应，无软组织肿块；增强扫描轻度强化",
+      "典型表现：干骺端皮质内透光区 + 清晰硬化边 + 无骨膜反应；FCD病灶小限于皮质，NOF病灶大累及髓腔"
+    ],
+    differential: {
+      "骨纤维结构不良": "磨玻璃样改变为特征，病变位于骨髓腔中央而非皮质内，可有囊状膨胀、丝瓜络样改变，无清晰硬化边",
+      "骨巨细胞瘤": "20-40岁，位于骨端（关节面下）而非干骺端，偏心性地图样溶骨破坏，边缘无硬化边，常横向膨胀生长",
+      "慢性骨脓肿（Brodie脓肿）": "成人多见，好发于长骨干骺端，病灶内可见钙化或死骨，周围硬化明显，有感染史或反复发作史"
+    }
   },
+
   {
-    name: "骨肉瘤",
-    nameEn: "Osteosarcoma",
+    name: "骨化性纤维瘤（Ossifying Fibroma，OF）",
     module: "bone",
-    subsystem: "肿瘤",
-    clinical: "定义：最常见的原发性恶性骨肿瘤，特征为肿瘤细胞产生骨样基质。好发人群：10-25岁青少年，男性多见。好发部位：长骨干骺端（股骨远端、胫骨近端最常见）。临床特征：疼痛（早期间歇性，后持续性）、肿胀、活动受限、病理性骨折。",
-    signs: "1. 骨质破坏；2. 肿瘤骨形成（云絮状/斑块状高密度）；3. 骨膜反应（Codman三角、日光放射状）。",
-    features: "X线表现：骨质破坏（溶骨性、成骨性或混合性）；肿瘤骨形成（云絮状、斑块状、针状高密度影）；骨膜反应（Codman三角、日光放射状骨针）。MRI表现：T1WI低信号，T2WI混杂高信号；显示骨髓浸润和软组织肿块优于CT。"
-  }
+    category: "良性骨肿瘤",
+    clinical: [
+      "定义：生长缓慢的良性成骨性肿瘤，由纤维组织和骨组织构成，极少数恶变",
+      "好发人群：女性多见，峰值年龄30-40岁",
+      "好发部位：常见于颌骨，尤其是下颌骨；偶见于长骨、肋骨",
+      "临床特征：生长缓慢，早期无症状；肿瘤增大后可引起面部畸形、牙齿移位；无疼痛或仅有轻微不适"
+    ],
+    signs: ["边界清楚", "硬化边", "轻度膨胀", "混合密度/信号"],
+    features: [
+      "X线及CT表现：病灶呈边缘清楚的骨质破坏区，边缘有硬化，有轻度膨胀，无骨膜反应；其内有骨化程度不一的不均匀高密度影、致密的骨性间隔和低密度囊变区；病变若以骨组织为主，则密度较高；若以纤维组织为主，则密度较低",
+      "MRI表现：病变区纤维及骨化部分在T1WI和T2WI均呈低信号；囊变部分因蛋白质含量不同，其信号强度不一（T1WI可呈低或高信号，T2WI呈高信号）；增强扫描纤维及骨化部分无明显强化，囊变部分可强化",
+      "典型表现：颌骨膨胀性骨质破坏 + 边界清楚 + 内见骨性间隔/高密度骨化影"
+    ],
+    differential: {
+      "骨纤维结构不良": "磨玻璃样改变为特征，无明确边界和硬化边，可累及骨髓腔全长，骨骼弯曲畸形常见，好发于长骨和颅骨",
+      "非骨化性纤维瘤": "8-20岁青少年，好发于股骨胫骨干骺端，病灶无骨化/钙化（密度低），无骨性间隔，增强无强化",
+      "骨巨细胞瘤": "20-40岁，位于骨端关节面下，偏心性溶骨破坏无硬化边，膨胀明显呈皂泡状，无骨化影"
+    }
+  },
+
+  {
+    name: "骨巨细胞瘤（Giant Cell Tumor of Bone，GCT）",
+    module: "bone",
+    category: "良性骨肿瘤（潜在恶性）",
+    clinical: [
+      "定义：起源于骨间质组织的肿瘤，由梭形基质细胞和大量破骨细胞样多核巨细胞组成，生物学行为介于良恶性之间（潜在恶性），约2-5%可肺转移",
+      "好发人群：20-40岁青壮年，女性略多（女:男≈1.2:1）",
+      "好发部位：股骨下端、胫骨上端、桡骨下端（膝关节周围占50%以上）；脊柱和骨盆也可受累；多位于骨端关节面下",
+      "临床特征：局部疼痛、肿胀，关节活动受限；靠近关节时关节功能障碍明显；病理性骨折少见但可发生；复发率约10-15%"
+    ],
+    signs: ["皂泡状改变", "地图样溶骨", "偏心性生长", "无硬化边", "关节面下发病"],
+    types: [
+      {label: "Campanacci分级", desc: "I级（良性）：边界清楚，皮质变薄但完整；II级（交界性）：边界模糊，皮质破坏但无软组织肿块；III级（恶性）：软组织肿块，明显破坏"}
+    ],
+    features: [
+      "X线及CT表现：地图样溶骨性破坏，边缘清晰但无硬化边（重要鉴别点），病灶内无钙化；约30%呈'皂泡状'改变（分房样）；病灶位于骨端（关节面下），常横向偏心生长；一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应（花边样骨膜新生骨）；肿瘤可突破骨皮质形成软组织肿块",
+      "MRI表现：T1WI多表现为不均匀的低或等信号，出血可呈明显高信号；T2WI常为低、等、高混杂信号；约63%的骨巨细胞瘤可出现含铁血黄素沉着，表现为T2WI上结节状、带状甚至弥漫分布的低信号区（特征性表现）；增强扫描明显不均匀强化；可清楚显示肿瘤对关节、软组织的侵犯",
+      "典型表现：20-40岁 + 膝关节周围骨端 + 偏心性地图样溶骨破坏无硬化边 + T2WI含铁血黄素低信号 + H3.3G34W（+）"
+    ],
+    pathology: [
+      "肿瘤由梭形基质细胞和散在分布的大量破骨细胞样多核巨细胞组成",
+      "免疫组化：H3.3G34W（+）（特异性标记，约90%病例阳性），CD68（+）（巨细胞），S-100（部分+），Ki-67（良性<5%，恶性>10%）"
+    ],
+    differential: {
+      "单纯性骨囊肿": "20岁以下儿童，位于干骺端（非骨端），中心性膨胀，有硬化边，囊内无骨嵴，无强化，T2WI均匀高信号",
+      "动脉瘤样骨囊肿": "20岁以下儿童，干骺端发病（非骨端），明显膨胀性分叶状改变，液-液平面为特征，T2WI上层高信号下层低信号",
+      "软骨肉瘤": "30-60岁中老年，好发于骨盆、股骨近端，病灶内可见钙化（环弧状、斑点状），皮质破坏和软组织肿块更明显，无H3.3G34W表达"
+    }
+  },
+
+  {
+    name: "单纯性骨囊肿（Simple Bone Cyst，SBC）",
+    module: "bone",
+    category: "良性骨病",
+    clinical: [
+      "定义：骨髓腔内充满澄清黄色的浆液性液体的囊性病变，囊壁为一层纤维包膜，无上皮内衬，属于发育性/特发性病变",
+      "好发人群：20岁以下儿童青少年，无明显性别差异",
+      "好发部位：肱骨近端（50%）、股骨近端（25%）干骺端；随生长发育可移向骨干",
+      "临床特征：多无症状，体检偶然发现；常因病理性骨折首次就诊（骨片陷落征）；局部可有轻微疼痛或压痛；病变进展缓慢"
+    ],
+    signs: ["骨片陷落征", "中心性膨胀", "硬化边", "液性密度/信号"],
+    features: [
+      "X线表现：卵圆形溶骨性病变，长径与骨长轴一致，均居于中心；膨胀性生长，皮质可变薄，边缘光整，有硬化边；囊内无明显骨嵴（与动脉瘤样骨囊肿鉴别）；病灶位于干骺端，随生长可移向骨干",
+      "CT表现：病灶内为均匀的液体密度影（-10~20Hu），骨壳完整；病理性骨折时，可见骨皮质断裂，骨碎片落入囊内，称为'骨片陷落征'（fallen fragment sign），为特异性征象",
+      "MRI表现：T1WI低信号（类似肌肉或稍高），T2WI高信号（均匀）；蛋白含量高时T1WI可呈高信号；增强扫描：囊壁和间隔可轻度强化，囊液无强化；无软组织肿块",
+      "典型表现：干骺端中心性卵圆形透亮区 + 硬化边 + 骨片陷落征（骨折时） + T2WI均匀高信号无液-液平面"
+    ],
+    differential: {
+      "动脉瘤样骨囊肿": "20岁以下，膨胀更明显呈分叶状，囊内有骨嵴和液-液平面（T2WI上层高信号下层低信号），增强囊间隔强化，无骨片陷落征",
+      "纤维骨皮质缺损/非骨化性纤维瘤": "8-20岁，位于一侧皮质内（非中心性），有清晰硬化边，长轴与骨长轴一致，无骨片陷落征",
+      "软骨黏液样纤维瘤": "10-30岁青少年，偏心性发病，病灶内可见分隔和钙化，边缘硬化明显，T2WI信号混杂"
+    }
+  },
+
+  // ==================== 纵隔系统 ====================
+  
+  // ==================== 腹膜后系统 ====================
+  
+  // ==================== 椎管系统 ====================
+  
+  // ==================== 心血管系统 ====================
+  
+  // ==================== 乳腺系统 ====================
 ];
 
-function setModule(module) {
-  currentModule = module;
-  document.querySelectorAll('.module-btn').forEach(btn => {
-    btn.classList.remove('active');
+const MODULES = [
+  { key: "all", label: "全部", color: "" },
+  { key: "brain", label: "中枢神经", color: "#6c5ce7" },
+  { key: "head", label: "头颈五官", color: "#00b894" },
+  { key: "lung", label: "呼吸系统", color: "#e17055" },
+  { key: "mediastinum", label: "纵隔", color: "#7dd3fc" },
+  { key: "abdomen", label: "消化系统", color: "#fdcb6e" },
+  { key: "retroperitoneum", label: "腹膜后", color: "#f59e0b" },
+  { key: "bone", label: "骨肌系统", color: "#74b9ff" },
+  { key: "spinalcanal", label: "椎管", color: "#a78bfa" },
+  { key: "cardio", label: "心血管", color: "#e84393" },
+  { key: "breast", label: "乳腺", color: "#00cec9" }
+];
+
+function normalizeModuleKey(key){
+  if(key === "musculoskeletal") return "bone";
+  if(key === "mediastinal") return "mediastinum";
+  if(key === "retroperitoneal") return "retroperitoneum";
+  if(key === "spine_canal" || key === "spinal_canal") return "spinalcanal";
+  return key;
+}
+DATA.forEach(d => d.module = normalizeModuleKey(d.module));
+
+function countByModule(key){
+  if(key === "all") return DATA.length;
+  return DATA.filter(d => d.module === key).length;
+}
+
+function cleanModuleLabel(label){
+  return String(label || "").replace(/�/g, "").trim();
+}
+
+function getCategories(module) {
+  const categories = new Set();
+  DATA.filter(d => module === "all" || d.module === module).forEach(d => {
+    if (d.category) categories.add(d.category);
   });
-  event.target.classList.add('active');
+  return [
+    { key: "all", label: "全部" },
+    ...[...categories].sort().map(c => ({ key: c, label: c }))
+  ];
+}
+
+let activeModule = "all";
+let activeTag = "all";
+let activeBoneLevel2 = "all";
+let activeBoneLevel3 = "all";
+let lastRendered = [];
+
+const BONE_LEVEL2 = [
+  { key: "all", label: "全部" },
+  { key: "tumor", label: "肿瘤" },
+  { key: "joint", label: "关节" }
+];
+
+const BONE_LEVEL3_JOINT = [
+  { key: "all", label: "全部关节" },
+  { key: "knee", label: "膝关节" },
+  { key: "hip", label: "髋关节" },
+  { key: "shoulder", label: "肩关节" },
+  { key: "ankle", label: "踝关节" },
+  { key: "hand", label: "手关节" },
+  { key: "wrist", label: "腕关节" },
+  { key: "spine", label: "脊柱关节" }
+];
+
+
+function isTumorDisease(d) {
+  const text = [d.name, d.category].join(" ");
+  return /肿瘤|肉瘤|瘤|转移瘤|淋巴瘤|脊索瘤|浆细胞瘤|造釉细胞瘤/.test(text);
+}
+
+function isJointDisease(d) {
+  const text = [d.name, d.category, ...(d.clinical || []), ...(d.signs || []), ...(d.features || [])].join(" ");
+  // 关节系统只收录明确的关节疾病；凡名称/分类属于肿瘤者，一律不进入关节。
+  return !isTumorDisease(d) && /关节|膝|髋|肩|踝|腕|手关节|脊柱关节|椎间小关节|骶髂|滑膜|半月板|韧带|软骨损伤|骨关节炎|关节炎|关节积液/.test(text);
+}
+
+function inferBoneLevel2(d) {
+  if (isJointDisease(d)) return "joint";
+  return "tumor";
+}
+
+function inferBoneLevel3(d) {
+  if (!isJointDisease(d)) return "none";
+  const text = [d.name, d.category, ...(d.clinical || []), ...(d.signs || []), ...(d.features || [])].join(" ");
+  if (/膝|半月板|交叉韧带/.test(text)) return "knee";
+  if (/髋|股骨头|髋臼/.test(text)) return "hip";
+  if (/肩|肩袖|盂唇|肱二头肌长头/.test(text)) return "shoulder";
+  if (/踝|距骨|跟腱/.test(text)) return "ankle";
+  if (/腕|腕管|舟骨|月骨/.test(text)) return "wrist";
+  if (/手|指|掌骨|指骨/.test(text)) return "hand";
+  if (/脊柱|椎|椎间盘|小关节|骶髂/.test(text)) return "spine";
+  return "all";
+}
+
+
+function enableMouseDragScroll(el) {
+  if (!el || el.dataset.dragScrollReady === "1") return;
+  el.dataset.dragScrollReady = "1";
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+  let moved = false;
+
+  el.addEventListener("mousedown", (e) => {
+    isDown = true;
+    moved = false;
+    el.classList.add("dragging");
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+  });
+
+  el.addEventListener("mouseleave", () => {
+    isDown = false;
+    el.classList.remove("dragging");
+  });
+
+  el.addEventListener("mouseup", (e) => {
+    isDown = false;
+    el.classList.remove("dragging");
+    if (moved) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
+  el.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    if (Math.abs(walk) > 4) moved = true;
+    el.scrollLeft = scrollLeft - walk;
+  });
+
+  // 防止鼠标拖动后误触发系统按钮点击
+  el.addEventListener("click", (e) => {
+    if (moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      moved = false;
+    }
+  }, true);
+}
+
+function init() {
+  document.getElementById("totalCount").textContent = DATA.length;
+  renderModuleNav();
+  enableMouseDragScroll(document.getElementById("moduleNav"));
+  renderBoneSubNav();
+  renderTags();
+  renderList([]);
+  updateStats(0);
+  window.addEventListener("scroll", () => {
+    document.getElementById("backTop").style.display = window.scrollY > 300 ? "block" : "none";
+  });
+}
+
+
+function moduleIconSvg(key) {
+  const icons = {
+    all: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg>',
+    brain: '<svg viewBox="0 0 24 24"><path d="M9 4a4 4 0 0 0-4 4v1a3 3 0 0 0 0 6v1a4 4 0 0 0 4 4"/><path d="M15 4a4 4 0 0 1 4 4v1a3 3 0 0 1 0 6v1a4 4 0 0 1-4 4"/><path d="M12 5v14"/><path d="M8 9h2M14 9h2M8 15h2M14 15h2"/></svg>',
+    head: '<svg viewBox="0 0 24 24"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="3"/></svg>',
+    lung: '<svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M12 10c-3-4-6-4-7 0-1 4 0 8 4 9 2 .5 3-1 3-3z"/><path d="M12 10c3-4 6-4 7 0 1 4 0 8-4 9-2 .5-3-1-3-3z"/></svg>',
+    abdomen: '<svg viewBox="0 0 24 24"><path d="M8 4h8c2 3 3 6 3 9 0 5-3 8-7 8s-7-3-7-8c0-3 1-6 3-9z"/><path d="M9 12h6M9 16h6"/></svg>',
+    bone: '<svg viewBox="0 0 24 24"><path d="M7 8a3 3 0 1 1 4-4l9 9a3 3 0 1 1-4 4l-9-9z"/><path d="M8 16a3 3 0 1 0-4 4 3 3 0 0 0 4-4z"/><path d="M16 8a3 3 0 1 1 4-4 3 3 0 0 1-4 4z"/></svg>',
+    cardio: '<svg viewBox="0 0 24 24"><path d="M20 9c0 6-8 11-8 11S4 15 4 9a4 4 0 0 1 7-2 4 4 0 0 1 9 2z"/><path d="M4 13h4l2-3 3 6 2-3h5"/></svg>',
+    breast: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg>'
+  };
+  return icons[key] || icons.all;
+}
+
+function renderModuleNav() {
+  const nav = document.getElementById("moduleNav");
+  nav.innerHTML = MODULES.map(m => `
+    <button class="module-btn ${m.key === activeModule ? 'active' : ''}" onclick="setModule('${m.key}')">
+      <span class="m-icon">${moduleIconSvg(m.key)}</span>
+      <span class="m-text">
+        <span class="m-label">${cleanModuleLabel(m.label)}</span>
+        <span class="m-count">${countByModule(m.key)} items</span>
+      </span>
+    </button>
+  `).join("");
+}
+
+function setModule(module) {
+  activeModule = module;
+  activeTag = "all";
+  activeBoneLevel2 = "all";
+  activeBoneLevel3 = "all";
+  document.getElementById("search").value = "";
+  document.body.classList.add("show-list");
+  renderModuleNav();
+  enableMouseDragScroll(document.getElementById("moduleNav"));
+  renderBoneSubNav();
+  renderTags();
+  filterCards();
+}
+
+function renderBoneSubNav() {
+  const level2 = document.getElementById("boneLevel2");
+  const level3 = document.getElementById("boneLevel3");
+  if (!level2 || !level3) return;
+
+  if (activeModule !== "bone") {
+    level2.classList.remove("show");
+    level3.classList.remove("show");
+    level2.innerHTML = "";
+    level3.innerHTML = "";
+    return;
+  }
+
+  level2.classList.add("show");
+  level2.innerHTML = BONE_LEVEL2.map(t => `
+    <button class="sub-btn ${t.key === activeBoneLevel2 ? 'active' : ''}" onclick="setBoneLevel2('${t.key}')">${t.label}</button>
+  `).join("");
+
+  if (activeBoneLevel2 === "joint") {
+    level3.classList.add("show");
+    level3.innerHTML = BONE_LEVEL3_JOINT.map(t => `
+      <button class="sub-btn ${t.key === activeBoneLevel3 ? 'active' : ''}" onclick="setBoneLevel3('${t.key}')">${t.label}</button>
+    `).join("");
+  } else {
+    level3.classList.remove("show");
+    level3.innerHTML = "";
+  }
+}
+
+function setBoneLevel2(key) {
+  activeBoneLevel2 = key;
+  activeBoneLevel3 = "all";
+  activeTag = "all";
+  renderBoneSubNav();
+  renderTags();
+  filterCards();
+}
+
+function setBoneLevel3(key) {
+  activeBoneLevel3 = key;
+  activeTag = "all";
+  renderBoneSubNav();
+  renderTags();
+  filterCards();
+}
+
+function renderTags() {
+  const c = document.getElementById("tags");
+
+  // 点击“骨肌系统 > 关节”后，隐藏通用疾病分类标签。
+  // 否则这里会继续显示骨肌系统全部分类，如“良性骨肿瘤、恶性骨肿瘤”等，造成误解。
+  if (activeModule === "bone" && activeBoneLevel2 === "joint") {
+    activeTag = "all";
+    c.innerHTML = "";
+    return;
+  }
+
+  const cats = getCategories(activeModule);
+  c.innerHTML = cats.map(t => `
+    <button class="tag ${t.key === activeTag ? 'active' : ''}" onclick="setTag('${String(t.key).replace(/'/g, "\\'")}')">${t.label}</button>
+  `).join("");
+}
+
+function setTag(key) {
+  activeTag = key;
+  renderTags();
   filterCards();
 }
 
 function filterCards() {
-  const keyword = document.getElementById('search').value.toLowerCase();
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  if(q) document.body.classList.add("show-list");
   let filtered = DATA;
-  
-  if (currentModule !== 'all') {
-    filtered = filtered.filter(d => d.module === currentModule);
+  if (activeModule !== "all") filtered = filtered.filter(d => d.module === activeModule);
+
+  if (activeModule === "bone" && activeBoneLevel2 !== "all") {
+    filtered = filtered.filter(d => inferBoneLevel2(d) === activeBoneLevel2);
+    if (activeBoneLevel2 === "joint") {
+      filtered = filtered.filter(d => isJointDisease(d));
+      if (activeBoneLevel3 !== "all") {
+        filtered = filtered.filter(d => inferBoneLevel3(d) === activeBoneLevel3);
+      }
+    }
   }
-  
-  if (keyword) {
+
+  if (activeTag !== "all") filtered = filtered.filter(d => d.category === activeTag);
+  if (q) {
     filtered = filtered.filter(d => {
-      return d.name.toLowerCase().includes(keyword) || 
-             d.clinical.toLowerCase().includes(keyword);
+      const searchable = [
+        d.name, d.category,
+        ...(d.clinical || []), ...(d.signs || []), ...(d.features || []),
+        ...(d.pathology || []),
+        ...(Object.keys(d.differential || {})), ...(Object.values(d.differential || {}))
+      ].join(" ").toLowerCase();
+      return searchable.includes(q);
     });
   }
-  
+  if(!q && activeModule === "all" && activeTag === "all") {
+    document.body.classList.remove("show-list");
+    renderModuleNav();
+    renderBoneSubNav();
+    return;
+  }
   renderList(filtered);
+  updateStats(filtered.length);
+}
+
+function updateStats(n) {
+  let moduleName = activeModule === "all" ? "全部系统" : (MODULES.find(m => m.key === activeModule)?.label || "");
+  if (activeModule === "bone" && activeBoneLevel2 !== "all") {
+    moduleName += " / " + (BONE_LEVEL2.find(x => x.key === activeBoneLevel2)?.label || "");
+    if (activeBoneLevel2 === "joint" && activeBoneLevel3 !== "all") {
+      moduleName += " / " + (BONE_LEVEL3_JOINT.find(x => x.key === activeBoneLevel3)?.label || "");
+    }
+  }
+  document.getElementById("stats").textContent = `${moduleName} · 共 ${n} 种疾病`;
 }
 
 function renderList(data) {
-  const listEl = document.getElementById('list');
-  const statsEl = document.getElementById('stats');
-  
-  statsEl.textContent = '共 ' + DATA.length + ' 个疾病 | 当前显示 ' + data.length + ' 个';
-  
-  if (data.length === 0) {
-    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#888">暂无匹配疾病</div>';
+  lastRendered = data;
+  const c = document.getElementById("list");
+  if (!data.length) {
+    const moduleLabel = activeModule === "all" ? "" : cleanModuleLabel(MODULES.find(m => m.key === activeModule)?.label || "");
+    const isEmptyNewSystem = ["mediastinum", "retroperitoneum", "spinalcanal"].includes(activeModule);
+    c.innerHTML = `
+      <div class="module-empty">
+        <div style="font-size:54px;margin-bottom:10px">⌕</div>
+        <div style="font-size:17px;font-weight:700">${isEmptyNewSystem ? moduleLabel + "系统已建立" : "没有找到匹配内容"}</div>
+        <div style="font-size:13px;margin-top:6px">${isEmptyNewSystem ? "当前暂无条目，后续可在 DATA 中添加 module 对应内容" : "试试其他关键词，或切换系统分类"}</div>
+      </div>`;
     return;
   }
-  
-  listEl.innerHTML = data.map(d => {
-    return `
-      <div class="disease-card">
-        <div class="card-header" onclick="toggle(this)">
-          <h3>${d.name}（${d.nameEn}）</h3>
-          <span class="arrow">▶</span>
-        </div>
-        <div class="card-body">
-          <div class="info-section">
-            <span class="info-label">临床概述</span>
-            <div class="info-text">${d.clinical}</div>
-          </div>
-          <div class="info-section">
-            <span class="info-label">影像征象</span>
-            <div class="info-text">${d.signs}</div>
-          </div>
-          <div class="info-section">
-            <span class="info-label">影像特征</span>
-            <div class="info-text">${d.features}</div>
+  c.innerHTML = data.map((d, i) => `
+    <div class="disease-card">
+      <div class="card-header" onclick="toggle(${i})">
+        <div class="card-title-wrap">
+          <div class="card-kicker"><span class="dot"></span><span>${d.module || 'imaging'} · ${String(i + 1).padStart(2, '0')}</span></div>
+          <h3>${d.name}</h3>
+          <div class="card-meta">
+            ${d.category ? `<span class="meta-chip">${d.category}</span>` : ""}
+            ${d.signs?.length ? `<span class="meta-chip">${d.signs.length} 个征象</span>` : ""}
+            ${d.differential && Object.keys(d.differential).length ? `<span class="meta-chip">${Object.keys(d.differential).length} 项鉴别</span>` : ""}
           </div>
         </div>
+        <span class="arrow" id="arrow${i}">▶</span>
       </div>
-    `;
-  }).join('');
+      <div class="card-body" id="body${i}">
+        ${d.clinical?.length ? `<div class="info-section clinical"><div class="info-label">临床概述</div><div class="info-text"><ul>${d.clinical.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>` : ""}
+        ${d.signs?.length ? `<div class="info-section signs"><div class="info-label">影像征象</div><div class="info-text">${d.signs.map(x=>`<span class="sign-tag">${x}</span>`).join("")}</div></div>` : ""}
+        ${d.features?.length ? `<div class="info-section features"><div class="info-label">影像特征</div><div class="info-text"><ul>${d.features.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>` : ""}
+        ${d.pathology?.length ? `<div class="info-section pathology"><div class="info-label">病理特点</div><div class="info-text"><ul>${d.pathology.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>` : ""}
+        ${d.differential && Object.keys(d.differential).length ? `<div class="info-section differential"><div class="info-label">鉴别诊断</div><div class="info-text">${Object.entries(d.differential).map(([k,v])=>`<div class="differential-item"><strong>${k}</strong><div class="diff-text">${v}</div></div>`).join("")}</div></div>` : ""}
+      </div>
+    </div>
+  `).join("");
 }
 
-function toggle(header) {
-  const body = header.nextElementSibling;
-  const arrow = header.querySelector('.arrow');
-  body.classList.toggle('open');
-  arrow.classList.toggle('open');
+function toggle(i) {
+  const body = document.getElementById("body" + i);
+  const arrow = document.getElementById("arrow" + i);
+  if(!body || !arrow) return;
+  const isOpen = body.classList.contains("open");
+  body.classList.toggle("open");
+  arrow.classList.toggle("open");
+  if (!isOpen) body.parentElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
-// 初始化
-filterCards();
+init();
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7939e04a4baf43c8b86a560f74aac60e","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"45c2bf8136a245cd97f1c2e9a96c0730","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
