@@ -4,946 +4,200 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>影像诊断知识库</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="影像诊断">
-<meta name="theme-color" content="#1a5276">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a5276'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>🫁</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --primary:#1a5276;
-  --accent:#2980b9;
-  --bg:#f5f7fa;
-  --card:#fff;
-  --text:#2c3e50;
-  --light:#ecf0f1;
-  --tag-bg:#e8f4fd;
-  --tag-active:#2980b9;
-  --tag-active-text:#fff;
-  --clinical-bg:#e8f6f3;
-  --clinical-color:#1e8449;
-  --signs-bg:#fef9e7;
-  --signs-color:#d4a017;
-  --features-bg:#eaf2f8;
-  --features-color:#2874a6;
-  --pathology-bg:#f5eef8;
-  --pathology-color:#8e44ad;
-  --differential-bg:#fdedec;
-  --differential-color:#c0392b;
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
-  --brain:#6c5ce7;
-  --head:#00b894;
-  --lung:#e17055;
-  --abdomen:#fdcb6e;
-  --bone:#74b9ff;
-  --cardio:#e84393;
-  --breast:#00cec9;
-}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 60px)}
-
-.header{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:16px 20px;padding-top:calc(16px + var(--safe-top));position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#2c3e50;line-height:1.6;padding-bottom:60px}
+.header{background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;padding:16px 20px;position:sticky;top:0;z-index:100}
 .header h1{font-size:18px;font-weight:600}
-.header p{font-size:12px;opacity:.8;margin-top:2px}
-
-.module-nav{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:#fff;position:sticky;top:0;z-index:99}
-.module-nav::-webkit-scrollbar{display:none}
+.module-nav{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;background:#fff;position:sticky;top:50px;z-index:99}
 .module-btn{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid #ddd;background:#fff;color:#666;transition:all .2s;white-space:nowrap}
-.module-btn.active{color:#fff;border-color:transparent}
-.module-btn[data-module="brain"].active{background:var(--brain)}
-.module-btn[data-module="head"].active{background:var(--head)}
-.module-btn[data-module="lung"].active{background:var(--lung)}
-.module-btn[data-module="abdomen"].active{background:var(--abdomen);color:#333}
-.module-btn[data-module="bone"].active{background:var(--bone)}
-.module-btn[data-module="cardio"].active{background:var(--cardio)}
-.module-btn[data-module="breast"].active{background:var(--breast)}
-.module-btn[data-module="all"].active{background:var(--primary)}
-
-.tags{padding:8px 16px 12px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--bg);position:sticky;top:0;z-index:98}
-.tags::-webkit-scrollbar{display:none}
-.tag{flex-shrink:0;padding:5px 14px;border-radius:16px;font-size:12px;background:var(--tag-bg);color:var(--accent);cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
-.tag.active{background:var(--tag-active);color:var(--tag-active-text)}
-
-.search-box{padding:12px 16px;background:var(--bg);position:sticky;top:0;z-index:97}
-.search-box input{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:20px;font-size:14px;background:var(--card);outline:none;transition:border .2s}
-.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(41,128,185,.15)}
-
-.stats{padding:8px 16px;font-size:12px;color:#888;background:var(--bg)}
+.module-btn.active{color:#fff;background:#2980b9;border-color:#2980b9}
+.search-box{padding:12px 16px;background:#f5f7fa;position:sticky;top:90px;z-index:98}
+.search-box input{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:20px;font-size:14px;background:#fff;outline:none}
+.stats{padding:8px 16px;font-size:12px;color:#888;background:#f5f7fa}
 .disease-list{padding:0 16px 100px}
-.disease-card{background:var(--card);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;transition:transform .2s}
-.disease-card:active{transform:scale(.98)}
-.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--card)}
-.card-header h3{font-size:15px;font-weight:600;color:var(--primary);flex:1;line-height:1.4}
-.card-header .arrow{font-size:12px;color:#aaa;transition:transform .3s;margin-left:8px}
+.disease-card{background:#fff;border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+.card-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.card-header h3{font-size:15px;font-weight:600;color:#1a5276;flex:1}
+.card-header .arrow{font-size:12px;color:#aaa;transition:transform .3s}
 .card-header .arrow.open{transform:rotate(90deg)}
-.card-body{display:none;padding:12px 16px 14px;border-top:1px solid var(--light);background:#fafbfc}
+.card-body{display:none;padding:12px 16px 14px;border-top:1px solid #ecf0f1;background:#fafbfc}
 .card-body.open{display:block}
-
-/* 字段标签样式 */
-.info-section{margin-bottom:14px}
-.info-section:last-child{margin-bottom:0}
-.info-label{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.info-text{font-size:13px;color:#444;line-height:1.7}
-.info-text ul{margin:0;padding-left:18px}
-.info-text li{margin-bottom:4px}
-
-/* 临床概述 - 绿色 */
-.info-section.clinical .info-label{background:var(--clinical-bg);color:var(--clinical-color)}
-
-/* 影像征象 - 黄色 */
-.info-section.signs .info-label{background:var(--signs-bg);color:var(--signs-color)}
-.sign-tag{display:inline-block;background:var(--signs-bg);color:var(--signs-color);padding:3px 10px;border-radius:12px;font-size:12px;margin:3px 4px 3px 0;border:1px solid #f9e79f;font-weight:500}
-
-/* 影像特征 - 蓝色 */
-.info-section.features .info-label{background:var(--features-bg);color:var(--features-color)}
-
-/* 病理特点 - 紫色 */
-.info-section.pathology .info-label{background:var(--pathology-bg);color:var(--pathology-color)}
-.pathology-tag{display:inline-block;background:var(--pathology-bg);color:var(--pathology-color);padding:3px 10px;border-radius:12px;font-size:12px;margin:3px 4px 3px 0;border:1px solid #d7bde2;font-weight:500}
-
-/* 鉴别诊断 - 红色 */
-.info-section.differential .info-label{background:var(--differential-bg);color:var(--differential-color)}
-.differential-item{background:#fff;border-left:3px solid var(--differential-color);padding:10px 12px;margin-bottom:8px;border-radius:0 8px 8px 0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.differential-item:last-child{margin-bottom:0}
-.differential-item strong{color:var(--differential-color);font-size:13px}
-.differential-item .diff-text{font-size:12px;color:#555;margin-top:3px;line-height:1.5}
-
-.module-empty{padding:40px 20px;text-align:center}
-.module-empty .module-icon{font-size:64px;margin-bottom:16px;opacity:.3}
-.module-empty .module-title{font-size:18px;font-weight:600;color:#333;margin-bottom:8px}
-.module-empty .module-desc{font-size:14px;color:#888}
-
-.back-top{position:fixed;right:16px;bottom:calc(24px + var(--safe-bottom));width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);display:none;z-index:200}
-.back-top:hover{background:var(--primary)}
-
-@media(min-width:768px){
-.disease-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stats{grid-column:1/-1}
-}
+.info-section{margin-bottom:12px}
+.info-label{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;margin-bottom:6px;background:#e8f6f3;color:#1e8449}
+.info-text{font-size:13px;color:#444;line-height:1.6}
 </style>
 </head>
 <body>
 
 <div class="header">
-<h1>🫁 影像诊断知识库</h1>
-<p>放射科日常工作速查手册</p>
+<h1>影像诊断知识库</h1>
 </div>
 
 <div class="module-nav" id="moduleNav">
-<button class="module-btn active" data-module="all">全部</button>
-<button class="module-btn" data-module="brain">🧠 中枢神经</button>
-<button class="module-btn" data-module="head">👁 头颈五官</button>
-<button class="module-btn" data-module="lung">🫁 呼吸系统</button>
-<button class="module-btn" data-module="abdomen">🍽 消化系统</button>
-<button class="module-btn" data-module="bone">🦴 骨肌系统</button>
-<button class="module-btn" data-module="cardio">❤️ 心血管</button>
-<button class="module-btn" data-module="breast">🤝 乳腺</button>
+<button class="module-btn active" onclick="setModule('all')">全部</button>
+<button class="module-btn" onclick="setModule('bone')">骨肌系统</button>
 </div>
 
 <div class="search-box">
-<input type="text" id="search" placeholder="🔍 搜索疾病名称、影像特征..." oninput="filterCards()">
+<input type="text" id="search" placeholder="搜索疾病名称..." oninput="filterCards()">
 </div>
-
-<div class="tags" id="tags"></div>
 
 <div class="stats" id="stats"></div>
 
 <div class="disease-list" id="list"></div>
 
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
 <script>
-// =============================================
-// 疾病数据 - 按系统分类
-// =============================================
+let currentModule = 'all';
+
 const DATA = [
-  // ==================== 中枢神经系统 ====================
-  
-  // ==================== 头颈五官系统 ====================
-  
-  // ==================== 呼吸系统 ====================
-  
-  // ==================== 消化系统 ====================
-  
-  // ==================== 骨肌系统 ====================
-      {
-      name: "内生软骨瘤（Enchondroma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "良性成软骨性肿瘤",
-      clinical: [
-        "定义：是生长缓慢的良性肿瘤，由软骨细胞和软骨基质构成，极少数恶变。",
-        "好发人群：多见于青少年，11-20岁占80%以上，男性略多于女性。",
-        "好发部位：好发于手、足短管状骨，其次为长骨（股骨、肱骨）。",
-        "临床特征：通常无症状，常因外伤或病理骨折偶然发现；位于长骨者可出现疼痛。"
-      ],
-      signs: [
-        "囊状透亮区",
-        "斑点状钙化",
-        "皮质变薄",
-        "病理骨折"
-      ],
-      features: [
-        "X线表现：髓腔内类圆形或分叶状透亮区，边缘清晰，可见硬化边；囊状透亮区内的钙化影（斑点状、环状）是诊断主要依据；骨皮质常变薄、膨胀。",
-        "CT表现：髓腔内软组织密度影，内可见斑点状、环状钙化，骨皮质变薄但完整。",
-        "MRI表现：T1WI呈低-等信号，T2WI呈高信号（软骨基质），钙化区呈低信号；增强扫描病变强化不明显或轻度强化。",
-        "典型表现：短管状骨内囊状透亮区伴斑点状钙化，骨皮质变薄。"
-      ],
-      differential: {
-        "骨软骨瘤": "位于骨表面，有蒂或广基底与母骨相连，皮质和髓腔与母骨相延续。",
-        "软骨肉瘤": "发病年龄较大（40-50岁），疼痛明显，钙化更密集且形态不规则，骨皮质破坏，软组织肿块。",
-        "低级别软骨肉瘤": "鉴别困难，需结合临床；明显疼痛的内生性软骨瘤需警惕恶变。"
-      }
-    },
-    {
-      name: "骨软骨瘤（Osteochondroma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "良性成软骨性肿瘤",
-      clinical: [
-        "定义：又称外生骨疣，是最常见的良性骨肿瘤，由骨性基底和软骨帽构成。",
-        "好发人群：青少年多发，80%年龄在20岁以下，男性多于女性。",
-        "好发部位：好发于长骨干骺端，尤以股骨下端、胫骨上端、肱骨上端多见。",
-        "临床特征：多为无痛性肿块，生长缓慢；可因压迫神经血管或邻近组织出现症状。"
-      ],
-      signs: [
-        "骨性突起",
-        "软骨帽",
-        "背向关节生长",
-        "皮质髓腔延续"
-      ],
-      features: [
-        "X线表现：长骨干骺端骨性突起，背向关节生长；骨皮质和髓腔与母骨相延续；顶部可见软骨帽钙化。",
-        "CT表现：清晰显示骨性基底的皮质和髓腔与母骨相延续，软骨帽厚度（成人<1cm，儿童可较厚）。",
-        "MRI表现：骨性基底呈低信号，软骨帽T1WI呈低信号、T2WI呈高信号；增强扫描软骨帽可强化。",
-        "典型表现：带蒂或广基底的骨性突起，皮质和髓腔与母骨相延续，背向关节生长。"
-      ],
-      differential: {
-        "内生软骨瘤": "位于髓腔内，骨皮质膨胀变薄，无骨性突起。",
-        "软骨肉瘤": "发病年龄大，疼痛明显，软骨帽增厚（>1cm），钙化形态不规则，骨皮质破坏。",
-        "骨旁骨肉瘤": "位于骨表面，与骨皮质间有透亮间隙，无软骨帽，可见瘤骨形成。"
-      }
-    },
-    {
-      name: "软骨母细胞瘤（Chondroblastoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "良性成软骨性肿瘤",
-      clinical: [
-        "定义：是一种由软骨母细胞及其产生的软骨样基质所组成的良性肿瘤，占所有骨肿瘤的不到1%。",
-        "好发人群：大多数发病年龄为10-25岁，平均年龄约20岁，男性为主，男女比为2:1。",
-        "好发部位：通常发生于未成熟骨骼的骨骺或骨突，大多发生在股骨，紧邻关节软骨的长管状骨骺端。",
-        "临床特征：绝大多数患者表现为局部疼痛，可持续多年；可伴有关节积液和活动受限。"
-      ],
-      signs: [
-        "骨骺溶骨性病变",
-        "薄层硬化边",
-        "斑点状钙化",
-        "关节积液"
-      ],
-      features: [
-        "X线表现：界限清楚、偏心性、溶骨性病变，位于骨骺或骨突；周围有薄层硬化骨形成的边缘；病变一般较小(3-6cm)；中心'斑点状'钙化常见；骨皮质常被侵蚀或变薄。",
-        "CT表现：有助于定性诊断和确定病变范围，清晰显示钙化。",
-        "MRI表现：T1WI低信号；T2WI混杂信号(低-钙化、中-透明软骨基质、高-液化和出血)；周围可见广泛骨髓水肿和软组织水肿；增强扫描病灶边缘及分隔强化。",
-        "典型表现：骨骺或骨突内溶骨性病变，薄层硬化边，伴广泛骨髓水肿。"
-      ],
-      differential: {
-        "骨巨细胞瘤": "好发年龄20-40岁，位于骨端，横向偏心生长，无硬化边，无钙化。",
-        "内生软骨瘤": "位于干骺端或骨干，髓腔内，无骨髓水肿。",
-        "软骨肉瘤": "发病年龄较大，疼痛明显，病变较大，骨皮质破坏，软组织肿块。"
-      }
-    },
-    {
-      name: "软骨肉瘤（Chondrosarcoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "恶性成软骨性肿瘤",
-      clinical: [
-        "定义：是起源于软骨或成软骨结缔组织的一种较常见的骨恶性肿瘤，发病率仅次于骨肉瘤，占骨恶性肿瘤的16.1%。",
-        "好发人群：多见于男性，男女比例约1.8:1，发病年龄较广，多见于50岁以上。",
-        "好发部位：发病部位以股骨及胫骨最为多见，其次为骨盆骨、肋骨、肩胛骨。",
-        "临床特征：主要症状是疼痛和肿胀，并形成质地较硬的肿块；生长较慢，倾向于局部浸润，全身转移晚。"
-      ],
-      signs: [
-        "溶骨性破坏",
-        "环形钙化",
-        "软组织肿块",
-        "骨皮质破坏"
-      ],
-      features: [
-        "X线表现：中心型在骨内呈溶骨性破坏，边界多不清楚；邻近骨皮质膨胀、变薄或破坏；骨破坏区和软组织肿块内可见环形、半环形或沙砾样钙化（具有定性价值）。",
-        "CT表现：显示骨破坏区、软组织肿块和钙化；典型钙化是点状、环形或半环形；非钙化部分密度可不均匀，可见坏死、囊变。",
-        "MRI表现：T1WI呈等或低信号；T2WI恶性度低的呈均匀高信号，恶性度高的信号不均匀；钙化和骨化均呈低信号；增强扫描不均匀强化。",
-        "典型表现：溶骨性破坏伴环形、半环形钙化，软组织肿块，多见于中老年。"
-      ],
-      differential: {
-        "内生软骨瘤": "病变较小，疼痛不明显，钙化较稀疏，无骨皮质破坏和软组织肿块。",
-        "骨肉瘤": "瘤骨形成（象牙质样、云絮状），骨膜反应明显（Codman三角），无软骨样环形钙化。",
-        "骨巨细胞瘤": "位于骨端，皂泡状改变，无钙化，发病年龄较轻（20-40岁）。"
-      }
-    },
-    {
-      name: "骨肉瘤（Osteosarcoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "恶性骨肿瘤",
-      clinical: [
-        "定义：是一种瘤细胞能直接形成骨样组织或骨质的恶性肿瘤，主要成分是肿瘤性成骨细胞、肿瘤性骨样组织和肿瘤骨。",
-        "好发人群：好发于青少年及儿童（10-20岁），男女比约1.7:1。",
-        "好发部位：好发于长骨干骺端，尤其股骨下端、胫腓骨上端。",
-        "临床特征：疼痛、局部肿胀和运动障碍；实验室检查多有碱性磷酸酶升高。"
-      ],
-      signs: [
-        "骨质破坏",
-        "瘤骨形成",
-        "骨膜反应",
-        "软组织肿块",
-        "Codman三角"
-      ],
-      features: [
-        "X线表现：骨质破坏（斑状、大片状、虫蚀状、筛孔状）；瘤骨（象牙质样、云絮状、针状）；骨膜增生（平行型、葱皮型、Codman三角、放射状）；软组织肿块。",
-        "CT表现：不规则溶骨性破坏，骨皮质变薄或中断；软组织肿块形成；瘤骨分布于骨质破坏区或软组织内；增强后实质部分强化，中心可见坏死液化区。",
-        "MRI表现：不均匀长T1、长T2信号，形态不规则，边界模糊；增强早期边缘强化，逐渐向中心进展；软组织肿块强化程度高于髓腔内肿瘤；瘤骨、瘤软骨钙化呈低信号。",
-        "典型表现：骨质破坏+瘤骨形成+骨膜反应+软组织肿块，青少年长骨干骺端。"
-      ],
-      differential: {
-        "软骨肉瘤": "环形钙化为主，无瘤骨形成，发病年龄较大（50岁以上）。",
-        "骨巨细胞瘤": "位于骨端，皂泡状改变，无瘤骨，无骨膜反应，发病年龄20-40岁。",
-        "尤文肉瘤": "骨干多见，葱皮样骨膜反应，无瘤骨形成，发病年龄5-15岁。",
-        "骨髓炎": "病史长，有感染症状，骨质破坏与增生并存，无软组织肿块。"
-      }
-    },
-    {
-      name: "造釉细胞瘤（Ameloblastoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "牙源性肿瘤",
-      clinical: [
-        "定义：是颌骨最常见的牙源性肿瘤，具有局部侵袭性，多呈缓慢持续生长。",
-        "好发人群：中年人好发，发病高峰年龄是30-40岁，男女发病率相近。",
-        "好发部位：好发于下颌磨牙区和下颌升支，上颌骨少见。",
-        "临床特征：常以颌面部肿块就诊，颌面局部变形；较大肿块影响下颌骨运动，甚至发生吞咽、咀嚼和呼吸障碍；肿瘤区牙齿松动或脱落；触之有乒乓球感。"
-      ],
-      signs: [
-        "多囊状改变",
-        "蜂窝状",
-        "牙根吸收",
-        "骨皮质膨胀",
-        "壁结节强化"
-      ],
-      features: [
-        "X线表现：多囊型（多见）呈蜂窝状或肥皂泡状低密度影，边界清晰，边缘围绕高密度骨反应线；单囊型呈单囊状低密度，边缘可有切迹；牙根呈锯齿状吸收。",
-        "CT表现：囊内含有实质性成分，增强后有强化（区别于囊肿的特征性表现）；病变可突破膨隆的骨皮质侵犯邻近软组织；多房型可见分房大小不等，间隔厚薄不均。",
-        "MRI表现：T1WI混杂信号（囊性呈低信号，实性可呈高信号）；T2WI混杂信号；增强可见壁结节强化（代表'肿瘤生长中心'），分隔强化，实性区域快速强化（约60秒达峰值）。",
-        "典型表现：多囊状或蜂窝状改变，牙根锯齿状吸收，壁结节强化。"
-      ],
-      differential: {
-        "牙源性角化囊肿": "单囊多见，沿颌骨长轴生长，牙根吸收较轻，无壁结节强化，易复发。",
-        "根尖囊肿": "与龋齿相关，位于牙根方，边缘光滑，无分隔，无强化。",
-        "颌骨中心性鳞癌": "边界不清，溶骨性破坏，无多囊改变，发病年龄较大（40-60岁）。",
-        "骨巨细胞瘤": "位于骨端，皂泡状，无牙根吸收，发病部位不同。"
-      }
-    },
-    {
-      name: "脊索瘤（Chordoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "恶性骨肿瘤",
-      clinical: [
-        "定义：是起源于脊索残余组织的低度恶性肿瘤，局部侵袭性强，生长缓慢。",
-        "好发人群：发病年龄以20-40岁成人多见，男性略多于女性。",
-        "好发部位：好发于骶尾部（50%）、颅底（35%）、颈椎（15%）。",
-        "临床特征：骶尾部：疼痛、便秘、下肢麻木；颅底：头痛、颅神经麻痹、视力障碍。"
-      ],
-      signs: [
-        "溶骨性破坏",
-        "软组织肿块",
-        "残留骨片",
-        "钙化",
-        "T2高信号"
-      ],
-      features: [
-        "X线表现：骶尾部或颅底溶骨性破坏，边界不清，可见残留骨片；软组织肿块较大，可向前突入盆腔或向后突入臀肌。",
-        "CT表现：骨质破坏区呈低密度，内可见残留骨片或钙化；软组织肿块密度不均，增强后不均匀强化。",
-        "MRI表现：T1WI呈等或低信号；T2WI呈显著高信号（特征性，因含大量黏液）；增强扫描不均匀强化，呈蜂窝状或分隔状。",
-        "典型表现：中线部位（骶尾/颅底）溶骨性破坏伴巨大软组织肿块，T2显著高信号。"
-      ],
-      differential: {
-        "骨巨细胞瘤": "位于骶骨上部，偏心性，无T2显著高信号，发病年龄较轻。",
-        "软骨肉瘤": "可见环形钙化，T2高信号但不如脊索瘤显著，发病部位不限于中线。",
-        "转移瘤": "发病年龄较大，有原发肿瘤病史，多发，无T2显著高信号。",
-        "浆细胞瘤": "边界较清楚，无T2显著高信号，尿本周蛋白阳性。"
-      }
-    },
-    {
-      name: "浆细胞瘤（Plasmacytoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "恶性骨肿瘤",
-      clinical: [
-        "定义：孤立性浆细胞瘤是多发性骨髓瘤的临床变异或早期阶段，由单克隆浆细胞异常增殖形成。",
-        "好发人群：发病年龄比多发骨髓瘤年轻，40-50岁多见，男性多于女性。",
-        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨、颅骨），长骨少见。",
-        "临床特征：局部疼痛，病理性骨折；可进展为多发性骨髓瘤（孤立性者50%以上会转化）。"
-      ],
-      signs: [
-        "穿凿样骨质破坏",
-        "软组织肿块",
-        "病理性骨折",
-        "骨质疏松"
-      ],
-      features: [
-        "X线表现：穿凿样溶骨性骨质破坏，边界清楚，无硬化边，无骨膜反应；可呈膨胀性改变；病理性骨折常见。",
-        "CT表现：骨质破坏区呈软组织密度，边界清楚；可伴软组织肿块；增强扫描轻到中度强化。",
-        "MRI表现：T1WI呈低信号；T2WI呈高信号；增强扫描明显强化；可显示骨髓浸润范围。",
-        "典型表现：中轴骨穿凿样溶骨性破坏，边界清楚，可伴软组织肿块。"
-      ],
-      differential: {
-        "转移瘤": "发病年龄较大，有原发肿瘤病史，多发常见，骨质破坏边界不如浆细胞瘤清楚。",
-        "淋巴瘤": "骨质破坏伴硬化边，软组织肿块相对较小，全身症状明显。",
-        "骨巨细胞瘤": "位于骨端，皂泡状，发病部位不同（长骨多见）。"
-      }
-    },
-    {
-      name: "骨转移瘤（Bone Metastasis）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "恶性骨肿瘤",
-      clinical: [
-        "定义：是原发于其他器官的恶性肿瘤通过血行、淋巴或直接侵犯转移至骨骼。",
-        "好发人群：发病年龄较大，常有原发肿瘤病史，中老年多见。",
-        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨）和四肢骨近端（股骨、肱骨）。",
-        "临床特征：局部疼痛，病理性骨折，脊髓压迫症状；部分患者以骨转移为首发症状。"
-      ],
-      signs: [
-        "多发骨质破坏",
-        "成骨性转移",
-        "混合性转移",
-        "软组织肿块",
-        "病理性骨折"
-      ],
-      features: [
-        "X线表现：溶骨性转移（肺癌、甲状腺癌、肾癌）：边界不清的溶骨性破坏；成骨性转移（前列腺癌）：斑片状或结节状高密度影；混合性转移（乳腺癌）：溶骨与成骨并存。",
-        "CT表现：清晰显示骨质破坏范围和软组织肿块；溶骨性转移呈低密度，成骨性转移呈高密度。",
-        "MRI表现：T1WI呈低信号，T2WI呈高信号（溶骨性）或低信号（成骨性）；增强扫描强化；可早期发现骨髓转移。",
-        "典型表现：多发骨质破坏，中老年，有原发肿瘤病史或同时发现原发灶。"
-      ],
-      differential: {
-        "多发性骨髓瘤": "穿凿样破坏，边界清楚，尿本周蛋白阳性，无原发肿瘤病史。",
-        "骨淋巴瘤": "骨质破坏伴硬化边，软组织肿块相对较小。",
-        "甲状旁腺功能亢进": "全身骨质疏松，指骨骨膜下吸收，血钙升高。"
-      }
-    },
-    {
-      name: "骨淋巴瘤（Lymphoma）",
-      module: "musculoskeletal",
-      subsystem: "肿瘤",
-      category: "恶性骨肿瘤",
-      clinical: [
-        "定义：是起源于淋巴造血系统的恶性肿瘤侵犯骨骼，可为原发性或继发性。",
-        "好发人群：各年龄均可发病，以中老年人多见，男性多于女性。",
-        "好发部位：好发于中轴骨（脊柱、骨盆、肋骨、颅骨），长骨也可受累。",
-        "临床特征：局部疼痛，软组织肿块，病理性骨折；可伴有全身症状（发热、盗汗、体重减轻）。"
-      ],
-      signs: [
-        "溶骨性破坏",
-        "骨质硬化",
-        "软组织肿块",
-        "骨膜反应"
-      ],
-      features: [
-        "X线表现：溶骨性骨质破坏，边界不清或呈虫蚀状；可伴有骨质硬化；骨膜反应可见；软组织肿块较大而与骨质破坏程度不成比例。",
-        "CT表现：骨质破坏区呈软组织密度，边界不清；软组织肿块明显；增强扫描均匀强化。",
-        "MRI表现：T1WI呈低信号；T2WI呈等或稍高信号；增强扫描明显均匀强化；可显示骨髓浸润和软组织肿块范围。",
-        "典型表现：骨质破坏伴明显软组织肿块，肿块与骨破坏程度不成比例，脊柱相对特征。"
-      ],
-      differential: {
-        "转移瘤": "多发常见，有原发肿瘤病史，软组织肿块相对较小。",
-        "骨髓瘤": "穿凿样破坏，边界清楚，尿本周蛋白阳性。",
-        "尤文肉瘤": "发病年龄小（5-15岁），葱皮样骨膜反应，骨干多见。"
-      }
-    },
-
   {
-    name: "骨纤维结构不良（Fibrous Dysplasia，FD）",
+    name: "骨性关节炎",
+    nameEn: "Osteoarthritis",
+    module: "bone",
+    subsystem: "关节",
+    clinical: "定义：一种以关节软骨退行性变和继发性骨质增生为特征的慢性关节疾病。好发人群：中老年人，女性多于男性，肥胖者多见。好发部位：膝关节、髋关节、手关节。临床特征：关节疼痛（活动后加重，休息后缓解）、关节僵硬（晨僵时间短，通常<30分钟）。",
+    signs: "1. 关节间隙狭窄（非对称性、不均匀）；2. 骨赘形成（关节边缘尖锐增生）；3. 软骨下硬化（骨密度增高）。",
+    features: "X线表现：早期关节间隙轻度狭窄、骨赘形成；中期关节间隙明显狭窄、软骨下硬化、囊肿形成；晚期关节间隙消失、严重骨赘、关节畸形。MRI表现：早期显示软骨退变（T2WI信号增高、软骨变薄）、骨髓水肿。"
+  },
+  {
+    name: "类风湿关节炎",
+    nameEn: "Rheumatoid Arthritis",
+    module: "bone",
+    subsystem: "关节",
+    clinical: "定义：一种以侵蚀性、对称性多关节炎为主要临床表现的慢性、全身性自身免疫性疾病。好发人群：30-50岁女性多见。好发部位：手足小关节（掌指关节、近端指间关节、腕关节）。临床特征：对称性、持续性关节疼痛、肿胀、晨僵（>1小时）。",
+    signs: "1. 关节间隙均匀性狭窄；2. 边缘性骨侵蚀；3. 骨质疏松（全身性）。",
+    features: "X线表现：早期软组织肿胀、骨质疏松；中期关节间隙均匀狭窄、边缘性骨侵蚀；晚期关节半脱位/脱位、关节强直。MRI表现：早期显示滑膜炎、血管翳、骨髓水肿。"
+  },
+  {
+    name: "痛风性关节炎",
+    nameEn: "Gouty Arthritis",
+    module: "bone",
+    subsystem: "关节",
+    clinical: "定义：由于尿酸盐结晶沉积在关节及周围组织引起的炎症反应。好发人群：中老年男性。好发部位：第一跖趾关节（50-70%）、踝关节、膝关节。临床特征：急性发作、剧烈疼痛、红肿热痛、夜间发作。",
+    signs: "1. 穿凿样骨侵蚀（圆形/椭圆形骨质缺损、边缘硬化）；2. 痛风石（软组织结节）。",
+    features: "X线表现：早期正常或仅有软组织肿胀；典型期穿凿样骨侵蚀、关节间隙保持；慢性期痛风石、关节畸形。双能CT：绿色编码尿酸盐结晶（特异性诊断）。"
+  },
+  {
+    name: "夏科氏关节病",
+    nameEn: "Charcot Joint",
+    module: "bone",
+    subsystem: "关节",
+    clinical: "定义：由于神经感觉丧失导致关节反复损伤、退化、破坏的一种神经关节病。好发人群：糖尿病患者（60-75%）、脊髓痨（梅毒）。好发部位：足部（50%）、膝关节（25%）。临床特征：关节肿胀、积液；疼痛轻微或无痛（特征性）；神经病变表现。",
+    signs: "经典5D征象：1. Density（密度增高）；2. Debris（碎屑）；3. Dislocation（脱位）；4. Distension（肿胀）；5. Destruction（破坏）。",
+    features: "X线表现：早期关节积液、软组织肿胀；进展期关节间隙狭窄、骨侵蚀、碎骨片、半脱位；晚期严重骨破坏、关节脱位、骨硬化、关节融合。"
+  },
+  {
+    name: "骨纤维结构不良",
+    nameEn: "Fibrous Dysplasia",
     module: "bone",
     subsystem: "肿瘤",
-    category: "良性骨病",
-    clinical: [
-      "定义：骨的生长发育性疾病，发生于形成骨的间充质的发育畸形，骨内纤维组织增殖，在未成熟的编织阶段骨的发育停止，故不能形成正常的骨小梁",
-      "好发人群：任何年龄，幼年时发病，儿童或青少年时出现症状，成年后进展缓慢；无显著性别差异",
-      "好发部位：全身骨骼均可发病；单骨型多见于股骨颈、胫骨、肋骨；多骨型多见于长骨、颅骨、肋骨、骨盆，并有一侧性发病倾向",
-      "临床特征：轻微疼痛不适、肿胀及局部压痛；由于病变沿髓腔纵深发展和骨软化，导致肢体过长和弯曲畸形；病理性骨折是常见的并发症；成人期病灶多停止发展"
-    ],
-    signs: ["磨玻璃样改变", "囊状膨胀性改变", "丝瓜络样改变", "虫蚀样改变", "骨弯曲畸形"],
-    features: [
-      "X线和CT表现：①囊状膨胀性改变：骨干或骨骺端膨胀性低密度病变，边缘较清晰，可有线样硬化，骨皮质变薄，病变内呈大小不等之圆形、椭圆形低密度区，间或有条索状改变，可见短骨嵴；②磨玻璃样改变：病灶正常骨纹理消失，密度均匀，呈磨玻璃状，较正常骨皮质密度稍低；③丝瓜络样改变：骨小梁粗大扭曲，与骨干平行，表现为沿骨干纵轴方向走行的骨纹；④虫蚀样（地图样）改变：单发或多发大小不等的局限性溶骨性破坏，边缘锐利清晰",
-      "MRI表现：T1和T2加权像的信号强度和增强程度取决于骨小梁、细胞、胶原蛋白、囊变和出血的数量和程度；典型FD病变在T1WI上边界清晰，呈中等至低信号，在T2WI上呈中等至高信号；骨小梁数量越多，T2信号越低，反之骨小梁越少，T2信号越高；不同程度的强化：活动性病变强化明显，非活动性病变呈轻度强化",
-      "典型表现：磨玻璃样密度/信号 + 囊状膨胀性改变 + 骨弯曲畸形；单骨型多见，多骨型常一侧发病"
-    ],
-    differential: {
-      "骨化性纤维瘤": "20-40岁女性多见，好发于颌骨（尤其下颌骨），病灶内有骨化程度不一的不均匀高密度影，CT显示病灶内致密骨性间隔，无磨玻璃样改变",
-      "非骨化性纤维瘤": "8-20岁青少年，好发于股骨、胫骨远端干骺端，病灶多位于一侧皮质内或皮质下，呈单房或多房透光区，长轴与骨长轴一致，边缘硬化以髓腔侧明显",
-      "单纯性骨囊肿": "20岁以下儿童青少年，好发于肱骨、股骨近端干骺端，卵圆形中心性膨胀生长，囊内无明显骨嵴，无磨玻璃样改变，CT示均匀液体密度，病理性骨折可见骨片陷落征"
-    }
+    clinical: "定义：骨的生长发育性疾病，发生于形成骨的间充质的发育畸形。好发人群：任何年龄，幼年时发病。好发部位：全身骨骼均可发病；单骨型多见于股骨颈、胫骨；多骨型多见于长骨、颅骨。",
+    signs: "1. 磨玻璃样改变；2. 囊状膨胀性改变；3. 丝瓜络样改变；4. 虫蚀样改变。",
+    features: "X线和CT表现：磨玻璃样改变（特征）、囊状膨胀性改变、丝瓜络样改变、虫蚀样改变。MRI表现：T1WI边界清晰，呈中等至低信号；T2WI呈中等至高信号。"
   },
-
   {
-    name: "动脉瘤样骨囊肿（Aneurysmal Bone Cyst，ABC）",
+    name: "动脉瘤样骨囊肿",
+    nameEn: "Aneurysmal Bone Cyst",
     module: "bone",
     subsystem: "肿瘤",
-    category: "良性骨病",
-    clinical: [
-      "定义：扩张性的溶骨性病变，内含充满血液的腔隙，分为原发性和继发性（在原有骨病变基础上发生），囊内血窦由纤维性间隔分隔",
-      "好发人群：原发性ABC好发于20岁以下儿童青少年，无显著性别差异；继发性可发生于任何年龄",
-      "好发部位：多累及长管状骨的干骺端，其次为脊柱（椎体和后方附件）、骨盆、肩胛骨",
-      "临床特征：局部肿胀疼痛，靠近关节时可出现运动障碍；有时可触及肿块，听诊可闻及杂音；病变进展较快，可引起病理性骨折"
-    ],
-    signs: ["液-液平面", "膨胀性分叶状改变", "低信号环", "囊间隔强化"],
-    features: [
-      "X线表现：早期多为单纯溶骨性改变，边界不清；进展期呈较典型的膨胀性分房样改变，并可有不规则的钙化斑点；病灶呈吹气球样膨胀，骨皮质变薄",
-      "CT表现：可显示病变的范围、大小及数量不一的囊性区；特征性表现为病变内液-液平面（较特异性征象）；增强扫描囊间隔强化，病变显示更清楚；骨壳完整或局部缺损",
-      "MRI表现：病变呈边缘清楚的膨胀性分叶状改变，边缘在T1WI、T2WI均为完整或不完整低信号环（含铁血黄素沉积或骨壳）；病灶内亦可见同样低信号的间隔；内可见液-液平面：T1WI上液-液平面上、下方液体均呈高信号（蛋白含量高），T2WI上层为较高信号（浆液），下层为较低信号（血液/含铁血黄素）；增强后囊间隔明显强化",
-      "典型表现：长骨干骺端膨胀性分叶状病变 + 液-液平面（T2WI上层高信号下层低信号） + 边缘低信号环"
-    ],
-    differential: {
-      "单纯性骨囊肿": "20岁以下，好发于肱骨、股骨近端干骺端，中心性卵圆形膨胀，囊内无骨嵴或液-液平面，T2WI均匀高信号，无强化，病理性骨折可见骨片陷落征",
-      "骨巨细胞瘤": "20-40岁成人，好发于股骨下端、胫骨上端骨端（关节面下），偏心性地图样溶骨破坏，无硬化边，无液-液平面，T2WI常为低等高的混杂信号（含铁血黄素）",
-      "骨纤维结构不良": "任何年龄，磨玻璃样改变为特征，无液-液平面，骨小梁粗大扭曲呈丝瓜络样，无囊间隔强化"
-    }
+    clinical: "定义：扩张性的溶骨性病变，内含充满血液的腔隙。好发人群：原发性ABC好发于20岁以下儿童青少年。好发部位：多累及长管状骨的干骺端，其次为脊柱。",
+    signs: "1. 液-液平面（特征性）；2. 膨胀性分叶状改变；3. 低信号环。",
+    features: "CT表现：病变内液-液平面（较特异性征象）；增强扫描囊间隔强化。MRI表现：病变呈边缘清楚的膨胀性分叶状改变；T2WI上层为高信号（浆液），下层为较低信号（血液/含铁血黄素）。"
   },
-
   {
-    name: "纤维骨皮质缺损/非骨化性纤维瘤（FCD/NOF）",
+    name: "骨巨细胞瘤",
+    nameEn: "Giant Cell Tumor",
     module: "bone",
     subsystem: "肿瘤",
-    category: "良性骨肿瘤",
-    clinical: [
-      "定义：由骨髓结缔组织源性的良性病变，无成骨活动；本质上FCD和NOF是同一种病变，只是发病部位和病灶大小不同",
-      "好发人群：FCD好发6-15岁儿童，无症状或仅轻症；NOF好发8-20岁青少年；均无显著性别差异",
-      "好发部位：好发于股骨、胫骨的干骺端（邻近骺板），多位于一侧骨皮质内",
-      "临床特征：FCD病灶小（<2-3cm），仅限于骨皮质，多无症状，体检意外发现；NOF病灶大，有症状，病变膨胀并有骨髓腔侵犯；均无骨膜反应，无软组织肿块"
-    ],
-    signs: ["皮质缺损", "硬化边", "无骨膜反应", "长轴与骨长轴一致"],
-    features: [
-      "FCD影像学表现：透明皮质内骨质缺陷；由硬化的边缘勾勒出轮廓；没有累及下面的髓腔；没有骨膜反应；增强扫描无强化；MRI：T1WI呈低信号，T2WI信号表现多样（取决于愈合阶段）",
-      "NOF影像学表现：多位于一侧皮质内或皮质下，呈单房或多房的透光区，长轴与骨的长轴一致；边缘有硬化，以髓腔侧明显；无骨膜反应，无软组织肿块；增强扫描轻度强化",
-      "典型表现：干骺端皮质内透光区 + 清晰硬化边 + 无骨膜反应；FCD病灶小限于皮质，NOF病灶大累及髓腔"
-    ],
-    differential: {
-      "骨纤维结构不良": "磨玻璃样改变为特征，病变位于骨髓腔中央而非皮质内，可有囊状膨胀、丝瓜络样改变，无清晰硬化边",
-      "骨巨细胞瘤": "20-40岁，位于骨端（关节面下）而非干骺端，偏心性地图样溶骨破坏，边缘无硬化边，常横向膨胀生长",
-      "慢性骨脓肿（Brodie脓肿）": "成人多见，好发于长骨干骺端，病灶内可见钙化或死骨，周围硬化明显，有感染史或反复发作史"
-    }
+    clinical: "定义：起源于骨间质组织的肿瘤，由梭形基质细胞和大量破骨细胞样多核巨细胞组成。好发人群：20-40岁青壮年，女性略多。好发部位：股骨下端、胫骨上端、桡骨下端（膝关节周围占50%以上）。",
+    signs: "1. 皂泡状改变；2. 地图样溶骨；3. 偏心性生长；4. 无硬化边。",
+    features: "X线及CT表现：地图样溶骨性破坏，边缘清晰但无硬化边；病灶位于骨端（关节面下），常横向偏心生长。MRI表现：T2WI常为低、等、高混杂信号；约63%可出现含铁血黄素沉着（T2WI低信号）。"
   },
-
   {
-    name: "骨化性纤维瘤（Ossifying Fibroma，OF）",
+    name: "骨肉瘤",
+    nameEn: "Osteosarcoma",
     module: "bone",
     subsystem: "肿瘤",
-    category: "良性骨肿瘤",
-    clinical: [
-      "定义：生长缓慢的良性成骨性肿瘤，由纤维组织和骨组织构成，极少数恶变",
-      "好发人群：女性多见，峰值年龄30-40岁",
-      "好发部位：常见于颌骨，尤其是下颌骨；偶见于长骨、肋骨",
-      "临床特征：生长缓慢，早期无症状；肿瘤增大后可引起面部畸形、牙齿移位；无疼痛或仅有轻微不适"
-    ],
-    signs: ["边界清楚", "硬化边", "轻度膨胀", "混合密度/信号"],
-    features: [
-      "X线及CT表现：病灶呈边缘清楚的骨质破坏区，边缘有硬化，有轻度膨胀，无骨膜反应；其内有骨化程度不一的不均匀高密度影、致密的骨性间隔和低密度囊变区；病变若以骨组织为主，则密度较高；若以纤维组织为主，则密度较低",
-      "MRI表现：病变区纤维及骨化部分在T1WI和T2WI均呈低信号；囊变部分因蛋白质含量不同，其信号强度不一（T1WI可呈低或高信号，T2WI呈高信号）；增强扫描纤维及骨化部分无明显强化，囊变部分可强化",
-      "典型表现：颌骨膨胀性骨质破坏 + 边界清楚 + 内见骨性间隔/高密度骨化影"
-    ],
-    differential: {
-      "骨纤维结构不良": "磨玻璃样改变为特征，无明确边界和硬化边，可累及骨髓腔全长，骨骼弯曲畸形常见，好发于长骨和颅骨",
-      "非骨化性纤维瘤": "8-20岁青少年，好发于股骨胫骨干骺端，病灶无骨化/钙化（密度低），无骨性间隔，增强无强化",
-      "骨巨细胞瘤": "20-40岁，位于骨端关节面下，偏心性溶骨破坏无硬化边，膨胀明显呈皂泡状，无骨化影"
-    }
-  },
-
-  {
-    name: "骨巨细胞瘤（Giant Cell Tumor of Bone，GCT）",
-    module: "bone",
-    subsystem: "肿瘤",
-    category: "良性骨肿瘤（潜在恶性）",
-    clinical: [
-      "定义：起源于骨间质组织的肿瘤，由梭形基质细胞和大量破骨细胞样多核巨细胞组成，生物学行为介于良恶性之间（潜在恶性），约2-5%可肺转移",
-      "好发人群：20-40岁青壮年，女性略多（女:男≈1.2:1）",
-      "好发部位：股骨下端、胫骨上端、桡骨下端（膝关节周围占50%以上）；脊柱和骨盆也可受累；多位于骨端关节面下",
-      "临床特征：局部疼痛、肿胀，关节活动受限；靠近关节时关节功能障碍明显；病理性骨折少见但可发生；复发率约10-15%"
-    ],
-    signs: ["皂泡状改变", "地图样溶骨", "偏心性生长", "无硬化边", "关节面下发病"],
-    types: [
-      {label: "Campanacci分级", desc: "I级（良性）：边界清楚，皮质变薄但完整；II级（交界性）：边界模糊，皮质破坏但无软组织肿块；III级（恶性）：软组织肿块，明显破坏"}
-    ],
-    features: [
-      "X线及CT表现：地图样溶骨性破坏，边缘清晰但无硬化边（重要鉴别点），病灶内无钙化；约30%呈'皂泡状'改变（分房样）；病灶位于骨端（关节面下），常横向偏心生长；一般无骨膜反应，或仅在骨壳与正常皮质交界处可见少量骨膜反应（花边样骨膜新生骨）；肿瘤可突破骨皮质形成软组织肿块",
-      "MRI表现：T1WI多表现为不均匀的低或等信号，出血可呈明显高信号；T2WI常为低、等、高混杂信号；约63%的骨巨细胞瘤可出现含铁血黄素沉着，表现为T2WI上结节状、带状甚至弥漫分布的低信号区（特征性表现）；增强扫描明显不均匀强化；可清楚显示肿瘤对关节、软组织的侵犯",
-      "典型表现：20-40岁 + 膝关节周围骨端 + 偏心性地图样溶骨破坏无硬化边 + T2WI含铁血黄素低信号 + H3.3G34W（+）"
-    ],
-    pathology: [
-      "肿瘤由梭形基质细胞和散在分布的大量破骨细胞样多核巨细胞组成",
-      "免疫组化：H3.3G34W（+）（特异性标记，约90%病例阳性），CD68（+）（巨细胞），S-100（部分+），Ki-67（良性<5%，恶性>10%）"
-    ],
-    differential: {
-      "单纯性骨囊肿": "20岁以下儿童，位于干骺端（非骨端），中心性膨胀，有硬化边，囊内无骨嵴，无强化，T2WI均匀高信号",
-      "动脉瘤样骨囊肿": "20岁以下儿童，干骺端发病（非骨端），明显膨胀性分叶状改变，液-液平面为特征，T2WI上层高信号下层低信号",
-      "软骨肉瘤": "30-60岁中老年，好发于骨盆、股骨近端，病灶内可见钙化（环弧状、斑点状），皮质破坏和软组织肿块更明显，无H3.3G34W表达"
-    }
-  },
-
-  {
-    name: "单纯性骨囊肿（Simple Bone Cyst，SBC）",
-    module: "bone",
-    subsystem: "肿瘤",
-    category: "良性骨病",
-    clinical: [
-      "定义：骨髓腔内充满澄清黄色的浆液性液体的囊性病变，囊壁为一层纤维包膜，无上皮内衬，属于发育性/特发性病变",
-      "好发人群：20岁以下儿童青少年，无明显性别差异",
-      "好发部位：肱骨近端（50%）、股骨近端（25%）干骺端；随生长发育可移向骨干",
-      "临床特征：多无症状，体检偶然发现；常因病理性骨折首次就诊（骨片陷落征）；局部可有轻微疼痛或压痛；病变进展缓慢"
-    ],
-    signs: ["骨片陷落征", "中心性膨胀", "硬化边", "液性密度/信号"],
-    features: [
-      "X线表现：卵圆形溶骨性病变，长径与骨长轴一致，均居于中心；膨胀性生长，皮质可变薄，边缘光整，有硬化边；囊内无明显骨嵴（与动脉瘤样骨囊肿鉴别）；病灶位于干骺端，随生长可移向骨干",
-      "CT表现：病灶内为均匀的液体密度影（-10~20Hu），骨壳完整；病理性骨折时，可见骨皮质断裂，骨碎片落入囊内，称为'骨片陷落征'（fallen fragment sign），为特异性征象",
-      "MRI表现：T1WI低信号（类似肌肉或稍高），T2WI高信号（均匀）；蛋白含量高时T1WI可呈高信号；增强扫描：囊壁和间隔可轻度强化，囊液无强化；无软组织肿块",
-      "典型表现：干骺端中心性卵圆形透亮区 + 硬化边 + 骨片陷落征（骨折时） + T2WI均匀高信号无液-液平面"
-    ],
-    differential: {
-      "动脉瘤样骨囊肿": "20岁以下，膨胀更明显呈分叶状，囊内有骨嵴和液-液平面（T2WI上层高信号下层低信号），增强囊间隔强化，无骨片陷落征",
-      "纤维骨皮质缺损/非骨化性纤维瘤": "8-20岁，位于一侧皮质内（非中心性），有清晰硬化边，长轴与骨长轴一致，无骨片陷落征",
-      "软骨黏液样纤维瘤": "10-30岁青少年，偏心性发病，病灶内可见分隔和钙化，边缘硬化明显，T2WI信号混杂"
-    }
-  },
-,
-
-    {
-      name: "骨性关节炎",
-      nameEn: "Osteoarthritis",
-      category: "musculoskeletal",
-      subsystem: "关节",
-      joint: "膝关节",
-      clinical: "定义：一种以关节软骨退行性变和继发性骨质增生为特征的慢性关节疾病。好发人群：中老年人，女性多于男性，肥胖者多见。好发部位：膝关节、髋关节、手关节（远端指间关节、第一腕掌关节）、脊柱。临床特征：关节疼痛（活动后加重，休息后缓解）、关节僵硬（晨僵时间短，通常<30分钟）、关节肿胀、骨赘形成、活动受限。",
-      pathology: "1. 关节软骨退变：软骨细胞减少、基质降解、软骨变薄；2. 软骨下骨改变：硬化、囊肿形成；3. 骨赘形成：关节边缘骨质增生；4. 滑膜炎症：轻度炎性反应；5. 关节囊挛缩、肌肉痉挛。",
-      signs: "1. 关节间隙狭窄（非对称性、不均匀）；2. 骨赘形成（关节边缘尖锐增生）；3. 软骨下硬化（骨密度增高）；4. 软骨下囊肿（透亮区，边缘硬化）；5. 关节内游离体（关节鼠）；6. 关节畸形（屈曲挛缩、内翻/外翻）。",
-      features: "X线表现：1. 早期：关节间隙轻度狭窄、骨赘形成；2. 中期：关节间隙明显狭窄、软骨下硬化、囊肿形成；3. 晚期：关节间隙消失、严重骨赘、关节畸形。CT表现：更清晰显示骨性结构改变，骨赘、软骨下囊肿、关节面下微小骨折。MRI表现：1. 早期显示软骨退变（T2WI信号增高、软骨变薄）；2. 骨髓水肿（T2WI压脂高信号）；3. 半月板退变/撕裂；4. 滑膜炎；5. 韧带损伤。",
-      differential: "1. 类风湿关节炎：对称性关节受累、均匀性关节间隙狭窄、骨质疏松、无骨赘形成；2. 痛风性关节炎：穿凿样骨侵蚀、痛风石、血尿酸升高；3. 感染性关节炎：急性起病、高热、关节积液、软组织红肿热痛；4. 夏科氏关节病：关节破坏与临床症状不符、关节脱位/半脱位、碎骨片形成。"
-    },
-
-    {
-      name: "类风湿关节炎",
-      nameEn: "Rheumatoid Arthritis",
-      category: "musculoskeletal",
-      subsystem: "关节",
-      joint: "手关节",
-      clinical: "定义：一种以侵蚀性、对称性多关节炎为主要临床表现的慢性、全身性自身免疫性疾病。好发人群：30-50岁女性多见（女:男=3:1）。好发部位：手足小关节（掌指关节、近端指间关节、腕关节）、肘、肩、膝、踝、颈椎。临床特征：1. 关节症状：对称性、持续性关节疼痛、肿胀、晨僵（>1小时）；2. 全身症状：发热、乏力、体重下降；3. 关节外表现：类风湿结节、肺间质病变、心血管病变、神经系统病变。",
-      pathology: "1. 滑膜炎：滑膜细胞增生、炎性细胞浸润（CD4+ T细胞、B细胞、巨噬细胞）；2. 血管翳形成：增生的滑膜组织侵蚀软骨和骨；3. 软骨破坏：蛋白多糖和胶原降解；4. 骨侵蚀：破骨细胞活化，骨吸收；5. 关节纤维化、强直。",
-      signs: "1. 关节间隙均匀性狭窄（软骨普遍破坏）；2. 边缘性骨侵蚀（关节边缘、非承重区）；3. 骨质疏松（全身性、早期表现）；4. 关节畸形：尺侧偏斜、天鹅颈畸形、纽扣花畸形、扳机指；5. 关节强直（晚期）；6. 类风湿结节（皮下、骨突起处）。",
-      features: "X线表现：1. 早期：软组织肿胀、骨质疏松、关节积液；2. 中期：关节间隙均匀狭窄、边缘性骨侵蚀（腕骨、掌指关节、近端指间关节边缘）；3. 晚期：关节半脱位/脱位、关节强直、严重畸形。CT表现：更清晰显示骨侵蚀、关节面破坏、骨质疏松。MRI表现：1. 早期显示滑膜炎（T2WI压脂高信号、强化）；2. 血管翳（T1WI低信号、T2WI混杂信号、明显强化）；3. 骨髓水肿（T2WI压脂高信号）；4. 肌腱炎/腱鞘炎；5. 早期骨侵蚀（CT/X线尚未显示）。",
-      differential: "1. 骨性关节炎：非对称性关节受累、不均匀关节间隙狭窄、骨赘形成、无骨质疏松；2. 痛风性关节炎：单关节或少关节受累、穿凿样骨侵蚀、痛风石、血尿酸升高；3. 银屑病关节炎：非对称性、累及远端指间关节、伴甲改变、骨赘形成；4. 系统性红斑狼疮：关节痛但很少侵蚀、面部红斑、肾脏受累、自身抗体阳性。"
-    },
-
-    {
-      name: "痛风性关节炎",
-      nameEn: "Gouty Arthritis",
-      category: "musculoskeletal",
-      subsystem: "关节",
-      joint: "踝关节",
-      clinical: "定义：由于尿酸盐结晶沉积在关节及周围组织引起的炎症反应。好发人群：中老年男性（女:男=1:20），绝经后女性发病率增加。好发部位：第一跖趾关节（50-70%）、踝关节、膝关节、手指关节、肘关节。临床特征：1. 急性关节炎： sudden onset、剧烈疼痛、红肿热痛、夜间发作；2. 间歇期：症状完全缓解；3. 慢性期：痛风石形成、慢性关节炎、关节畸形；4. 伴随：高尿酸血症、尿酸性肾病、肾结石。",
-      pathology: "1. 尿酸盐结晶沉积：单钠尿酸盐（MSU）结晶沉积在关节软骨、滑膜、肌腱、软组织；2. 急性炎症：结晶被中性粒细胞吞噬、释放炎性介质（IL-1β、TNF-α）；3. 慢性痛风石：尿酸盐结晶被纤维组织包裹、形成结节；4. 骨侵蚀：痛风石压迫、释放酶类导致骨破坏。",
-      signs: "1. 穿凿样骨侵蚀：圆形/椭圆形骨质缺损、边缘锐利、有硬化边（悬边征）；2. 痛风石：软组织结节、密度不均（钙化/骨化）；3. 关节间隙：早期正常、晚期狭窄；4. 软骨钙化：尿酸盐沉积在软骨；5. 软组织肿胀：急性发作期。",
-      features: "X线表现：1. 早期：正常或仅有软组织肿胀；2. 典型期：穿凿样骨侵蚀（圆形/椭圆形、边缘硬化、悬边征）、关节间隙保持；3. 慢性期：痛风石（软组织结节、可钙化）、关节间隙狭窄、关节畸形。CT表现：1. 更清晰显示骨侵蚀（早期、微小侵蚀）；2. 痛风石密度（负值，-100~-150HU）；3. 软骨钙化；4. 关节积液。MRI表现：1. 痛风石：T1WI低/等信号、T2WI低信号（纤维化/钙化）、增强后环形强化；2. 骨侵蚀：骨髓水肿（T2WI压脂高信号）；3. 滑膜炎；4. 关节积液。双能CT（DECT）：绿色编码尿酸盐结晶（特异性诊断）。",
-      differential: "1. 骨性关节炎：骨赘形成、关节间隙不均匀狭窄、无穿凿样侵蚀；2. 类风湿关节炎：对称性小关节受累、均匀性关节间隙狭窄、骨质疏松、无穿凿样侵蚀；3. 感染性关节炎：单关节、急性炎症、关节积液、细菌培养阳性；4. 夏科氏关节病：关节破坏严重但疼痛轻微、脱位/半脱位、碎骨片。"
-    },
-
-    {
-      name: "夏科氏关节病",
-      nameEn: "Charcot Joint Disease",
-      category: "musculoskeletal",
-      subsystem: "关节",
-      joint: "踝关节",
-      clinical: "定义：由于神经感觉丧失导致关节反复损伤、退化、破坏的一种神经关节病。好发人群：40-60岁，糖尿病患者（60-75%）、脊髓痨（梅毒）、脊髓空洞症、周围神经损伤。好发部位：足部（距舟关节、跖跗关节，50%）、膝关节（25%）、踝关节、脊柱（颈椎、腰椎）。临床特征：1. 关节肿胀、积液；2. 关节不稳定、脱位/半脱位；3. 骨碎片、关节面破坏；4. 疼痛轻微或无痛（特征性！）；5. 神经病变表现：感觉丧失、反射消失、肌无力。",
-      pathology: "1. 神经感觉丧失：本体感觉、痛觉、温度觉减退；2. 反复微创伤：关节承受异常应力、损伤不被感知；3. 骨与软骨破坏：软骨退变、骨侵蚀、骨折；4. 异位骨化：骨碎片、新骨形成；5. 关节松弛：韧带损伤、关节不稳定。",
-      signs: "经典"5D"征象：1. Density（密度增高）：骨硬化、异位骨化；2. Debris（碎屑）：关节内碎骨片；3. Dislocation（脱位）：关节脱位/半脱位；4. Distension（肿胀）：关节积液、软组织肿胀；5. Destruction（破坏）：严重骨破坏、关节面消失。",
-      features: "X线表现：1. 早期：关节积液、软组织肿胀、骨萎缩；2. 进展期：关节间隙狭窄、骨侵蚀、碎骨片、半脱位；3. 晚期：严重骨破坏、关节脱位、骨硬化、异位骨化、关节融合。CT表现：1. 更清晰显示骨破坏、碎骨片、关节脱位；2. 早期改变（X线可能漏诊）；3. 评估骨折、骨碎片移位。MRI表现：1. 骨髓水肿（T2WI压脂高信号）；2. 软骨破坏；3. 滑膜炎、关节积液；4. 韧带损伤、断裂；5. 软组织肿胀；6. 骨碎片。",
-      differential: "1. 骨性关节炎：疼痛明显、骨赘形成、无碎骨片、无脱位；2. 类风湿关节炎：对称性、骨质疏松、边缘性骨侵蚀、无"5D"征象；3. 感染性关节炎：急性炎症、高热、白细胞升高、细菌培养阳性；4. 痛风性关节炎：穿凿样骨侵蚀、痛风石、血尿酸升高。"
-    }];
-
-// =============================================
-// 分类配置 - 按系统
-// =============================================
-const MODULES = [
-  { key: "all", label: "全部", icon: "📋", color: "" },
-  { key: "brain", label: "🧠 中枢神经", icon: "🧠", color: "#6c5ce7" },
-  { key: "head", label: "👁 头颈五官", icon: "👁", color: "#00b894" },
-  { key: "lung", label: "🫁 呼吸系统", icon: "🫁", color: "#e17055" },
-  { key: "abdomen", label: "🍽 消化系统", icon: "🍽", color: "#fdcb6e" },
-  { key: "bone", label: "🦴 骨肌系统", icon: "🦴", color: "#74b9ff" },
-  { key: "cardio", label: "❤️ 心血管", icon: "❤️", color: "#e84393" },
-  { key: "breast", label: "🤝 乳腺", icon: "🤝", color: "#00cec9" }
+    clinical: "定义：最常见的原发性恶性骨肿瘤，特征为肿瘤细胞产生骨样基质。好发人群：10-25岁青少年，男性多见。好发部位：长骨干骺端（股骨远端、胫骨近端最常见）。临床特征：疼痛（早期间歇性，后持续性）、肿胀、活动受限、病理性骨折。",
+    signs: "1. 骨质破坏；2. 肿瘤骨形成（云絮状/斑块状高密度）；3. 骨膜反应（Codman三角、日光放射状）。",
+    features: "X线表现：骨质破坏（溶骨性、成骨性或混合性）；肿瘤骨形成（云絮状、斑块状、针状高密度影）；骨膜反应（Codman三角、日光放射状骨针）。MRI表现：T1WI低信号，T2WI混杂高信号；显示骨髓浸润和软组织肿块优于CT。"
+  }
 ];
 
-// 按模块获取所有分类
-function getCategories(module) {
-  const categories = new Set();
-  DATA.filter(d => module === "all" || d.module === module).forEach(d => {
-    if (d.category) categories.add(d.category);
-  });
-  return [
-    { key: "all", label: "全部" },
-    ...[...categories].sort().map(c => ({ key: c, label: c }))
-  ];
-}
-
-let activeModule = "all";
-let activeTag = "all";
-
-function init() {
-  renderModuleNav();
-  renderTags();
-  renderList(DATA);
-  updateStats();
-  window.addEventListener("scroll", () => {
-    document.getElementById("backTop").style.display = window.scrollY > 300 ? "block" : "none";
-  });
-}
-
-function renderModuleNav() {
-  const nav = document.getElementById("moduleNav");
-  nav.innerHTML = MODULES.map(m => `
-    <button class="module-btn ${m.key === activeModule ? 'active' : ''}" 
-            data-module="${m.key}" 
-            onclick="setModule('${m.key}')">${m.label}</button>
-  `).join("");
-}
-
 function setModule(module) {
-  activeModule = module;
-  activeTag = "all";
-  activeSubsystem = "all";
-  activeJoint = "all";
-  renderModuleNav();
-  renderTags();
-  filterCards();
-}
-
-function renderTags() {
-  const c = document.getElementById("tags");
-  
-  // 骨肌系统特殊处理：显示子系统筛选
-  if (activeModule === "bone") {
-    renderBoneSubsystems();
-    return;
-  }
-  
-  const cats = getCategories(activeModule);
-  c.innerHTML = cats.map(t => `
-    <button class="tag ${t.key === activeTag ? 'active' : ''}" onclick="setTag('${t.key}')">${t.label}</button>
-  `).join("");
-}
-
-// 骨肌系统子系统筛选
-let activeSubsystem = "all";
-let activeJoint = "all";
-
-function renderBoneSubsystems() {
-  const c = document.getElementById("tags");
-  const subsystems = [
-    { key: "all", label: "全部" },
-    { key: "关节", label: "🦴 关节" },
-    { key: "肿瘤", label: "⚠️ 肿瘤" }
-  ];
-  
-  let html = `<div style="margin-bottom:8px">`;
-  html += subsystems.map(s => `
-    <button class="tag ${activeSubsystem === s.key ? 'active' : ''}" onclick="setSubsystem('${s.key}')">${s.label}</button>
-  `).join("");
-  html += `</div>`;
-  
-  // 如果选中"关节"，显示关节部位二级筛选
-  if (activeSubsystem === "关节") {
-    const joints = [
-      { key: "all", label: "全部关节" },
-      { key: "膝关节", label: "膝关节" },
-      { key: "髋关节", label: "髋关节" },
-      { key: "手关节", label: "手/腕关节" },
-      { key: "脊柱关节", label: "脊柱关节" },
-      { key: "肩关节", label: "肩关节" },
-      { key: "踝关节", label: "踝关节" },
-      { key: "其他关节", label: "其他" }
-    ];
-    html += `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed #ddd">`;
-    html += joints.map(j => `
-      <button class="tag ${activeJoint === j.key ? 'active' : ''}" onclick="setJoint('${j.key}')" style="font-size:11px;padding:4px 10px">${j.label}</button>
-    `).join("");
-    html += `</div>`;
-  }
-  
-  c.innerHTML = html;
-}
-
-function setSubsystem(key) {
-  activeSubsystem = key;
-  activeJoint = "all";
-  renderTags();
-  filterCards();
-}
-
-function setJoint(key) {
-  activeJoint = key;
-  renderTags();
-  filterCards();
-}
-
-function setTag(key) {
-  activeTag = key;
-  renderTags();
+  currentModule = module;
+  document.querySelectorAll('.module-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
   filterCards();
 }
 
 function filterCards() {
-  const q = document.getElementById("search").value.trim().toLowerCase();
+  const keyword = document.getElementById('search').value.toLowerCase();
   let filtered = DATA;
   
-  // 模块过滤
-  if (activeModule !== "all") {
-    filtered = filtered.filter(d => d.module === activeModule || (activeModule === "bone" && d.module === "musculoskeletal"));
+  if (currentModule !== 'all') {
+    filtered = filtered.filter(d => d.module === currentModule);
   }
   
-  // 骨肌系统子系统筛选
-  if (activeModule === "bone" && activeSubsystem !== "all") {
-    filtered = filtered.filter(d => d.subsystem === activeSubsystem);
-  }
-  
-  // 关节部位筛选
-  if (activeModule === "bone" && activeSubsystem === "关节" && activeJoint !== "all") {
-    filtered = filtered.filter(d => d.joint === activeJoint || !d.joint); // 暂时允许无joint字段的显示
-  }
-  
-  // 分类过滤
-  if (activeTag !== "all") {
-    filtered = filtered.filter(d => d.category === activeTag);
-  }
-  
-  // 搜索过滤
-  if (q) {
+  if (keyword) {
     filtered = filtered.filter(d => {
-      const searchable = [
-        d.name, 
-        d.category, 
-        ...(d.clinical || []),
-        ...(d.signs || []), 
-        ...(d.features || []),
-        ...(d.pathology || []),
-        ...(Object.keys(d.differential || {})),
-        ...(Object.values(d.differential || {}))
-      ].join(" ").toLowerCase();
-      return searchable.includes(q) || d.name.toLowerCase().includes(q);
+      return d.name.toLowerCase().includes(keyword) || 
+             d.clinical.toLowerCase().includes(keyword);
     });
   }
   
   renderList(filtered);
-  updateStats(filtered.length);
-}
-
-function updateStats(n) {
-  const total = n !== undefined ? n : DATA.length;
-  const moduleName = activeModule === "all" ? "" : MODULES.find(m => m.key === activeModule)?.label.replace(/^[🧠👁🫁🍽🦴❤️🤝]\s*/, "") + " ";
-  document.getElementById("stats").textContent = `${moduleName}共 ${total} 种疾病`;
 }
 
 function renderList(data) {
-  const c = document.getElementById("list");
+  const listEl = document.getElementById('list');
+  const statsEl = document.getElementById('stats');
   
-  if (!data.length) {
-    c.innerHTML = `
-      <div class="module-empty">
-        <div class="module-icon">🔍</div>
-        <div class="module-title">没有找到匹配的疾病</div>
-        <div class="module-desc">试试其他关键词或切换分类</div>
-      </div>
-    `;
+  statsEl.textContent = '共 ' + DATA.length + ' 个疾病 | 当前显示 ' + data.length + ' 个';
+  
+  if (data.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#888">暂无匹配疾病</div>';
     return;
   }
   
-  c.innerHTML = data.map((d, i) => `
-    <div class="disease-card" data-index="${i}">
-      <div class="card-header" onclick="toggle(${i})">
-        <h3>${d.name}</h3>
-        <span class="arrow" id="arrow${i}">▶</span>
+  listEl.innerHTML = data.map(d => {
+    return `
+      <div class="disease-card">
+        <div class="card-header" onclick="toggle(this)">
+          <h3>${d.name}（${d.nameEn}）</h3>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="card-body">
+          <div class="info-section">
+            <span class="info-label">临床概述</span>
+            <div class="info-text">${d.clinical}</div>
+          </div>
+          <div class="info-section">
+            <span class="info-label">影像征象</span>
+            <div class="info-text">${d.signs}</div>
+          </div>
+          <div class="info-section">
+            <span class="info-label">影像特征</span>
+            <div class="info-text">${d.features}</div>
+          </div>
+        </div>
       </div>
-      <div class="card-body" id="body${i}">
-        
-        <!-- 临床概述 -->
-        ${d.clinical && d.clinical.length ? `
-          <div class="info-section clinical">
-            <div class="info-label">临床概述</div>
-            <div class="info-text">
-              <ul>${d.clinical.map(item => `<li>${item}</li>`).join("")}</ul>
-            </div>
-          </div>
-        ` : ""}
-        
-        <!-- 影像征象 -->
-        ${d.signs && d.signs.length ? `
-          <div class="info-section signs">
-            <div class="info-label">影像征象</div>
-            <div class="info-text">${d.signs.map(s => `<span class="sign-tag">${s}</span>`).join("")}</div>
-          </div>
-        ` : ""}
-        
-        <!-- 影像特征 -->
-        ${d.features && d.features.length ? `
-          <div class="info-section features">
-            <div class="info-label">影像特征</div>
-            <div class="info-text">
-              <ul>${d.features.map(f => `<li>${f}</li>`).join("")}</ul>
-            </div>
-          </div>
-        ` : ""}
-        
-        <!-- 病理特点 -->
-        ${d.pathology && d.pathology.length ? `
-          <div class="info-section pathology">
-            <div class="info-label">病理特点</div>
-            <div class="info-text">
-              <ul>${d.pathology.map(p => `<li>${p}</li>`).join("")}</ul>
-            </div>
-          </div>
-        ` : ""}
-        
-        <!-- 鉴别诊断 -->
-        ${d.differential && Object.keys(d.differential).length ? `
-          <div class="info-section differential">
-            <div class="info-label">鉴别诊断</div>
-            <div class="info-text">
-              ${Object.entries(d.differential).map(([key, val]) => `
-                <div class="differential-item">
-                  <strong>${key}</strong>
-                  <div class="diff-text">${val}</div>
-                </div>
-              `).join("")}
-            </div>
-          </div>
-        ` : ""}
-        
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join('');
 }
 
-function toggle(i) {
-  const body = document.getElementById("body" + i);
-  const arrow = document.getElementById("arrow" + i);
-  const isOpen = body.classList.contains("open");
-  body.classList.toggle("open");
-  arrow.classList.toggle("open");
-  if (!isOpen) body.parentElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
 }
 
-init();
+// 初始化
+filterCards();
 </script>
 </body>
 </html>
