@@ -35,6 +35,7 @@
   --mediastinum:#7dd3fc;
   --retroperitoneum:#f59e0b;
   --spinalcanal:#a78bfa;
+  --urogenital:#e05a00;
 }
 html{scroll-behavior:smooth}
 body{
@@ -614,6 +615,174 @@ body.show-list .differential-item strong{color:#c0392b}
 body.show-list .diff-text{color:#4d5f6c}
 body.show-list .module-empty{color:#6f8494}
 
+/* ========== 单病种详情页 ========== */
+.detail-page{
+  display:none;
+  padding:0 0 90px;
+}
+body.show-detail .home,
+body.show-detail .hero-panel,
+body.show-detail .module-nav,
+body.show-detail .sub-nav,
+body.show-detail .tags,
+body.show-detail .stats,
+body.show-detail .disease-list{display:none !important}
+body.show-detail .hero{
+  background:#fff;
+  border-bottom:1px solid #d9e6ee;
+  box-shadow:0 8px 24px rgba(19,58,88,.08);
+  padding:12px 18px 10px;
+}
+body.show-detail .brand h1{color:#123047;font-size:17px;letter-spacing:.3px}
+body.show-detail .brand p{display:none}
+body.show-detail .status-pill{display:none}
+body.show-detail .hero-panel{background:transparent;border:none;box-shadow:none;padding:0}
+body.show-detail .search-box{display:none}
+body.show-detail::before,
+body.show-detail::after{display:none}
+body.show-detail{
+  background:#eef4f8;
+  color:#263746;
+}
+
+.detail-back{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:#fff;
+  border:1px solid #d6e5ee;
+  border-radius:999px;
+  padding:7px 15px;
+  font-size:13px;
+  color:#2d6f96;
+  cursor:pointer;
+  margin:10px 18px 0;
+  font-family:inherit;
+  transition:.18s;
+}
+.detail-back:hover{background:#eaf4fb;border-color:#8bc9e8}
+
+.detail-container{
+  padding:10px 18px 0;
+}
+
+.detail-card{
+  position:relative;
+  background:#fff;
+  border:1px solid #dbe6ee;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 10px 22px rgba(34,68,92,.08);
+}
+.detail-card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,#2980b9,#46bde7,#dbeefa);
+  box-shadow:0 0 18px rgba(41,128,185,.4);
+}
+.detail-header{
+  position:relative;
+  padding:18px 18px 14px 20px;
+}
+.detail-header .card-kicker{
+  display:flex;align-items:center;gap:6px;
+  color:#2d86b7;font-size:10px;letter-spacing:.8px;text-transform:uppercase;
+}
+.detail-header .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#2980b9;box-shadow:0 0 10px #2980b9;
+}
+.detail-header h2{
+  font-size:17px;font-weight:800;
+  color:#1d3344;line-height:1.45;
+  margin-top:6px;
+}
+.detail-header .meta-chip{
+  display:inline-flex;align-items:center;
+  padding:3px 8px;border-radius:999px;
+  background:#f2f7fa;
+  border:1px solid #e0ebf2;
+  color:#607889;font-size:11px;
+  margin-top:8px;margin-right:6px;
+}
+.detail-body{
+  padding:14px 15px 16px 20px;
+  border-top:1px solid #e5eef4;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.08)),
+    repeating-linear-gradient(90deg,rgba(70,231,255,.015) 0 1px,transparent 1px 14px);
+}
+body.show-detail .info-section{
+  position:relative;
+  margin-bottom:13px;
+  padding:12px 12px 11px;
+  border-radius:16px;
+  background:#fff;
+  border:1px solid #e6eef4;
+}
+body.show-detail .info-section:last-child{margin-bottom:0}
+body.show-detail .info-label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:8px;
+  letter-spacing:.5px;
+}
+body.show-detail .info-label::before{
+  content:"";
+  width:5px;height:5px;border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 8px currentColor;
+}
+body.show-detail .info-text{font-size:13px;color:#364b5a;line-height:1.75}
+body.show-detail .info-text ul{padding-left:18px}
+body.show-detail .info-text li{margin-bottom:5px}
+body.show-detail .info-section.clinical .info-label{background:#e8f6f3;color:#1e8449}
+body.show-detail .info-section.signs .info-label{background:#fef9e7;color:#b58200}
+body.show-detail .info-section.features .info-label{background:#eaf2f8;color:#2874a6}
+body.show-detail .info-section.pathology .info-label{background:#f5eef8;color:#8e44ad}
+body.show-detail .info-section.differential .info-label{background:#fdedec;color:#c0392b}
+body.show-detail .sign-tag,
+body.show-detail .pathology-tag{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  margin:4px 5px 4px 0;
+  background:#fff9df;color:#9d7100;
+  border:1px solid #f3e4a3;
+  box-shadow:inset 0 0 14px rgba(255,209,102,.04);
+}
+body.show-detail .differential-item{
+  background:#fff;
+  border:1px solid #f1d0d0;
+  border-left:3px solid #c0392b;
+  padding:10px 11px;
+  margin-bottom:9px;
+  border-radius:0 14px 14px 0;
+}
+body.show-detail .differential-item strong{color:#c0392b;font-size:13px}
+body.show-detail .diff-text{font-size:12px;color:#4d5f6c;margin-top:4px;line-height:1.65}
+
+/* 详情页响应式 */
+@media (min-width: 768px) {
+  .detail-back{margin:14px 32px 0;font-size:14px;padding:8px 18px}
+  .detail-container{padding:14px 32px 0}
+  .detail-header h2{font-size:19px}
+  body.show-detail .info-text{font-size:14px}
+}
+@media (min-width: 1024px) {
+  .detail-back{margin:16px 48px 0}
+  .detail-container{padding:16px 48px 0}
+  .detail-header h2{font-size:21px}
+}
+
 </style>
 </head>
 <body>
@@ -660,6 +829,10 @@ body.show-list .module-empty{color:#6f8494}
   <div class="tags" id="tags"></div>
   <div class="stats" id="stats"></div>
   <div class="disease-list" id="list"></div>
+  <section class="detail-page" id="detailPage">
+    <button class="detail-back" onclick="hideDetail()">← 返回列表</button>
+    <div class="detail-container" id="detailContainer"></div>
+  </section>
 </div>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
@@ -749,6 +922,219 @@ const DATA = [
       "颅咽管瘤": "好发于儿童，位于鞍上，囊实性，可见钙化（CT），无正常垂体可见。",
       "Rathke裂囊肿": "位于垂体前后叶之间，T1WI信号多变（蛋白含量高时高信号），无强化或仅囊壁轻度强化。",
       "脑膜瘤": "位于鞍结节、鞍隔，广基底与硬脑膜相连，明显均匀强化，垂体受压下移但结构可辨。"
+    }
+  },
+
+
+
+  // ==================== 中枢神经系统 - 脑血管疾病 ====================
+  {
+    name: "囊性动脉瘤（Saccular Aneurysm）",
+    module: "brain",
+    category: "脑血管疾病",
+    clinical: [
+      "定义：动脉壁的病理性膨出，多数瘤壁缺少正常血管壁的两层结构（内弹性膜与中膜）。",
+      "好发人群：后天获得性多见，血流动力学异常、剪切力改变、薄弱的动脉壁潜在的遗传性改变。",
+      "好发部位：多发生在脑底动脉环（Willis环）的动脉分叉处，以前循环多见。",
+      "临床特征：未破裂时可无症状；破裂后引起蛛网膜下腔出血（SAH），表现为剧烈头痛、呕吐、意识障碍；部分患者以癫痫为首发症状。"
+    ],
+    signs: [
+      "边缘清楚的团块影",
+      "瘤壁钙化",
+      "部分血栓形成",
+      "流空信号",
+      "残余瘤腔强化"
+    ],
+    features: [
+      "CT表现：较大的动脉瘤表现为边缘清楚的团块影，密度稍高，边缘可见钙化；部分血栓形成的动脉瘤可见残余瘤腔的强化；完全栓塞的动脉瘤不强化且CTA无异常；长期存在的病灶可见边缘强化（炎性改变）。",
+      "MRI表现：因脉冲序列、血流动力学、出血时期不同而异；T1/T2上可见流空信号；瘤腔内血栓在T1WI可呈高信号（亚急性期）；SWI对血栓及含铁血黄素敏感。",
+      "CTA表现：怀疑SAH病人的常用成像方法，可清楚显示动脉瘤形态、大小和载瘤动脉关系。",
+      "DSA表现：诊断金标准，可显示动脉瘤的精确位置、形态和血流动力学，但存在创伤及诱发破裂风险。"
+    ],
+    pathology: [
+      "瘤壁缺少正常血管壁的两层结构（内弹性膜与中膜）",
+      "先天性因素：多发生在脑底动脉环的动脉分叉处，此处动脉中层最薄弱而又承受血流冲击力最大",
+      "后天性因素：动脉硬化、感染性（霉菌性或细菌性）、外伤性（假性动脉瘤，占0.5%左右）"
+    ],
+    differential: {
+      "梭形动脉瘤": "血管壁全层局部扩张，无瘤颈，常累及长段血管（尤其是后循环），多由动脉粥样硬化所致，老年多见（70-80岁）。",
+      "血泡样动脉瘤": "位于前交通动脉或颈内动脉床突段，瘤壁极薄（仅内膜+外膜），容易破裂，手术难度大，预后差。",
+      "假性动脉瘤": "外伤或医源性损伤所致，瘤壁为纤维组织包裹血肿，无动脉壁结构，CTA可见'点征'（活动性出血）。"
+    }
+  },
+  {
+    name: "梭形动脉瘤（Fusiform Aneurysm）",
+    module: "brain",
+    category: "脑血管疾病",
+    clinical: [
+      "定义：血管壁全层的局部扩张，瘤壁包含动脉壁的各层结构（与囊性动脉瘤不同）。",
+      "好发人群：70-80岁的老年人，与广泛动脉粥样硬化相关。",
+      "好发部位：后循环更常见（基底动脉、椎动脉），也可发生在前循环。",
+      "临床特征：可无症状；或表现为脑缺血症状（栓塞、低灌注）；瘤体较大时可压迫颅神经（面瘫、吞咽困难）；破裂引起SAH。"
+    ],
+    signs: [
+      "血管壁全层扩张",
+      "无瘤颈",
+      "长段血管受累",
+      "动脉粥样硬化",
+      "后循环多见"
+    ],
+    features: [
+      "CT表现：基底动脉或椎动脉增粗、迂曲、扩张；可伴管壁钙化；增强后瘤腔均匀强化；可伴周围脑组织缺血改变。",
+      "MRI表现：T1WI/T2WI上扩张的血管流空信号；瘤腔内血栓形成时信号混杂；增厚管壁可见强化（炎性反应）；MRA/CTA可清楚显示血管扩张范围。",
+      "分型：动脉粥样硬化型（ASVD-FA）和非动脉粥样硬化型（与胶原血管性疾病如马方综合征、Ehlers-Danlos综合征相关）。",
+      "典型表现：后循环长段血管扩张、迂曲 + 广泛动脉粥样硬化 + 老年病人。"
+    ],
+    pathology: [
+      "血管壁全层局部扩张（与囊性动脉瘤的'瘤壁缺损'不同）",
+      "动脉粥样硬化是最常见病因，尤其好发于后循环",
+      "非动脉粥样硬化型与胶原血管性疾病相关（马方综合征、Ehlers-Danlos综合征）"
+    ],
+    differential: {
+      "囊性动脉瘤": "有瘤颈，多发生在动脉分叉处，瘤壁缺少内弹性膜与中膜，前循环多见。",
+      "血泡样动脉瘤": "位于前交通或颈内动脉床突段，瘤壁极薄，无粥样硬化表现。",
+      "椎基底动脉延长扩张症": "整个椎基底动脉系统弥漫性扩张、延长、迂曲，无局限性瘤样膨出。"
+    }
+  },
+  {
+    name: "血泡样动脉瘤（Blood Blister-Like Aneurysm，BBA）",
+    module: "brain",
+    category: "脑血管疾病",
+    clinical: [
+      "定义：一种特殊类型的动脉瘤，瘤壁极薄（仅由内膜和蛛网膜样外膜构成），无真正的瘤颈。",
+      "好发人群：中青年多见，女性略多于男性。",
+      "好发部位：前交通动脉（35-50%）和颈内动脉床突段（40-50%）。",
+      "临床特征：极易破裂（90%以SAH为首发症状）；再破裂率高；手术难度大、预后差；术前Hunt-Hess分级多较高。"
+    ],
+    signs: [
+      "瘤壁极薄",
+      "无真正瘤颈",
+      "宽基底",
+      "易破裂",
+      "再破裂率高"
+    ],
+    features: [
+      "CT表现：早期可仅表现为局部血管壁稍增厚或微小隆起，容易漏诊；破裂后可见SAH（脑沟、脑池高密度影）。",
+      "CTA表现：宽基底的局限性囊状突起，瘤颈宽、瘤体小；易漏诊（尤其小BBA）；CTA对BBA的检出率低于DSA。",
+      "DSA表现：金标准，典型表现为宽基底的囊状突起，无明确瘤颈；正位/侧位需充分投照；可伴血管痉挛。",
+      "MRI表现：T1WI高信号提示动脉瘤壁血栓或出血；SWI可显示瘤壁出血；HR-MRI（高分辨MRI）可显示瘤壁强化（不稳定动脉瘤）。",
+      "典型表现：前交通/颈内动脉床突段宽基底小囊状突起 + 易破裂 + SAH。"
+    ],
+    pathology: [
+      "瘤壁极薄，仅由内膜和蛛网膜样外膜构成，缺乏中膜和內弹性膜",
+      "病理基础：动脉壁局限性薄弱或缺损",
+      " female: male ≈ 1.5:1"
+    ],
+    differential: {
+      "囊性动脉瘤": "有明确瘤颈，瘤壁相对较厚（含中膜/内弹性膜），手术夹闭相对容易。",
+      "梭形动脉瘤": "长段血管壁全层扩张，无局限性囊状突起，动脉粥样硬化明显，老年多见。",
+      "假性动脉瘤": "有外伤或医源性损伤史，瘤壁为纤维组织包裹，CTA可见'点征'。"
+    }
+  },
+  {
+    name: "假性动脉瘤（Pseudoaneurysm）",
+    module: "brain",
+    category: "脑血管疾病",
+    clinical: [
+      "定义：动脉壁全层破裂后，血液被周围纤维组织包裹形成的局限性血肿，瘤壁不含动脉壁结构。",
+      "好发人群：任何年龄，多有明确外伤史或医源性损伤史。",
+      "好发部位：可发生在任何损伤部位，颅内多见于外伤性脑内血肿周围。",
+      "临床特征：可表现为实质性血肿的扩大；外伤后迟发性出血；部分患者无症状；破裂后引起SAH或脑内血肿。"
+    ],
+    signs: [
+      "血肿扩大",
+      "点征（CTA）",
+      "流空信号（MRI）",
+      "无瘤颈",
+      "延迟显影（DSA）"
+    ],
+    features: [
+      "CT表现：通常是正常或非特异性的；血肿密度可不均匀；增强后可见局限性对比剂外溢（活动性出血）。",
+      "CTA表现：有时在快速扩张的血肿内可见'点征'（对比剂外溢点），提示活动性出血；许多假性动脉瘤体积小且显示不准确，CTA诊断困难。",
+      "MRI表现：信号随时间变化（亚急性期T1WI高信号）；流空信号（快速血流）；SWI对出血敏感。",
+      "DSA表现：显示无颈动脉瘤的具体形态；造影剂延迟进入瘤腔、延迟排空；DSA是诊断金标准。",
+      "并发症：破裂出血（最常见）；压迫周围结构；感染。"
+    ],
+    pathology: [
+      "瘤壁为纤维组织包裹血肿，不含动脉壁的三层结构",
+      "多由外伤、手术、感染或肿瘤侵犯引起",
+      "约占所有颅内动脉瘤的0.5%"
+    ],
+    differential: {
+      "囊性动脉瘤": "瘤壁含动脉壁结构（至少部分），有瘤颈，多为先天性或动脉粥样硬化性。",
+      "梭形动脉瘤": "血管壁全层扩张，有动脉壁结构，多见于后循环老年病人。",
+      "脑内血肿": "无'点征'，无流空信号，DSA无异常显影。"
+    }
+  },
+  {
+    name: "动静脉畸形（Arteriovenous Malformation，AVM）",
+    module: "brain",
+    category: "脑血管畸形",
+    clinical: [
+      "定义：先天性高流量的血管畸形，由供血动脉、畸形血管团和引流静脉三部分组成。",
+      "好发人群：青少年及青年成人（10-40岁），男女比例约1.5:1；以出血为首发症状者，无高血压脑血管硬化病史（特别是年轻人）应考虑AVM。",
+      "好发部位：主要位于脑实质（85%位于幕上），也可位于脑膜、脑室及海绵窦；幕上多见，单发灶占98%。",
+      "临床特征：出血（50%）、癫痫（25%）及头痛（15%）；进行性神经功能障碍（盗血现象）；颅内血管杂音（较大AVM）。"
+    ],
+    signs: [
+      "迂曲条状流空信号",
+      "供血动脉增粗",
+      "引流静脉早期显影",
+      "无占位效应",
+      "周围胶质增生"
+    ],
+    features: [
+      "CT表现：点状或迂曲条状高密度影（血管影），供血动脉也可能与脑实质等密度；约1/3可见钙化；增强后血管影更清楚；可伴脑内血肿、脑室出血或SAH。",
+      "MRI表现：异常血管在T1WI及T2WI均为流空信号影；回流静脉由于血流缓慢T1WI为低信号、T2WI为高信号；病灶内可见不同时期的出血密度或信号；周围脑组织萎缩；T2WI或FLAIR上呈高信号提示周围胶质增生；无占位效应（但局部脑组织MRI信号可异常，如由病变血管盗血所致的邻近脑缺血、出血等）。",
+      "DSA表现：诊断金标准，典型表现是增粗的供血动脉和引流静脉的早期显影；可显示畸形血管团的确切大小和部位、供血动脉来源和数目、引流静脉的数目和方向。",
+      "分级：Spetzler-Martin分级（根据大小、部位、引流静脉），用于评估手术风险。"
+    ],
+    pathology: [
+      "先天性高流量血管畸形，由供血动脉、畸形血管团和引流静脉组成",
+      "畸形血管团内无正常毛细血管床，血流直接由动脉进入静脉（动静脉短路）",
+      "可伴进行性血管扩张（盗血现象），导致邻近脑组织缺血"
+    ],
+    differential: {
+      "海绵状血管瘤": "无流空信号（T2WI典型'爆米花'样改变），DSA阴性（隐匿性血管畸形），中青年多见，常有家族遗传史。",
+      "囊性动脉瘤": "局限性囊状膨出，有瘤颈，DSA可见瘤腔显影，无畸形血管团。",
+      "烟雾病": "颈内动脉末端进行性狭窄或闭塞，伴异常血管网形成（T2WI'烟雾样'流空信号），多见于儿童和青年女性。"
+    }
+  },
+  {
+    name: "海绵状血管瘤（Cavernous Hemangioma/ Cavernous Malformation，CM）",
+    module: "brain",
+    category: "脑血管畸形",
+    clinical: [
+      "定义：又称海绵状血管畸形，并非真性肿瘤，而是一种较为隐匿的先天性血管畸形，具有一定生长能力。",
+      "好发人群：16岁以上成年人每年检出率约0.56/10万；无明显性别差异；家族遗传型与基因突变相关（CCM1/CCM2/CCM3）。",
+      "好发部位：分为脑内型和脑外型；脑内型临床常见（位于脑实质），部分多发者可合并脊髓内CM；脑外型较罕见（鞍旁、凸面、脑室内），多与硬膜关系密切。",
+      "临床特征：癫痫（最常见，50-80%）、出血（占20-30%，出血量通常较小）、神经功能障碍（占位效应）、头痛；脑外型可压迫颅神经引起相应症状。"
+    ],
+    signs: [
+      "爆米花样改变（T2WI）",
+      "中心混杂信号",
+
+      "周围低信号环（含铁血黄素）",
+      "无流空信号",
+      "DSA阴性"
+    ],
+    features: [
+      "CT表现（脑内型）：边界清楚的圆形或类圆形的高密度影（亚急性出血），增强后轻度强化或不强化；周围水肿不明显；约30-50%可见钙化。",
+      "MRI表现（脑内型，对CMs高度敏感，首选检查）：典型表现为T2WI上边界清楚的'爆米花样'混杂信号，中心为不同时期出血的混杂信号，周围可见完整的低信号环（含铁血黄素沉积）；T1WI可呈高信号（亚急性期出血）；GRE/SWI序列对含铁血黄素敏感，低信号环显示更清楚；增强扫描通常无强化或轻度强化；分为4型（I型：亚急性出血；II型：爆米花样典型表现；III型：慢性出血/钙化；IV型：仅SWI阳性）。",
+      "CT表现（脑外型）：常呈等密度或高密度影，边界较清楚；鞍旁及凸面者增强CT显著强化；脑室内者强化情况不确定。",
+      "MRI表现（脑外型）：T1WI均匀低信号，T2WI均匀极高信号（接近脑脊液信号）；FLAIR为高信号；DWI呈等、低信号；增强扫描均匀显著强化；动态增强扫描部分病例呈延迟强化表现（边缘到中心的'填充式'强化）；鞍旁海绵窦区CMs最为常见。",
+      "DSA表现：通常阴性（隐匿性血管畸形），因瘤内血液流速缓慢，脑血管造影不能显示畸形血管团病灶。"
+    ],
+    pathology: [
+      "实质是畸形血管团，由扩张的薄壁血管窦组成，缺乏正常血管壁结构（缺乏弹力层和肌层）",
+      "瘤内的血液流速缓慢，故脑血管造影不能显示畸形血管团病灶",
+      "血液滞留是畸形血管内形成血栓和钙化的原因",
+      "病因：先天性学说（婴儿患者和家族史）+ 后天性学说（放疗、病毒感染、外伤、手术、出血后血管性反应）"
+    ],
+    differential: {
+      "动静脉畸形（AVM）": "DSA阳性（可见畸形血管团和动静脉短路），T1/T2上流空信号，占位效应更明显，出血更频繁且量大。",
+      "囊性动脉瘤": "局限性囊状膨出，DSA可见瘤腔显影，T1/T2上流空信号，无'爆米花样'改变。",
+      "脑出血（高血压性）": "多有高血压病史，出血位于基底节/丘脑，无'爆米花样'典型表现，周围无低信号环。"
     }
   },
 
@@ -1250,6 +1636,207 @@ const DATA = [
     }
   },
 
+  // ==================== 消化系统 - 胰腺 ====================
+  {
+    name: "胰腺癌（Pancreatic Carcinoma）",
+    module: "abdomen",
+    subModule: "pancreas",
+    category: "胰腺恶性肿瘤",
+    clinical: [
+      "40岁以上中老年人，男性多于女性（约2~5:1）",
+      "症状出现较迟，早期诊断困难，预后极差",
+      "主要表现为腹部胀痛不适、体重减轻、食欲不振、黄疸和腰背部疼痛",
+      "胰头癌常因早期侵犯胆总管下端引起梗阻性黄疸而发现较早",
+      "胰体、尾癌早期症状常不明显，多因肿块就诊，发现时常已是晚期",
+      "临床多有CA-199明显升高"
+    ],
+    signs: [
+      "双管征（胆总管+胰管同时扩张）",
+      "四管征（肿块上方扩张胆总管、远端扩张胰管、肿块下方正常胆总管和胰管）",
+      "肿瘤远端胰腺萎缩",
+      "侵犯周围血管（血管脂肪间隙消失、血管形态不规则、变细或有癌栓）",
+      "肝转移（36%~55%）",
+      "腹腔干和肠系膜根部周围淋巴结转移"
+    ],
+    features: [
+      "CT平扫：瘤体通常为等密度或略低密度",
+      "增强后呈乏血供，表现为不强化或轻度强化，强化程度低于正常胰腺组织",
+      "MRI：T1WI为略低或低信号，T2WI为混杂或略高信号；瘤体增强后仅轻度或不强化",
+      "肿瘤远端胰腺萎缩，胆管、胰管扩张，表现为'双管征'、'四管征'（可靠征象）",
+      "侵犯周围血管：胰腺与血管间脂肪间隙消失，血管形态不规则、变细或有癌栓，继发侧支循环",
+      "远处转移：肝转移比例最高（36%~55%），淋巴结转移最常见于腹腔干和肠系膜根部"
+    ],
+    pathology: [
+      "绝大多数起源于胰管上皮细胞，仅极少部分起源于腺泡细胞",
+      "乏血供肿瘤",
+      "胰头癌常直接侵犯胆总管、十二指肠；胰体癌常直接侵犯腹腔干、肠系膜上动脉起始部；胰尾癌常侵犯脾门",
+      "胰头癌易侵犯肠系膜上静脉或门静脉汇合部，胰体尾癌易侵犯脾静脉，再经门静脉转移到肝脏",
+      "经淋巴常转移至胰周及后腹膜淋巴结",
+      "病理分型：导管腺癌（约90%）、腺泡细胞癌（<1%）、胰母细胞瘤（罕见，儿童期最常见）"
+    ],
+    differential: {
+      "慢性胰腺炎": "多有反复发作病史，胰腺钙化、假囊肿形成，扩张胰管光滑、无壁结节，无恶变征象",
+      "自身免疫性胰腺炎": "IgG4升高，胰腺弥漫性肿大呈'腊肠样'，增强后延迟强化，激素治疗有效",
+      "胰腺神经内分泌肿瘤": "多血供肿瘤，增强后明显强化，功能性者有明显内分泌症状",
+      "IPMN恶变": "主胰管或分支胰管囊状扩张，壁结节，与胰腺癌鉴别需结合病史及影像",
+      "胰腺转移瘤": "有原发肿瘤病史，多发病灶多见"
+    }
+  },
+  {
+    name: "胰腺导管内乳头状黏液性肿瘤（IPMN）",
+    module: "abdomen",
+    subModule: "pancreas",
+    category: "胰腺囊性肿瘤（癌前病变）",
+    clinical: [
+      "好发于60~70岁，男性多于女性，被称为'爷爷瘤'",
+      "临床症状缺乏明显特征，多数患者并无明显的临床表现",
+      "主胰管型最常见症状是腹部疼痛、体重减轻、急性胰腺炎等",
+      "分支胰管型临床表现与主胰管型基本相同",
+      "临床症状和体征取决于导管扩张的程度和产生黏液的量"
+    ],
+    signs: [
+      "主胰管中度至明显扩张（≥10mm高度怀疑恶变）",
+      "分叶状或葡萄串样囊性病变，由较小囊性病变聚合而成，有交通",
+      "囊内可见间隔及壁结节（小壁结节很难显示）",
+      "常伴有胰腺萎缩",
+      "恶变征象：大小>30mm、局部囊性灶出现壁结节/胰管壁强化/囊壁增厚、主胰管≥10mm、远端胰腺萎缩伴随主胰管管径突然改变、周围淋巴结增大"
+    ],
+    features: [
+      "根据肿瘤发生部位分为：主胰管型、分支胰管型、混合型",
+      "CT：清楚显示扩张的胰管及胰腺内的囊性占位，薄层/曲面重建可显示扩张的胰管与囊腔相通，增强扫描乳头状结节及实性成分呈轻中度强化",
+      "MRI：长T1、长T2信号的囊腔和扩张的胰管，结节及间隔呈稍长T1、稍长T2信号",
+      "MRCP：清楚显示扩张主胰管及囊腔的全貌，MRCP诊断IPMN的准确性和敏感性更有优势",
+      "曲面重建示多囊性病变相互交通，并与主胰管相通",
+      "带分隔的囊肿和主胰管相通，囊肿和胰管连接部有狭窄颈部，高度提示分支胰管型或混合型"
+    ],
+    pathology: [
+      "起源于胰腺导管上皮，病变被覆高柱状的富含黏液的上皮细胞，并形成乳头状结节突入腔内",
+      "分泌过多的黏液，引起主胰管和(或)分支胰管进行性扩张或囊变",
+      "属于癌前病变，有恶变倾向",
+      "根据肿瘤发生部位分为：①主胰管型；②分支胰管型；③混合型"
+    ],
+    differential: {
+      "慢性胰腺炎": "胰腺实质钙化、假囊肿形成，胰管扩张但无囊壁结节，无葡萄串样表现",
+      "胰腺浆液性囊腺瘤": "微囊型（<2cm），中央瘢痕及日光放射状钙化，不与主胰管相通",
+      "胰腺黏液性囊腺瘤": "多见于女性，囊少囊大（>2cm），不与主胰管相通，多见于胰体尾部",
+      "胰腺癌": "实性占位，双管征，进行性强化，无葡萄串样囊性表现"
+    }
+  },
+  {
+    name: "胰腺实性假乳头状瘤（SPN）",
+    module: "abdomen",
+    subModule: "pancreas",
+    category: "胰腺交界性肿瘤",
+    clinical: [
+      "多见于年轻女性（中位年龄30岁），又称为'女儿瘤'",
+      "大多数SPN无症状，通过影像学检查偶然发现",
+      "也可能出现非特异性症状，包括腹部不适、恶心、呕吐、乏力或疼痛",
+      "当肿瘤较大时，外伤性肿瘤内出血可引起急腹症",
+      "肿瘤标志物的血清水平常正常，也没有功能性内分泌综合征有关的证据",
+      "男性少见，但发生于男性及老年女性者其恶性程度高于年轻女性患者"
+    ],
+    signs: [
+      "肿瘤多膨胀性生长，有完整包膜，与胰腺分界清晰，边缘光整",
+      "肿瘤异质性大，密度及信号多不均",
+      "囊实性成分相间",
+      "出血灶（T1WI高信号）",
+      "壁结节",
+      "包膜完整",
+      "渐进性延迟强化",
+      "浮云征（延迟期强化的范围及密度均增加，呈小片状）",
+      "杯口征/手抱球征（肿瘤外向性生长，推挤胰腺实质形成）"
+    ],
+    features: [
+      "好发于胰腺体尾部，多为类圆形或椭圆形，少数可有轻分叶，长径多＞5cm",
+      "瘤体常位于胰腺边缘处，与胰腺交界面形成'杯口征'或'手抱球征'，并推挤临近组织结构",
+      "CT表现：平扫肿物呈囊实性，边界清楚或不清，有时可见小片状或小结节状钙化灶，肿瘤内出血呈边界不清片状略高密度影，多期增强扫描实性成分、壁结节及包膜呈渐进性延迟强化",
+      "MRI表现：T1WI瘤体实性成分呈低信号，出血区域呈片状明显高信号；T2WI及T2WI脂肪抑制肿物呈混杂中高信号，有时可见液-液平面（不同时期肿瘤出血表现）；增强扫描瘤体实性成分、壁结节及包膜呈渐进性延迟强化",
+      "DWI高信号",
+      "肿瘤多膨胀性生长，有完整包膜，与胰腺分界清晰（少数因浸润性生长而边界不清）"
+    ],
+    pathology: [
+      "较罕见，约占成人胰腺外分泌部肿瘤的0.9%-2.7%，占胰腺囊性肿瘤的5%",
+      "好发生于胰体和胰尾，也可发生在胰腺以外的部位（胰腺后方、大网膜等、卵巢和睾丸）",
+      "低度恶性，手术切除可治愈，预后好"
+    ],
+    differential: {
+      "胰腺神经内分泌肿瘤": "多血供，增强后明显强化，功能性者有明显内分泌症状",
+      "胰腺癌": "老年多见，乏血供，双管征，CA-199升高",
+      "胰腺囊腺瘤": "纯囊性为主，无实性成分渐进性强化",
+      "胰母细胞瘤": "儿童期肿瘤，多见于肝脏和腹膜后"
+    }
+  },
+  {
+    name: "胰腺浆液性囊腺瘤（SCA）",
+    module: "abdomen",
+    subModule: "pancreas",
+    category: "胰腺囊性肿瘤（良性）",
+    clinical: [
+      "常发生在胰腺体尾部，老年女性（＞60岁）多见，约占75%，发病中位年龄为61.5岁，又称'奶奶瘤'",
+      "为胰腺良性肿瘤，无恶变潜能",
+      "依据囊的形态可分为微囊型（SMA）、寡囊型（SOA）及混合型"
+    ],
+    signs: [
+      "分叶形",
+      "中心纤维瘢痕和纤维间隔使病变呈蜂窝样",
+      "囊内含低密度液体",
+      "中央纤维瘢痕和分隔有时可见条状不规则或特征性日光放射状钙化",
+      "增强扫描后肿瘤的蜂窝结构更清晰"
+    ],
+    features: [
+      "CT表现：呈分叶形、中心纤维瘢痕和纤维间隔使病变呈蜂窝样，囊内含低密度液体；中央纤维瘢痕和分隔有时可见条状不规则或特征性日光放射状钙化，则高度提示为浆液性囊腺瘤；增强扫描后肿瘤的蜂窝结构更清晰",
+      "MRI表现：呈蜂窝状，T2WI肿瘤包膜和瘤内纤维间隔表现为低信号，肿瘤中央纤维瘢痕及钙化也表现为低信号",
+      "微囊型（SMA）：囊径＜2cm，蜂窝状；寡囊型（SOA）：囊径＞2cm，囊数少"
+    ],
+    pathology: [
+      "起自腺泡细胞，为一种少见的胰腺良性肿瘤",
+      "良性，无恶变潜能"
+    ],
+    differential: {
+      "黏液性囊腺瘤": "多见于中年女性，囊少囊大（＞2cm），厚壁，有强化，有恶变潜能",
+      "IPMN": "与主胰管相通，葡萄串样，壁结节，老年男性多见",
+      "胰腺假性囊肿": "有胰腺炎病史，无纤维间隔及蜂窝状表现，无强化"
+    }
+  },
+  {
+    name: "胰腺黏液性囊腺瘤（MCN）",
+    module: "abdomen",
+    subModule: "pancreas",
+    category: "胰腺囊性肿瘤（癌前病变）",
+    clinical: [
+      "多见于40~60岁的女性（中位年龄47岁），又称'妈妈瘤'",
+      "胰体尾部多见",
+      "肿瘤常较大，直径2~30cm，为单囊或几个大囊组成，囊内充满黏液",
+      "小的肿瘤（1~3cm）多为良性，肿瘤直径超过5cm要考虑恶性的可能，超过8cm则多为恶性",
+      "黏液性囊腺瘤和囊腺癌统称为黏液囊性肿瘤",
+      "不同于良性浆液性囊腺瘤，黏液性囊腺瘤常有恶变的可能，是潜在的恶性肿瘤"
+    ],
+    signs: [
+      "单房或多房囊肿，多房者囊数常少（＜6个）",
+      "囊腔较大（＞2cm）（囊少囊大）",
+      "10-25%可见囊壁或分隔的蛋壳样钙化（边缘）",
+      "肿瘤内纤维间隔和实性结节，伴渐进性强化",
+      "恶变征象：肿块边界不清、周围组织或器官有侵蚀；囊性病变内出现明显的实性软组织肿块；囊壁厚度＞1cm或厚薄不均；囊内间隔不规则、厚薄不一；肿瘤直径＞8cm；出现周围血管浸润包埋和远处转移；肿瘤标志物升高"
+    ],
+    features: [
+      "CT/MRI：单房或多房囊肿，多房者囊数常少（<6个）；囊腔较大（>2cm）（囊少囊大）；囊壁或分隔的蛋壳样钙化；肿瘤壁、纤维间隔和实性部分明显强化（提示恶性）",
+      "增强扫描后，肿瘤壁、纤维间隔和实性部分明显强化，提示恶性病变可能大，有转移病灶则为恶性可靠依据",
+      "小的肿瘤（1~3cm）多为良性，肿瘤直径超过5cm要考虑恶性的可能，超过8cm则多为恶性"
+    ],
+    pathology: [
+      "黏液性囊腺瘤（mucinous cystadenoma）和囊腺癌（cystadenocarcinoma）统称为黏液囊性肿瘤",
+      "不同于良性浆液性囊腺瘤，黏液性囊腺瘤常有恶变的可能，是潜在的恶性肿瘤"
+    ],
+    differential: {
+      "浆液性囊腺瘤": "微囊型（＜2cm），中央瘢痕及日光放射状钙化，无强化，良性无恶变潜能",
+      "IPMN": "与主胰管相通，葡萄串样，老年男性多见（爷爷瘤）",
+      "胰腺假性囊肿": "有胰腺炎病史，无厚壁及实性结节，无强化",
+      "胰腺神经内分泌肿瘤囊性变": "多血供，增强后明显强化，无厚壁及蛋壳样钙化"
+    }
+  },
+  
+
+
   // ==================== 纵隔系统 ====================
   
   // ==================== 腹膜后系统 ====================
@@ -1269,6 +1856,7 @@ const MODULES = [
   { key: "mediastinum", label: "纵隔", color: "#7dd3fc" },
   { key: "abdomen", label: "消化系统", color: "#fdcb6e" },
   { key: "retroperitoneum", label: "腹膜后", color: "#f59e0b" },
+  { key: "urogenital", label: "泌尿生殖", color: "#e05a00" },
   { key: "bone", label: "骨肌系统", color: "#74b9ff" },
   { key: "spinalcanal", label: "椎管", color: "#a78bfa" },
   { key: "cardio", label: "心血管", color: "#e84393" },
@@ -1308,6 +1896,7 @@ let activeModule = "all";
 let activeTag = "all";
 let activeBoneLevel2 = "all";
 let activeBoneLevel3 = "all";
+let activeAbdomenLevel2 = "all";
 let lastRendered = [];
 
 const BONE_LEVEL2 = [
@@ -1325,6 +1914,15 @@ const BONE_LEVEL3_JOINT = [
   { key: "hand", label: "手关节" },
   { key: "wrist", label: "腕关节" },
   { key: "spine", label: "脊柱关节" }
+];
+
+const ABDOMEN_LEVEL2 = [
+  { key: "all", label: "全部" },
+  { key: "liver", label: "肝脏" },
+  { key: "gallbladder", label: "胆囊" },
+  { key: "pancreas", label: "胰腺" },
+  { key: "spleen", label: "脾脏" },
+  { key: "gastro", label: "胃肠" }
 ];
 
 
@@ -1430,7 +2028,8 @@ function moduleIconSvg(key) {
     abdomen: '<svg viewBox="0 0 24 24"><path d="M8 4h8c2 3 3 6 3 9 0 5-3 8-7 8s-7-3-7-8c0-3 1-6 3-9z"/><path d="M9 12h6M9 16h6"/></svg>',
     bone: '<svg viewBox="0 0 24 24"><path d="M7 8a3 3 0 1 1 4-4l9 9a3 3 0 1 1-4 4l-9-9z"/><path d="M8 16a3 3 0 1 0-4 4 3 3 0 0 0 4-4z"/><path d="M16 8a3 3 0 1 1 4-4 3 3 0 0 1-4 4z"/></svg>',
     cardio: '<svg viewBox="0 0 24 24"><path d="M20 9c0 6-8 11-8 11S4 15 4 9a4 4 0 0 1 7-2 4 4 0 0 1 9 2z"/><path d="M4 13h4l2-3 3 6 2-3h5"/></svg>',
-    breast: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg>'
+    breast: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg>',
+    urogenital: '<svg viewBox="0 0 24 24"><path d="M12 3C8 3 5 7 5 11c0 6 7 10 7 10s7-4 7-10c0-4-3-8-7-8z"/><circle cx="9" cy="10" r="1.5"/><circle cx="15" cy="10" r="1.5"/><path d="M12 14v7"/></svg>'
   };
   return icons[key] || icons.all;
 }
@@ -1453,6 +2052,7 @@ function setModule(module) {
   activeTag = "all";
   activeBoneLevel2 = "all";
   activeBoneLevel3 = "all";
+  activeAbdomenLevel2 = "all";
   document.getElementById("search").value = "";
   document.body.classList.add("show-list");
   renderModuleNav();
@@ -1467,27 +2067,27 @@ function renderBoneSubNav() {
   const level3 = document.getElementById("boneLevel3");
   if (!level2 || !level3) return;
 
-  if (activeModule !== "bone") {
-    level2.classList.remove("show");
-    level3.classList.remove("show");
-    level2.innerHTML = "";
-    level3.innerHTML = "";
-    return;
-  }
+  level2.classList.remove("show");
+  level3.classList.remove("show");
+  level3.innerHTML = "";
 
-  level2.classList.add("show");
-  level2.innerHTML = BONE_LEVEL2.map(t => `
-    <button class="sub-btn ${t.key === activeBoneLevel2 ? 'active' : ''}" onclick="setBoneLevel2('${t.key}')">${t.label}</button>
-  `).join("");
-
-  if (activeBoneLevel2 === "joint") {
-    level3.classList.add("show");
-    level3.innerHTML = BONE_LEVEL3_JOINT.map(t => `
-      <button class="sub-btn ${t.key === activeBoneLevel3 ? 'active' : ''}" onclick="setBoneLevel3('${t.key}')">${t.label}</button>
+  if (activeModule === "bone") {
+    level2.classList.add("show");
+    level2.innerHTML = BONE_LEVEL2.map(t => `
+      <button class="sub-btn ${t.key === activeBoneLevel2 ? 'active' : ''}" onclick="setBoneLevel2('${t.key}')">${t.label}</button>
     `).join("");
-  } else {
-    level3.classList.remove("show");
-    level3.innerHTML = "";
+
+    if (activeBoneLevel2 === "joint") {
+      level3.classList.add("show");
+      level3.innerHTML = BONE_LEVEL3_JOINT.map(t => `
+        <button class="sub-btn ${t.key === activeBoneLevel3 ? 'active' : ''}" onclick="setBoneLevel3('${t.key}')">${t.label}</button>
+      `).join("");
+    }
+  } else if (activeModule === "abdomen") {
+    level2.classList.add("show");
+    level2.innerHTML = ABDOMEN_LEVEL2.map(t => `
+      <button class="sub-btn ${t.key === activeAbdomenLevel2 ? 'active' : ''}" onclick="setAbdomenLevel2('${t.key}')">${t.label}</button>
+    `).join("");
   }
 }
 
@@ -1502,6 +2102,14 @@ function setBoneLevel2(key) {
 
 function setBoneLevel3(key) {
   activeBoneLevel3 = key;
+  activeTag = "all";
+  renderBoneSubNav();
+  renderTags();
+  filterCards();
+}
+
+function setAbdomenLevel2(key) {
+  activeAbdomenLevel2 = key;
   activeTag = "all";
   renderBoneSubNav();
   renderTags();
@@ -1547,6 +2155,10 @@ function filterCards() {
     }
   }
 
+  if (activeModule === "abdomen" && activeAbdomenLevel2 !== "all") {
+    filtered = filtered.filter(d => d.subModule === activeAbdomenLevel2);
+  }
+
   if (activeTag !== "all") filtered = filtered.filter(d => d.category === activeTag);
   if (q) {
     filtered = filtered.filter(d => {
@@ -1577,6 +2189,9 @@ function updateStats(n) {
       moduleName += " / " + (BONE_LEVEL3_JOINT.find(x => x.key === activeBoneLevel3)?.label || "");
     }
   }
+  if (activeModule === "abdomen" && activeAbdomenLevel2 !== "all") {
+    moduleName += " / " + (ABDOMEN_LEVEL2.find(x => x.key === activeAbdomenLevel2)?.label || "");
+  }
   document.getElementById("stats").textContent = `${moduleName} · 共 ${n} 种疾病`;
 }
 
@@ -1594,11 +2209,13 @@ function renderList(data) {
       </div>`;
     return;
   }
-  c.innerHTML = data.map((d, i) => `
-    <div class="disease-card">
-      <div class="card-header" onclick="toggle(${i})">
+  c.innerHTML = data.map(d => {
+    const originalIndex = DATA.indexOf(d);
+    return `
+    <div class="disease-card" onclick="showDetail(${originalIndex})">
+      <div class="card-header">
         <div class="card-title-wrap">
-          <div class="card-kicker"><span class="dot"></span><span>${d.module || 'imaging'} · ${String(i + 1).padStart(2, '0')}</span></div>
+          <div class="card-kicker"><span class="dot"></span><span>${d.module || 'imaging'} · ${String(originalIndex + 1).padStart(2, '0')}</span></div>
           <h3>${d.name}</h3>
           <div class="card-meta">
             ${d.category ? `<span class="meta-chip">${d.category}</span>` : ""}
@@ -1606,9 +2223,28 @@ function renderList(data) {
             ${d.differential && Object.keys(d.differential).length ? `<span class="meta-chip">${Object.keys(d.differential).length} 项鉴别</span>` : ""}
           </div>
         </div>
-        <span class="arrow" id="arrow${i}">▶</span>
       </div>
-      <div class="card-body" id="body${i}">
+    </div>
+    `;
+  }).join("");
+}
+
+function showDetail(originalIndex) {
+  const d = DATA[originalIndex];
+  if (!d) return;
+  const container = document.getElementById("detailContainer");
+  container.innerHTML = `
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="card-kicker"><span class="dot"></span><span>${d.module || 'imaging'} · ${String(originalIndex + 1).padStart(2, '0')}</span></div>
+        <h2>${d.name}</h2>
+        <div>
+          ${d.category ? `<span class="meta-chip">${d.category}</span>` : ""}
+          ${d.signs?.length ? `<span class="meta-chip">${d.signs.length} 个征象</span>` : ""}
+          ${d.differential && Object.keys(d.differential).length ? `<span class="meta-chip">${Object.keys(d.differential).length} 项鉴别</span>` : ""}
+        </div>
+      </div>
+      <div class="detail-body">
         ${d.clinical?.length ? `<div class="info-section clinical"><div class="info-label">临床概述</div><div class="info-text"><ul>${d.clinical.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>` : ""}
         ${d.signs?.length ? `<div class="info-section signs"><div class="info-label">影像征象</div><div class="info-text">${d.signs.map(x=>`<span class="sign-tag">${x}</span>`).join("")}</div></div>` : ""}
         ${d.features?.length ? `<div class="info-section features"><div class="info-label">影像特征</div><div class="info-text"><ul>${d.features.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>` : ""}
@@ -1616,17 +2252,18 @@ function renderList(data) {
         ${d.differential && Object.keys(d.differential).length ? `<div class="info-section differential"><div class="info-label">鉴别诊断</div><div class="info-text">${Object.entries(d.differential).map(([k,v])=>`<div class="differential-item"><strong>${k}</strong><div class="diff-text">${v}</div></div>`).join("")}</div></div>` : ""}
       </div>
     </div>
-  `).join("");
+  `;
+  document.body.classList.remove("show-list");
+  document.body.classList.add("show-detail");
+  document.getElementById("detailPage").style.display = "block";
+  window.scrollTo({top:0, behavior:"smooth"});
 }
 
-function toggle(i) {
-  const body = document.getElementById("body" + i);
-  const arrow = document.getElementById("arrow" + i);
-  if(!body || !arrow) return;
-  const isOpen = body.classList.contains("open");
-  body.classList.toggle("open");
-  arrow.classList.toggle("open");
-  if (!isOpen) body.parentElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+function hideDetail() {
+  document.body.classList.remove("show-detail");
+  document.getElementById("detailPage").style.display = "none";
+  filterCards();
+  window.scrollTo({top:0, behavior:"smooth"});
 }
 
 init();
